@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Venture Apparels-Admin</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/userLogin.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Venture Apparels Admin</h1>
+    <h4> Secure Access to Powerful Administrative Tools</h4>
+
+
+    <form method="post" action="/admin/">
+      <div class="form-group">
+        <label class="form-label" for="email">email</label>
+        <input class="form-input" type="text" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" name="password" required>
+      </div>
+      <button class="form-submit" type="submit">Login</button>
+      <br></br>
+    </form>
+
+    <% if (typeof message!=='undefined' && message) { %>
+      <p style="color: red"><%= message %></p>
+      <% } %>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+/* Add your custom CSS styles here */
+
+/* Header styles */
+header {
+    padding: 10px;
+  }
+  
+  .logo-img {
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-nav .nav-link {
+    margin-right: 10px;
+  }
+  
+  /* Adjust the active link styles based on your preference */
+  .navbar-nav .nav-link.active {
+    font-weight: bold;
+  }
+  
+  /* Optionally, you can add more custom styles to enhance the header appearance */
+  
+  

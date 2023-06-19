@@ -1,0 +1,47 @@
+<%- include('../partials/admin-sidebar') %>
+<%- include('../partials/admin-header') %>
+
+<h1>Add Product</h1>
+
+<% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+  <p style="color: red;"><%= errorMessage %></p>
+<% } %>
+
+<style>
+  .form-group {
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="container mt-4">
+  <form method="POST" enctype="multipart/form-data" action="/product/add">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input type="number" class="form-control" id="price" name="price" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea class="form-control" id="description" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <select class="form-control" id="category" name="category" required style="color: black;">
+        <option value="" selected disabled>Choose a category</option>
+        <% categories.forEach(category=>{ %>
+          <option value="<%= category._id %>"><%= category.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="image">Image:</label>
+      <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary">Add Product</button>
+    </div>
+  </form>
+</div>

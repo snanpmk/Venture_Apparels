@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verify Mobile Number</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <style>
+      .container-fluid.h-custom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+              class="img-fluid"
+              alt="Sample image"
+            />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <h1>Verify Mobile Number</h1>
+            <p>
+              A text with a One Time Password (OTP) has been sent to your mobile
+              number:
+            </p>
+            <form method="post" action="/verify-otp">
+              <div class="form-group">
+                <label for="otpInput">Enter OTP:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otpInput"
+                  placeholder="Enter the OTP"
+                  name="otp"
+                />
+              </div>
+              <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <% if (typeof message !== 'undefined' && message) { %>
+              <p style="color: red"><%= message %></p>
+              <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

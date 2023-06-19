@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Venture Apparels-Login</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/userLogin.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Venture Apparels</h1>
+    <h4>Adventure Awaits, Gear Up and Explore</h4>
+
+    <form method="post" action="/login">
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" type="text" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" type="password" id="password" name="password" required>
+      </div>
+      <button class="form-submit" type="submit">Login</button>
+      <div class="center">
+        <p class="or-text">Or</p>
+        <a class="phone-login-button" href="/login-phone">Login with Phone Number</a>
+      </div>
+      <br>
+      <a class="buttontxt" href="/signup">Not a member? Join Us</a>
+    </form>
+
+    <% if (typeof message !== 'undefined' && message) { %>
+      <p style="color: red"><%= message %></p>
+    <% } %>
+  </div>
+</body>
+</html>
