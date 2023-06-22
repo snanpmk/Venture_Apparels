@@ -36,11 +36,13 @@ const loadAddProduct = async function (req, res) {
 const userViewCategory = async function (req, res) {
   try {
     const products = await Product.find();
+    const categories = await Category.find();
     console.log(products);
     res.render("product/category", {
       layout: "layouts/user-layout",
       title: "Category",
       products: products,
+      categories:categories
     });
   } catch (err) {
     console.log("error in loading user category view", err);

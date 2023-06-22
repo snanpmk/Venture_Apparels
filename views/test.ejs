@@ -1,27 +1,71 @@
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Image</th>
-      <th>Options</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% products.forEach((product) => { %>
-      <tr>
-        <td><%= product.id %></td>
-        <td><%= product.name %></td>
-        <td><%= product.description %></td>
-        <td>$<%= product.price %></td>
-        <td><img src="<%= product.image %>" alt="<%= product.name %>" width="50" height="50"></td>
-        <td>
-          <a href="/products/edit/<%= product.id %>">Edit</a>
-          <a href="/products/delete/<%= product.id %>">Delete</a>
-        </td>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Account</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
+    <style>
+      /* Add custom CSS for center alignment */
+      
+      .btn-primary {
+        color: white;
+        text-decoration: none;
+      }
+      a{
+        color: white;
+      }
+      a:hover{
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img
+              src="/images/background/login (2).jpg"
+              class="img-fluid"
+              alt="Sample image"
+              width="500"
+              style="border-radius: 25px"
+            />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <h1>Verify Mobile Number</h1>
+            <p>
+              A text with a One Time Password (OTP) has been sent to your mobile
+              number:
+            </p>
+            <form method="post" action="/verify-otp">
+              <div class="form-group">
+                <label for="otpInput">Enter OTP:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otpInput"
+                  placeholder="Enter the OTP"
+                  name="otp"
+                />
+              </div>
+              <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+
+              <% if (typeof message !== 'undefined' && message) { %>
+              <p style="color: red"><%= message %></p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+  </body>
+</html>

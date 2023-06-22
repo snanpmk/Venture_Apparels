@@ -1,0 +1,28 @@
+
+
+<h1>User List</h1>
+<link rel="stylesheet" href="/stylesheets/user-list.css">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mob</th>
+        <th>joined date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% allUsers.forEach(user => { %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.phoneNumber %></td>
+          <td><%= user.createdAt %></td>
+          <td><a href="/admin/edit-user/<%= user._id %>">EDIT</a>
+          <a href="/admin/delete-user/<%= user._id %>">DELETE</a>
+          </td>
+        </tr>
+      <% }); %> 
+    </tbody>
+  </table>

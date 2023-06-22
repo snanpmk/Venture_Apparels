@@ -1,35 +1,99 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Venture Apparels-Login</title>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/userLogin.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Venture Apparels</h1>
-    <h4>Adventure Awaits, Gear Up and Explore</h4>
+  <head>
+    <title>Create Account</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
+    <style>
+      /* Add custom CSS for center alignment */
+      .btn-primary {
+        color: white;
+        text-decoration: none;
+      }
+      a {
+        color: white;
+      }
+      a:hover {
+        color: white;
+        text-decoration: none;
+      }
+      .no-underline {
+        text-decoration: none;
+        color: blue;
+      }
+      .no-underline:hover {
+        text-decoration: none;
+        color: rgb(41, 147, 76);
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img
+              src="/images/background/login (2).jpg"
+              class="img-fluid"
+              alt="Sample image"
+              width="500"
+              style="border-radius: 25px"
+            />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <div class="container-fluid">
+              <!-- form for account creation -->
+              <form method="post" class="" action="/login">
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <input
+                  class="form-control"
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  placeholder="Enter your email"
+                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                  />
 
-    <form method="post" action="/login">
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <input class="form-input" type="text" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-input" type="password" id="password" name="password" required>
-      </div>
-      <button class="form-submit" type="submit">Login</button>
-      <div class="center">
-        <p class="or-text">Or</p>
-        <a class="phone-login-button" href="/login-phone">Login with Phone Number</a>
-      </div>
-      <br>
-      <a class="buttontxt" href="/signup">Not a member? Join Us</a>
-    </form>
+                  <label class="form-label" for="password">Password</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    id="password"
+                    name="password"
+                    minlength="6"
+                    required
+                    placeholder="Enter your password"
+                  />
+                </div>
+                <p>Passwords must be at least 6 characters.</p>
+                <div class="center-align">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
 
-    <% if (typeof message !== 'undefined' && message) { %>
-      <p style="color: red"><%= message %></p>
-    <% } %>
-  </div>
-</body>
+                <div class="mt-4 center-align">
+                  <p>Or</p>
+                  <button class="btn btn-primary"><a href="/login-phone">Login with mobile</a></button>
+                </div>
+              </form>
+
+              <% if (typeof message !== 'undefined' && message) { %>
+              <p style="color: red"><%= message %></p>
+              <% } %>
+              
+              <div class="mt-4 center-align">
+                <p>Not a member? <a href="/signup" class="no-underline">Join us</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
 </html>

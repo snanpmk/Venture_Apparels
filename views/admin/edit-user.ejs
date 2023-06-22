@@ -1,0 +1,17 @@
+<form action="/admin/edit-user/<%= user._id %>" method="post">
+    <link rel="stylesheet" href="/stylesheets/edit-user.css">
+      <div>
+        <label for="Username">Username:</label>
+        <input type="text" id="Username" name="Username" value="<%= user.name %>" required>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="<%= user.email %>" required>
+      </div>
+      <div>
+        <label for="phoneNumber">Mob</label>
+        <input type="number" id="email" name="phoneNumber" value="<%= user.phoneNumber %>" required>
+      </div>
+       <button class="form-submit" type="submit">Update user</button>
+    </form>
+    

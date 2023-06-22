@@ -14,14 +14,16 @@
         <div class="row d-flex justify-content-center align-items-center">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+              src="/images/background/signup (2).jpg"
               class="img-fluid"
               alt="Sample image"
+              width="600"
+              style="border-radius: 25px;"
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <!-- form for account creation -->
-            <form method="post" action="/signup">
+            <form method="post" action="/signup" onsubmit="return validateForm()">
               <div class="form-group">
                 <label class="form-label" for="name">Your name</label>
                 <input
@@ -36,11 +38,7 @@
                 <label class="form-label" for="phoneNumber">Phone Number</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <select
-                      class="custom-select"
-                      id="countryCode"
-                      name="countryCode"
-                    >
+                    <select class="custom-select" id="countryCode" name="countryCode">
                       <option value="+91">+91</option>
                       <option value="+1">+1</option>
                       <option value="+44">+44</option>
@@ -66,6 +64,8 @@
                   id="email"
                   name="email"
                   required
+                  placeholder="Enter your email"
+                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                 />
 
                 <label class="form-label" for="password">Password</label>
@@ -76,18 +76,34 @@
                   name="password"
                   minlength="6"
                   required
+                  placeholder="Enter your password"
                 />
+
+                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  minlength="6"
+                  required
+                  placeholder="Confirm your password"
+                />
+
+                <p id="passwordMatchMessage" style="color: red; display: none;">Passwords do not match.</p>
+
                 <p>Passwords must be at least 6 characters.</p>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <br />
 
-            <div class="mt-4">
-              <p>Already have an account? <a href="/login">Sign in</a></p>
-            </div>
             <% if (typeof message !== 'undefined' && message) { %>
             <p style="color: red"><%= message %></p>
             <% } %>
+            <div class="mt-4">
+              <p>Already have an account? <a href="/login">Sign in</a></p>
+            </div>
           </div>
         </div>
       </div>
@@ -104,6 +120,20 @@
         const countryCode = countryCodeSelect.value;
         phoneNumberInput.placeholder = `Enter your phone number (${countryCode})`;
       });
+
+      // Validate form on submission
+      function validateForm() {
+        const password = document.querySelector("#password").value;
+        const confirmPassword = document.querySelector("#confirmPassword").value;
+        const passwordMatchMessage = document.querySelector("#passwordMatchMessage");
+
+        if (password !== confirmPassword) {
+          passwordMatchMessage.style.display = "block";
+          return false;
+        }
+
+        return true;
+      }
     </script>
   </body>
 </html>

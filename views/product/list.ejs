@@ -8,6 +8,7 @@
       <th>Name</th>
       <th>Price</th>
       <th>Description</th>
+      <th>category</th>
       <th>Image</th>
     </tr>
   </thead>
@@ -17,6 +18,8 @@
         <td><%= product.name %></td>
         <td><%= product.price %></td>
         <td><%= product.description %></td>
+        <td><%= product.category %></td>
+
         <td><img src="/<%= product.image %>" alt="Product Image" height="100"></td>
       </tr>
     <% }); %>

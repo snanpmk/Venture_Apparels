@@ -15,8 +15,9 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   phoneNumber: {
-    type : String,
-    required:true
+    type: String,
+    required: true,
+    unique: true,
   },
   is_admin: {
     type: Number,
@@ -32,6 +33,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model("users",userSchema);
+const User = mongoose.model("users", userSchema);
 
-module.exports =  User
+module.exports = User;

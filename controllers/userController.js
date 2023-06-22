@@ -34,31 +34,39 @@ const securePassword = async (password) => {
 
 const RegisterUser = async function (req, res) {
   try {
-    const hashedPassword = await securePassword(req.body.password);
-    const user = new User({
-      name: req.body.name,
-      phoneNumber: req.body.countryCode + req.body.phoneNumber,
-      email: req.body.email,
-      password: hashedPassword,
-      is_verified: 0,
-      is_admin: 0,
-      createdAt: Date.now(),
-    });
+    const existingUserEmail = await User.findOne({ email: req.body.email });
+    const existingUserPhone = await User.findOne({ phoneNumber: req.body.countryCode + req.body.phoneNumber });
 
-    const userData = await user.save();
-    if (userData) {
-      sendOtpSignup(req, res);
+    if (existingUserEmail) {
+      res.render("auth/register", { message: "Email already registered" });
+    } else if (existingUserPhone) {
+      res.render("auth/register", { message: "Phone number already registered" });
     } else {
-      res.render("auth/register", { message: "Sign Up Failed !!!" });
+      const hashedPassword = await securePassword(req.body.password);
+      const user = new User({
+        name: req.body.name,
+        phoneNumber: req.body.countryCode + req.body.phoneNumber,
+        email: req.body.email,
+        password: hashedPassword,
+        is_verified: 0,
+        is_admin: 0,
+        createdAt: Date.now(),
+      });
+
+      const userData = await user.save();
+      if (userData) {
+        sendOtpSignup(req, res);
+      } else {
+        res.render("auth/register", { message: "Sign Up Failed !!!" });
+      }
     }
   } catch (err) {
     console.log("Error in Register User", err);
-
-    if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
-      res.render("auth/register", { message: "Email already registered" });
-    }
+    res.render("auth/register", { message: "Registration failed" });
   }
 };
+
+
 
 const loadLogin = async function (req, res) {
   try {
@@ -90,17 +98,17 @@ const sendOtpLogin = async function (req, res) {
 
   req.session.phoneNumber = phoneNumber;
   console.log(req.session.phoneNumber + "from the sendOtpLogin");
-  client.verify.v2
-    .services(servicesSid)
-    .verifications.create({ to: phoneNumber, channel: "sms" })
-    .then((verification) => {
-      console.log(verification.sid);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
+  // client.verify.v2
+  //   .services(servicesSid)
+  //   .verifications.create({ to: phoneNumber, channel: "sms" })
+  //   .then((verification) => {
+  //     console.log(verification.sid);
+  //     return true;
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     return false;
+  //   });
   res.render("auth/otpVerification");
 };
 
@@ -110,17 +118,17 @@ const sendOtpSignup = async function (req, res) {
   req.session.phoneNumber = phoneNumber;
   console.log(req.session.phoneNumber + "from the sendOtpSignup");
 
-  client.verify.v2
-    .services(servicesSid)
-    .verifications.create({ to: phoneNumber, channel: "sms" })
-    .then((verification) => {
-      console.log(verification.sid);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
+  // client.verify.v2
+  //   .services(servicesSid)
+  //   .verifications.create({ to: phoneNumber, channel: "sms" })
+  //   .then((verification) => {
+  //     console.log(verification.sid);
+  //     return true;
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     return false;
+  //   });
   res.render("auth/otpVerification");
 };
 
@@ -141,9 +149,9 @@ const login = async function (req, res) {
 
     if (!isPasswordValid) {
       console.log("Invalid email or password");
-      return res.render("auth/login", {
+      return res.redirect("/",{
         message: "Invalid email or password",
-      });
+      }) ;
     } else {
       console.log("Login successful");
       return res.redirect("/");
@@ -156,7 +164,6 @@ const login = async function (req, res) {
 const verifyOtp = async function (req, res) {
   try {
     const phoneNumber = req.session.phoneNumber;
-
     const otp = req.body.otp;
     console.log(phoneNumber + " " + otp);
     client.verify.v2
@@ -193,6 +200,14 @@ const testRender = async function (req, res) {
     console.log("Error registering user", err);
   }
 };
+
+const viewCart = async function (req,res) {
+  try {
+    res.render("cart")
+  } catch(err){
+    console.log("error in loading cart",err);
+  }
+}
 
 module.exports = {
   loadHome,

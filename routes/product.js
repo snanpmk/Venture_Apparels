@@ -33,12 +33,13 @@ router.post("/add", upload.single("image"), productController.uploadProduct);
 
 router.get("/list", productController.listAllProducts);
 
-router.get("/category",productController.userViewCategory);
+router.get("/allcategory",productController.userViewCategory);
 
 router.get('/add-category',categoryController.loadAddCategory)
 
 router.post('/add-category',categoryController.addCategory)
 
-router.get('/add-category/jackets',categoryController.loadAddCategory)
+router.get('/category/:categoryName',categoryController.loadJacketCategory)
 
 module.exports = router;
+  

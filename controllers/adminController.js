@@ -55,8 +55,75 @@ const adminLogin = async function (req, res) {
   }
 };
 
+const listAllUsers = async function (req, res) {
+  try {
+    const users = await User.find();
+    console.log(users);
+    res.render("admin/list-users", { allUsers: users });
+  } catch (err) {
+    console.log("error in listing useres", err);
+  }
+};
+
+const loadEditUser = async function (req, res) {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const userData = await User.findById(id).lean();
+    console.log(userData);
+    if (userData) {
+      res.status(200).render("admin/edit-user", { user: userData });
+    }
+  } catch (error) {
+    res.status(500).render("admin/users");
+  }
+};
+
+const loadUpdateUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const email = req.body.email;
+    const name = req.body.name;
+    const phoneNumber = req.body.phoneNumber;
+    const users = await User.find();
+    console.log(email);
+    console.log(phoneNumber);
+    let user = await User.findById(id);
+    console.log(user);
+    if (!user) {
+      return res.status(404).render("admin/list-users", {
+        message: "User not found",
+      });
+    }
+    user.email = email;
+    user.name = name;
+    user.phoneNumber = phoneNumber;
+    await user.save();
+    return res.redirect("/admin/list-users");
+  } catch (error) {
+    return res.status(500).render("admin/list-users", {
+      message: "Error editing user",
+     
+    });
+  }
+};
+
+const deleteUser = async function ( req, res ){
+  try {
+    const id = req.params.id;
+    await User.deleteOne({_id : id})
+    res.redirect('/admin/list-user')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   adminLogin,
   loadAdminLogin,
-  loadDashboard
+  loadDashboard,
+  listAllUsers,
+  loadEditUser,
+  loadUpdateUser, 
+  deleteUser
 };

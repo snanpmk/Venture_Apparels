@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login Form</title>
+    <title>Create Account</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
     <style>
-      .container-fluid.h-custom {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+      /* Add custom CSS for center alignment */
+      
+      .btn-primary {
+        color: white;
+        text-decoration: none;
+      }
+      a{
+        color: white;
+      }
+      a:hover{
+        color: white;
+        text-decoration: none;
       }
     </style>
   </head>
@@ -21,16 +29,20 @@
         <div class="row d-flex justify-content-center align-items-center">
           <div class="col-md-9 col-lg-6 col-xl-5">
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+              src="/images/background/login (2).jpg"
               class="img-fluid"
               alt="Sample image"
+              width="500"
+              style="border-radius: 25px"
             />
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <!-- form for phone number-->
-            <form method="post" action="/getotp">
-              <div class="form-group">
-                <label for="phoneInput">Phone Number</label>
+            <div class="container-fluid">
+              <!-- form for account creation -->
+              <form method="post" class="" action="/getotp">
+                <div class="form-group">
+                  
+                  <label for="phoneInput">Phone Number</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <select
@@ -50,22 +62,28 @@
                     type="tel"
                     class="form-control"
                     id="phoneInput"
-                    placeholder="Enter your phone number"
+                    placeholder="Phone Number"
                     name="phoneNumber"
                   />
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Get OTP</button>
-            </form>
-            <% if (typeof message !== 'undefined' && message) { %>
+                 
+                </div>
+              
+              
+              </form>
+
+              <% if (typeof message !== 'undefined' && message) { %>
               <p style="color: red"><%= message %></p>
               <% } %>
+            </div>
           </div>
         </div>
       </div>
     </section>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
   </body>
 </html>

@@ -7,7 +7,7 @@ router.get("/", userController.loadHome);
 router.get("/signup", userController.loadSignUp);
 
 router.get("/login", userController.loadLogin);
-
+ 
 router.post("/login", userController.login);
 
 router.get("/login-phone",userController.loadLoginPhone);

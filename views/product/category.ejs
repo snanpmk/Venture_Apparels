@@ -30,7 +30,7 @@
         <p class="lead text-white mb-0">
           Move, stretch, jump and hike in our latest waterproof arrivals. We've
           got you covered for your hike or climbing sessions, from Gortex
-          jackets to lightweight waterproof pants. Discover our latest range of
+           to lightweight waterproof pants. Discover our latest range of
           outdoor clothing.
         </p>
       </div>
@@ -53,7 +53,7 @@
                   <li class="mb-2">
                     <a
                       class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="/product/category"
+                      href="/product/allcategory"
                       ><span
                         ><i
                           class="ri-arrow-right-s-line align-bottom ms-n1"
@@ -63,85 +63,25 @@
                       <span class="text-muted ms-4">(21)</span></a
                     >
                   </li>
+                  <% categories.forEach(category => { %>
                   <li class="mb-2">
                     <a
                       class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="/product/category/hoodies"
-                      ><span name="categoryName"
-                        ><i
-                          name="categoryName"
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        Hoodies</span
-                      >
-                      <span class="text-muted ms-4">(13)</span></a
+                      href="/product/category/<%= category.name %>"
+                      name="categoryName"
                     >
-                  </li>
-                  <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="#"
-                      ><span  name="categoryName"
+
+                      <span
                         ><i
                           class="ri-arrow-right-s-line align-bottom ms-n1"
                         ></i>
-                        Windproof Jackets</span
+                        <%= category.name %></span
                       >
-                      <span class="text-muted ms-4">(18)</span></a
-                    >
+                      <span class="text-muted ms-4">(13)</span>
+                    </a>
                   </li>
-                  <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="#"
-                      ><span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        Hiking Jackets</span
-                      >
-                      <span class="text-muted ms-4">(25)</span></a
-                    >
-                  </li>
-                  <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="#"
-                      ><span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        Climbing Jackets</span
-                      >
-                      <span class="text-muted ms-4">(11)</span></a
-                    >
-                  </li>
-                  <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="#"
-                      ><span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        Trekking Jackets</span
-                      >
-                      <span class="text-muted ms-4">(19)</span></a
-                    >
-                  </li>
-                  <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="#"
-                      ><span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        Allround Jackets</span
-                      >
-                      <span class="text-muted ms-4">(24)</span></a
-                    >
-                  </li>
+                  <% }); %>
+                  
                 </ul>
               </nav>
             </div>
