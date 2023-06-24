@@ -7,28 +7,6 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="\stylesheets\userSignup.css" />
-    <style>
-      /* Add custom CSS for center alignment */
-      .btn-primary {
-        color: white;
-        text-decoration: none;
-      }
-      a {
-        color: white;
-      }
-      a:hover {
-        color: white;
-        text-decoration: none;
-      }
-      .no-underline {
-        text-decoration: none;
-        color: blue;
-      }
-      .no-underline:hover {
-        text-decoration: none;
-        color: rgb(41, 147, 76);
-      }
-    </style>
   </head>
   <body>
     <section>
@@ -50,13 +28,13 @@
                 <div class="form-group">
                   <label class="form-label" for="email">Email</label>
                   <input
-                  class="form-control"
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  placeholder="Enter your email"
-                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    class="form-control"
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="Enter your email"
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                   />
 
                   <label class="form-label" for="password">Password</label>
@@ -77,16 +55,20 @@
 
                 <div class="mt-4 center-align">
                   <p>Or</p>
-                  <button class="btn btn-primary"><a href="/login-phone">Login with mobile</a></button>
+                  <button class="btn btn-primary">
+                    <a href="/login-phone">Login with mobile</a>
+                  </button>
                 </div>
               </form>
 
-              <% if (typeof message !== 'undefined' && message) { %>
-              <p style="color: red"><%= message %></p>
-              <% } %>
-              
               <div class="mt-4 center-align">
-                <p>Not a member? <a href="/signup" class="no-underline">Join us</a></p>
+                <p>
+                  Not a member?
+                  <a href="/signup" class="no-underline">Join us</a>
+                </p>
+              </div>
+              <div id="errorContainer">
+                <p id="errorMessage" style="color: red"></p>
               </div>
             </div>
           </div>
@@ -95,5 +77,6 @@
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="/javascripts/signup.js"></script>
   </body>
 </html>

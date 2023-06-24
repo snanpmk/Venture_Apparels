@@ -4,3 +4,22 @@
   align-items: center;
   height: 100vh;
 }
+.btn-primary {
+  color: white;
+  text-decoration: none;
+}
+a {
+  color: white;
+}
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+.no-underline {
+  text-decoration: none;
+  color: blue;
+}
+.no-underline:hover {
+  text-decoration: none;
+  color: rgb(41, 147, 76);
+}

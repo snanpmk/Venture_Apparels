@@ -19,6 +19,7 @@ router.post("/verify-otp", userController.verifyOtp)
 router.post("/signup", userController.RegisterUser);
 
 
+router.get("/getotp",userController.testRender);
 router.get("/test",userController.testRender);
 
 
