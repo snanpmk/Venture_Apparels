@@ -41,5 +41,7 @@ router.post('/add-category',categoryController.addCategory)
 
 router.get('/category/:categoryName',categoryController.loadJacketCategory)
 
+router.get('/view-cart',productController.viewCart)
+
 module.exports = router;
   

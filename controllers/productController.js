@@ -73,18 +73,12 @@ const uploadProduct = async function (req, res) {
   }
 };
 
-const hoodies = async function(req,res) {
+const viewCart = async function(req,res) {
   try {
-    const products = await Product.find().filter  ;
-    res.render("product/list", {
-      title: "all Product",
-      layout: "layouts/product-layout",
-      products: products,
-      errorMessage: null,
-    });
-    res.render("product/categories/hoodies")
+    
+    res.render("product/cart")
   } catch(err) {
-    console.log("error in loading hoodie category",err);
+    console.log("error in loading cart",err);
   }
 }
 
@@ -93,4 +87,5 @@ module.exports = {
   uploadProduct,
   loadAddProduct,
   userViewCategory,
+  viewCart
 };

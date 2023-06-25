@@ -1,5 +1,6 @@
 require("dotenv").config();
 const User = require("../models/userModel");
+const Product = require("../models/productModel");
 const bcrypt = require("bcrypt");
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
@@ -9,7 +10,10 @@ const client = twilio(accountSid, authToken);
 
 const loadHome = async function (req, res) {
   try {
-    res.render("home", { layout: "layouts/user-layout" });
+    const products = await Product.find()
+      .sort({ upload: -1 }) 
+      .limit(7);
+    res.render("home", { layout: "layouts/user-layout", products: products });
   } catch (err) {
     console.log("Error registering user", err);
   }
@@ -77,13 +81,13 @@ const RegisterUser = async function (req, res) {
   }
 };
 
-const loadotpVerification = async function(req, res) {
+const loadotpVerification = async function (req, res) {
   try {
-    res.render('auth/otpVerification')
-  } catch(err){
-    console.log("error in loading otp input form",err);
+    res.render("auth/otpVerification");
+  } catch (err) {
+    console.log("error in loading otp input form", err);
   }
-}
+};
 
 const sendOtpSignup = async function (req, res) {
   try {
