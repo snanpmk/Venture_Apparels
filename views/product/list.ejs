@@ -8,8 +8,10 @@
       <th>Name</th>
       <th>Price</th>
       <th>Description</th>
-      <th>category</th>
+      <th>Category</th>
       <th>Image</th>
+      <th>Status</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -19,8 +21,18 @@
         <td><%= product.price %></td>
         <td><%= product.description %></td>
         <td><%= product.category %></td>
-
         <td><img src="/<%= product.image %>" alt="Product Image" height="100"></td>
+        <td>
+          <% if (!product.deleted) { %>
+            Available
+          <% } else { %>
+            Deleted
+          <% } %>
+        </td>
+        <td>
+          <a href="/product/edit/<%= product.id %>" class="btn btn-primary">Edit</a> 
+          <a href="/product/delete/<%= product.id %>" class="btn btn-danger">Delete</a> 
+        </td>
       </tr>
     <% }); %>
   </tbody>

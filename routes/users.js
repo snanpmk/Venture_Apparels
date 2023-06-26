@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const userController = require("../controllers/userController");
+const productController = require("../controllers/productController")
 
 router.get("/", userController.loadHome);
 
@@ -18,8 +19,10 @@ router.post("/verify-otp", userController.verifyOtp)
 
 router.post("/signup", userController.RegisterUser);
 
+router.get('/view-cart',userController.viewCart)
 
 router.get("/getotp",userController.testRender);
+
 router.get("/test",userController.testRender);
 
 

@@ -126,7 +126,7 @@ const login = async function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
     const user = await User.findOne({ email: email });
-    console.log(user);
+    
 
     if (!user) {
       return res.render("auth/login", {
@@ -143,6 +143,8 @@ const login = async function (req, res) {
       });
     } else {
       console.log("Login successful");
+      req.session.user = user
+      console.log(req.session.user.id);
       return res.redirect("/");
     }
   } catch (err) {
@@ -199,6 +201,7 @@ const verifyOtp = async function (req, res) {
     //     if (verification_check.status === "approved") {
     //       // Redirect to the landing page after OTP is approved
     //       res.redirect("/");
+
     //     } else {
     //       // Handle the case when OTP is not approved, e.g., render an error page
     //       res.render("auth/otpVerification", { message: "Invalid OTP" });
@@ -228,7 +231,7 @@ const testRender = async function (req, res) {
 
 const viewCart = async function (req, res) {
   try {
-    res.render("cart");
+    res.render("cart",{ layout: "layouts/user-layout"});
   } catch (err) {
     console.log("error in loading cart", err);
   }
@@ -245,4 +248,5 @@ module.exports = {
   sendOtpSignup,
   verifyOtp,
   testRender,
+  viewCart
 };

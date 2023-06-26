@@ -41,7 +41,13 @@ router.post('/add-category',categoryController.addCategory)
 
 router.get('/category/:categoryName',categoryController.loadJacketCategory)
 
-router.get('/view-cart',productController.viewCart)
+router.get('/product-detail',productController.productDetail)
+
+router.get('/edit/:ObjectId',productController.loadEditProduct)
+
+router.post('/update/:ObjectId',productController.upadateProduct)
+
+router.get('/delete/:ObjectId',productController.softDeleteProduct)
 
 module.exports = router;
   
