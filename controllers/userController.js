@@ -21,7 +21,7 @@ const loadHome = async function (req, res) {
 
 const loadSignUp = async function (req, res) {
   try {
-    res.render("auth/register");
+    res.render("auth/userSignIn");
   } catch (err) {
     console.log("Error loading register", err);
   }
@@ -81,9 +81,9 @@ const RegisterUser = async function (req, res) {
   }
 };
 
-const loadotpVerification = async function (req, res) {
+const loaduserOtpVerification = async function (req, res) {
   try {
-    res.render("auth/otpVerification");
+    res.render("auth/userOtpVerification");
   } catch (err) {
     console.log("error in loading otp input form", err);
   }
@@ -115,7 +115,7 @@ const sendOtpSignup = async function (req, res) {
 
 const loadLogin = async function (req, res) {
   try {
-    res.render("auth/login");
+    res.render("auth/userLogin");
   } catch (err) {
     console.log("Error in loading login", err);
   }
@@ -129,7 +129,7 @@ const login = async function (req, res) {
     
 
     if (!user) {
-      return res.render("auth/login", {
+      return res.render("auth/userLogin", {
         message: "Invalid email or password",
       });
     }
@@ -138,7 +138,7 @@ const login = async function (req, res) {
 
     if (!isPasswordValid) {
       console.log("Invalid email or password");
-      return res.render("auth/login", {
+      return res.render("auth/userLogin", {
         message: "Invalid email or password",
       });
     } else {
@@ -154,7 +154,7 @@ const login = async function (req, res) {
 
 const loadLoginPhone = async function (req, res) {
   try {
-    res.render("auth/otpLogin");
+    res.render("auth/userOtpLogin");
   } catch (err) {
     console.log("error in login with phone ", err);
   }
@@ -167,7 +167,7 @@ const sendOtpLogin = async function (req, res) {
   console.log(user);
 
   if (!user) {
-    return res.render("auth/otpLogin", {
+    return res.render("auth/userOtpLogin", {
       message: "User not found!!",
     });
   }
@@ -185,7 +185,7 @@ const sendOtpLogin = async function (req, res) {
   //     console.log(error);
   //     return false;
   //   });
-  res.render("auth/otpVerification");
+  res.render("auth/userOtpVerification");
 };
 
 const verifyOtp = async function (req, res) {
@@ -204,20 +204,20 @@ const verifyOtp = async function (req, res) {
 
     //     } else {
     //       // Handle the case when OTP is not approved, e.g., render an error page
-    //       res.render("auth/otpVerification", { message: "Invalid OTP" });
+    //       res.render("auth/userOtpVerification", { message: "Invalid OTP" });
     //     }
     //   })
     //   .catch((error) => {
     //     console.log(error);
     //     // Handle the error if needed
-    //     res.render("auth/otpVerification", {
+    //     res.render("auth/userOtpVerification", {
     //       message: "OTP verification failed",
     //     });
     //   });
   } catch (err) {
     console.log("Error in verifying OTP", err);
     // Handle the error if needed
-    res.render("auth/otpVerification", { message: "OTP verification failed" });
+    res.render("auth/userOtpVerification", { message: "OTP verification failed" });
   }
 };
 

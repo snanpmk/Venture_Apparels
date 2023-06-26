@@ -5,7 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const loadAddCategory = async function (req, res) {
   try {
-    res.render("product/categories/add-category");
+    res.render("/category/addCategory");
   } catch (err) {
     console.log("error in adding category", err);
   }
@@ -23,7 +23,7 @@ const addCategory = async function (req, res) {
   } catch (err) {}
 };
 
- const loadJacketCategory = async function (req, res) {
+ const loadEachCategory = async function (req, res) {
   try {
     const categoryName = req.params.categoryName;
     const category = await categoryModel.findOne({ name: categoryName });
@@ -39,7 +39,7 @@ const addCategory = async function (req, res) {
     const products = await Product.find({ category: categoryId });
     console.log(categories);
 
-    res.render("product/categories/jackets", {
+    res.render("categories/eachCategory", {
       layout: "layouts/user-layout",
       products: products,
       categories: categories,
@@ -53,5 +53,5 @@ const addCategory = async function (req, res) {
 module.exports = {
   addCategory,
   loadAddCategory,
-  loadJacketCategory,
+  loadEachCategory,
 };

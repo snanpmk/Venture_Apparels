@@ -39,7 +39,7 @@ const userViewCategory = async function (req, res) {
     const products = await Product.find();
     const categories = await Category.find();
     console.log(products);
-    res.render("product/category", {
+    res.render("category/allCategory", {
       layout: "layouts/user-layout",
       title: "Category",
       products: products,

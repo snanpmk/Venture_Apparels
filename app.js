@@ -14,9 +14,9 @@ const expressLayouts = require('express-ejs-layouts')
 
 
 
-var usersRouter = require("./routes/users");
-var adminRouter = require("./routes/admin");
-const productRouter = require("./routes/product");
+var usersRouter = require("./routes/userRoute");
+var adminRouter = require("./routes/adminRoute");
+const productRouter = require("./routes/productRoute");
 
 var app = express();
 

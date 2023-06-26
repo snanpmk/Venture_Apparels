@@ -39,7 +39,7 @@ router.get('/add-category',categoryController.loadAddCategory)
 
 router.post('/add-category',categoryController.addCategory)
 
-router.get('/category/:categoryName',categoryController.loadJacketCategory)
+router.get('/category/:categoryName',categoryController.loadEachCategory)
 
 router.get('/product-detail',productController.productDetail)
 

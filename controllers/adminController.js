@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const loadAdminLogin = function (req, res) {
   try {
-    res.render("admin/signin");
+    res.render("auth/adminSignIn");
   } catch (err) {
     console.log("error in loading admin login", err);
   }
@@ -35,7 +35,7 @@ const adminLogin = async function (req, res) {
     console.log(user);
 
     if (!user) {
-      return res.render("admin/signin", {
+      return res.render("auth/adminSignIn", {
         message: "Invalid username or password",
       });
     }
@@ -46,7 +46,7 @@ const adminLogin = async function (req, res) {
         res.send("welcome admin");
       }
     } else {
-      return res.render("admin/signin", {
+      return res.render("auth/adminSignIn", {
         message: "Invalid username or password",
       });
     }
@@ -59,7 +59,7 @@ const listAllUsers = async function (req, res) {
   try {
     const users = await User.find();
     console.log(users);
-    res.render("admin/list-users", { allUsers: users });
+    res.render("admin/userList", { allUsers: users });
   } catch (err) {
     console.log("error in listing useres", err);
   }
@@ -72,7 +72,7 @@ const loadEditUser = async function (req, res) {
     const userData = await User.findById(id).lean();
     console.log(userData);
     if (userData) {
-      res.status(200).render("admin/edit-user", { user: userData });
+      res.status(200).render("admin/userEdit", { user: userData });
     }
   } catch (error) {
     res.status(500).render("admin/users");
@@ -91,7 +91,7 @@ const loadUpdateUser = async (req, res) => {
     let user = await User.findById(id);
     console.log(user);
     if (!user) {
-      return res.status(404).render("admin/list-users", {
+      return res.status(404).render("admin/userList", {
         message: "User not found",
       });
     }
@@ -99,9 +99,9 @@ const loadUpdateUser = async (req, res) => {
     user.name = name;
     user.phoneNumber = phoneNumber;
     await user.save();
-    return res.redirect("/admin/list-users");
+    return res.redirect("/admin/userList");
   } catch (error) {
-    return res.status(500).render("admin/list-users", {
+    return res.status(500).render("admin/userList", {
       message: "Error editing user",
      
     });
