@@ -126,6 +126,8 @@ const login = async function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
     const user = await User.findOne({ email: email });
+    req.session.userId = user.id
+    // console.log(req.session.userId);
     
 
     if (!user) {
@@ -222,13 +224,7 @@ const verifyOtp = async function (req, res) {
 };
 
 
-const viewCart = async function (req, res) {
-  try {
-    res.render("cart",{ layout: "layouts/userLayout"});
-  } catch (err) {
-    console.log("error in loading cart", err);
-  }
-};
+
 
 const testRender = async function (req, res) {
   try {
@@ -249,5 +245,4 @@ module.exports = {
   sendOtpSignup,
   verifyOtp,
   testRender,
-  viewCart
 };

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -7,37 +7,32 @@ var logger = require("morgan");
 const db = require("./config/db");
 const session = require("express-session");
 const ejs = require("ejs");
-const expressLayouts = require('express-ejs-layouts')
-
-
-
-
+const expressLayouts = require("express-ejs-layouts");
 
 var usersRouter = require("./routes/userRoute");
 var adminRouter = require("./routes/adminRoute");
 const productRouter = require("./routes/productRoute");
+const cartRouter = require("./routes/cartRoute");
 
 var app = express();
 
 // view engine setup
-app.set('view engine', 'ejs'); // Set EJS as the template engine
-app.set('views', './views');
-
+app.set("view engine", "ejs"); // Set EJS as the template engine
+app.set("views", "./views");
 
 app.use(expressLayouts); // Use express-ejs-layouts middleware
-app.set('layout', 'layouts/adminLayout');
+app.set("layout", "layouts/adminLayout");
 
-app.locals.partialsDir = './views/partials';
- 
+app.locals.partialsDir = "./views/partials";
 
-app.use( 
-  session({ 
+app.use(
+  session({
     secret: "secret",
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
-    resave: false
+    resave: false,
   })
 );
 app.use(logger("dev"));
@@ -47,10 +42,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
 
-
-
-
-
 // app.use((req, res, next) => {
 //   res.header(
 //     "  Cache-Control",
@@ -59,19 +50,16 @@ app.use(express.static(path.join(__dirname, "uploads")));
 //   next();
 // });
 
-
-
-
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
-app.use("/product",productRouter);
-
+app.use("/product", productRouter);
+app.use("/cart", cartRouter)  
 console.clear();
-  db.connect((err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
+db.connect((err) => {
+  if (err) {
+    console.log(err);
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

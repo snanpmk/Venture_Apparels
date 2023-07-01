@@ -34,6 +34,7 @@ const loadAddProduct = async function (req, res) {
     console.log("error in loading add product", err);
   }
 };
+
 const userViewCategory = async function (req, res) {
   try {
     const products = await Product.find();
@@ -52,11 +53,19 @@ const userViewCategory = async function (req, res) {
 
 const productDetail = async function (req, res) {
   try {
-    res.render("product/productDetail", { layout: "layouts/userLayout" });
+    const productId = req.params.ObjectId;    
+    console.log(productId);
+    const product = await Product.findOne({ _id: productId });
+    console.log(product);
+    res.render("product/productDetail", {
+      layout: "layouts/userLayout",
+      product: product,
+    });
   } catch (err) {
     console.log("error in loading product detail", err);
   }
 };
+
 const uploadProduct = async function (req, res) {
   try {
     const { name, price, description } = req.body;
@@ -85,37 +94,38 @@ const uploadProduct = async function (req, res) {
 const loadEditProduct = async function (req, res) {
   try {
     const categories = await Category.find();
-    const productId = req.params.ObjectId; 
-    const product = await Product.findOne({ _id: productId }); 
+    const productId = req.params.ObjectId;
+    const product = await Product.findOne({ _id: productId });
     // console.log(product);
-    res.render("product/edit", { product: product ,categories: categories,}); 
+    res.render("product/edit", { product: product, categories: categories });
   } catch (err) {
     console.log("Error in loading edit product", err);
   }
-}
+};
 
-const upadateProduct = async function (req,res) {
+const upadateProduct = async function (req, res) {
   try {
-    const productId = req.params.ObjectId; 
+    const productId = req.params.ObjectId;
     const name = req.body.name;
     const price = req.body.price;
     const description = req.body.description;
     const category = req.body.category;
     const image = req.body.image;
 
-    const product = await Product.findOne({ _id: productId }); 
-    
-    product.name = name
-    product.description = description
-    product.category = category
-    
-    await product.save()
+    const product = await Product.findOne({ _id: productId });
+
+    product.name = name;
+    product.description = description;
+    product.category = category;
+    product.price = price;
+    product.image = image;
+
+    await product.save();
     console.log(product);
-    
-  } catch(err){
-    console.log("error in updating product",err);
+  } catch (err) {
+    console.log("error in updating product", err);
   }
-}
+};
 
 const deactivateProduct = async function (req, res) {
   try {
@@ -137,7 +147,7 @@ const deactivateProduct = async function (req, res) {
   }
 };
 
-const activateProduct = async function(req,res) {
+const activateProduct = async function (req, res) {
   try {
     const productId = req.params.ObjectId;
     const product = await Product.findByIdAndUpdate(
@@ -151,11 +161,9 @@ const activateProduct = async function(req,res) {
     console.log(product);
     res.json(product);
   } catch (err) {
-    console.log("error in activating product",err);
+    console.log("error in activating product", err);
   }
-}
-
-
+};
 
 module.exports = {
   listAllProducts,
@@ -167,5 +175,4 @@ module.exports = {
   upadateProduct,
   deactivateProduct,
   activateProduct,
-  
 };

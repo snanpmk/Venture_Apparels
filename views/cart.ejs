@@ -18,15 +18,12 @@
             </tr>
           </thead>
           <tbody>
+            <% products.forEach(product => { %>
             <tr>
               <!-- image -->
               <td class="d-none d-sm-table-cell">
                 <picture class="d-block bg-light p-3 f-w-20">
-                  <img
-                    class="img-fluid"
-                    src="/images/products/product-1.jpg"
-                    alt=""
-                  />
+                  <img class="img-fluid" src="/<%= product.image %>" alt="" />
                 </picture>
               </td>
               <!-- image -->
@@ -34,7 +31,7 @@
               <!-- Details -->
               <td>
                 <div class="ps-sm-3">
-                  <h6 class="mb-2 fw-bolder">Mens StormBreaker Jacket</h6>
+                  <h6 class="mb-2 fw-bolder"><%= product.name %></h6>
                   <small class="d-block text-muted">Mens / Blue / Medium</small>
                 </div>
               </td>
@@ -43,7 +40,9 @@
               <!-- Qty -->
               <td>
                 <div class="px-3">
-                  <span class="small text-muted mt-1">1 @ $1129.99</span>
+                  <span class="small text-muted mt-1"
+                    ><%= cart.items.quantity %> @ $<%= product.price %></span
+                  >
                 </div>
               </td>
               <!-- /Qty -->
@@ -59,90 +58,7 @@
               </td>
               <!-- /Actions -->
             </tr>
-            <tr>
-              <!-- image -->
-              <td class="d-none d-sm-table-cell">
-                <picture class="d-block bg-light p-3 f-w-20">
-                  <img
-                    class="img-fluid"
-                    src="/images/products/product-2.jpg"
-                    alt=""
-                  />
-                </picture>
-              </td>
-              <!-- image -->
-
-              <!-- Details -->
-              <td>
-                <div class="ps-sm-3">
-                  <h6 class="mb-2 fw-bolder">North Face Jacket</h6>
-                  <small class="d-block text-muted">Mens / Blue / Large</small>
-                </div>
-              </td>
-              <!-- Details -->
-
-              <!-- Qty -->
-              <td>
-                <div class="px-3">
-                  <span class="small text-muted mt-1">2 @ $499.99</span>
-                </div>
-              </td>
-              <!-- /Qty -->
-
-              <!-- Actions -->
-              <td class="f-h-0">
-                <div
-                  class="d-flex justify-content-between flex-column align-items-end h-100"
-                >
-                  <i class="ri-close-circle-line ri-lg"></i>
-                  <p class="fw-bolder mt-3 m-sm-0">$999.98</p>
-                </div>
-              </td>
-              <!-- /Actions -->
-            </tr>
-            <tr>
-              <!-- image -->
-              <td class="d-none d-sm-table-cell">
-                <picture class="d-block bg-light p-3 f-w-20">
-                  <img
-                    class="img-fluid"
-                    src="/images/products/product-4.jpg"
-                    alt=""
-                  />
-                </picture>
-              </td>
-              <!-- image -->
-
-              <!-- Details -->
-              <td>
-                <div class="ps-sm-3">
-                  <h6 class="mb-2 fw-bolder">Womens Adidas Hoodie</h6>
-                  <small class="d-block text-muted"
-                    >Womens / Red / Medium</small
-                  >
-                </div>
-              </td>
-              <!-- Details -->
-
-              <!-- Qty -->
-              <td>
-                <div class="px-3">
-                  <span class="small text-muted mt-1">1 @ $59.99</span>
-                </div>
-              </td>
-              <!-- /Qty -->
-
-              <!-- Actions -->
-              <td class="f-h-0">
-                <div
-                  class="d-flex justify-content-between flex-column align-items-end h-100"
-                >
-                  <i class="ri-close-circle-line ri-lg"></i>
-                  <p class="fw-bolder mt-3 m-sm-0">$59.99</p>
-                </div>
-              </td>
-              <!-- /Actions -->
-            </tr>
+            <% }); %>
           </tbody>
         </table>
       </div>

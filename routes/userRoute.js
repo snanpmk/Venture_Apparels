@@ -19,7 +19,6 @@ router.post("/verify-otp", userController.verifyOtp)
 
 router.post("/signup", userController.RegisterUser);
 
-router.get('/view-cart',userController.viewCart)
 
 router.get("/getotp",userController.testRender);
 
