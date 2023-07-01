@@ -1,71 +1,97 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create Account</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
-    <style>
-      /* Add custom CSS for center alignment */
-      
-      .btn-primary {
-        color: white;
-        text-decoration: none;
-      }
-      a{
-        color: white;
-      }
-      a:hover{
-        color: white;
-        text-decoration: none;
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-9 col-lg-6 col-xl-5">
-            <img
-              src="/images/background/login (2).jpg"
-              class="img-fluid"
-              alt="Sample image"
-              width="500"
-              style="border-radius: 25px"
-            />
-          </div>
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <h1>Verify Mobile Number</h1>
-            <p>
-              A text with a One Time Password (OTP) has been sent to your mobile
-              number:
-            </p>
-            <form method="post" action="/verify-otp">
-              <div class="form-group">
-                <label for="otpInput">Enter OTP:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="otpInput"
-                  placeholder="Enter the OTP"
-                  name="otp"
-                />
-              </div>
-              <button type="submit" class="btn btn-success">Submit</button>
-            </form>
+<!-- addCategory.ejs -->
 
-              <% if (typeof message !== 'undefined' && message) { %>
-              <p style="color: red"><%= message %></p>
-              <% } %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <% include('./partials/adminSidebar') %>
+    </div>
+
+    <div class="col-md-10">
+      <h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">ADD CATEGORY</h4>
+      <div class="container mt-4">
+        <form action="/product/add-category" method="post">
+          <div class="form-group">
+            <label for="categoryName">Category Name</label>
+            <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Enter category name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categoryDescription">Category Description</label>
+            <textarea class="form-control" id="categoryDescription" name="categoryDescription" placeholder="Enter category description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="gender">Gender</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="genderMen" name="gender" value="men" required>
+              <label class="form-check-label" for="genderMen">Men's</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="genderWomen" name="gender" value="women">
+              <label class="form-check-label" for="genderWomen">Women's</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="genderUnisex" name="gender" value="unisex">
+              <label class="form-check-label" for="genderUnisex">Unisex</label>
             </div>
           </div>
-        </div>
+
+          <div class="form-group">
+            <label for="ageGroup">Age Group</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="ageAdults" name="ageGroup" value="adults">
+              <label class="form-check-label" for="ageAdults">Adults</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="ageKids" name="ageGroup" value="kids">
+              <label class="form-check-label" for="ageKids">Kids</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="ageInfants" name="ageGroup" value="infants">
+              <label class="form-check-label" for="ageInfants">Infants</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Category</button>
+          <div class="mt-4">
+            <p id="errorMessage" class="text-danger mt-2"></p>
+          </div>
+        </form>
       </div>
-    </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  
-  </body>
-</html>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('errorMessage').textContent = '';
+
+      const formData = new FormData(this);
+
+      fetch('/product/add-category', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else if (response.status === 400) {
+            throw new Error('Please select one gender option');
+          } else {
+            throw new Error('An error occurred');
+          }
+        })
+        .then(data => {
+          console.log(data);
+          // Handle success response if needed
+        })
+        .catch(error => {
+          document.getElementById('errorMessage').textContent = error.message;
+          console.error(error);
+        });
+    });
+  });
+</script>

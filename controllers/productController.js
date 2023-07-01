@@ -11,12 +11,12 @@ const listAllProducts = async function (req, res) {
     const products = await Product.find();
     res.render("product/list", {
       title: "all Product",
-      layout: "layouts/product-layout",
+      layout: "layouts/adminLayout",
       products: products,
       errorMessage: null,
     });
   } catch (err) {
-    console.log("error in listing products" + err);
+    console.log("error in listing products", err);
   }
 };
 
@@ -26,7 +26,7 @@ const loadAddProduct = async function (req, res) {
     console.log(categories);
     res.render("product/add", {
       title: "Add Product",
-      layout: "layouts/admin-layout",
+      layout: "layouts/adminLayout",
       categories: categories,
       errorMessage: null,
     });
@@ -40,7 +40,7 @@ const userViewCategory = async function (req, res) {
     const categories = await Category.find();
     console.log(products);
     res.render("category/allCategory", {
-      layout: "layouts/user-layout",
+      layout: "layouts/userLayout",
       title: "Category",
       products: products,
       categories: categories,
@@ -52,7 +52,7 @@ const userViewCategory = async function (req, res) {
 
 const productDetail = async function (req, res) {
   try {
-    res.render("product/productDetail", { layout: "layouts/user-layout" });
+    res.render("product/productDetail", { layout: "layouts/userLayout" });
   } catch (err) {
     console.log("error in loading product detail", err);
   }
@@ -117,7 +117,7 @@ const upadateProduct = async function (req,res) {
   }
 }
 
-const softDeleteProduct = async function (req, res) {
+const deactivateProduct = async function (req, res) {
   try {
     const productId = req.params.ObjectId;
     console.log(productId);
@@ -137,6 +137,26 @@ const softDeleteProduct = async function (req, res) {
   }
 };
 
+const activateProduct = async function(req,res) {
+  try {
+    const productId = req.params.ObjectId;
+    const product = await Product.findByIdAndUpdate(
+      { _id: productId },
+      {
+        deleted: false,
+        deletedAt: new Date(),
+      },
+      { new: true }
+    );
+    console.log(product);
+    res.json(product);
+  } catch (err) {
+    console.log("error in activating product",err);
+  }
+}
+
+
+
 module.exports = {
   listAllProducts,
   uploadProduct,
@@ -145,5 +165,7 @@ module.exports = {
   productDetail,
   loadEditProduct,
   upadateProduct,
-  softDeleteProduct,
+  deactivateProduct,
+  activateProduct,
+  
 };

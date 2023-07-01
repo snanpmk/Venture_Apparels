@@ -13,7 +13,7 @@ const loadHome = async function (req, res) {
     const products = await Product.find()
       .sort({ upload: -1 }) 
       .limit(7);
-    res.render("home", { layout: "layouts/user-layout", products: products });
+    res.render("home", { layout: "layouts/userLayout", products: products });
   } catch (err) {
     console.log("Error registering user", err);
   }
@@ -221,19 +221,20 @@ const verifyOtp = async function (req, res) {
   }
 };
 
+
+const viewCart = async function (req, res) {
+  try {
+    res.render("cart",{ layout: "layouts/userLayout"});
+  } catch (err) {
+    console.log("error in loading cart", err);
+  }
+};
+
 const testRender = async function (req, res) {
   try {
     return res.render("test");
   } catch (err) {
     console.log("Error registering user", err);
-  }
-};
-
-const viewCart = async function (req, res) {
-  try {
-    res.render("cart",{ layout: "layouts/user-layout"});
-  } catch (err) {
-    console.log("error in loading cart", err);
   }
 };
 

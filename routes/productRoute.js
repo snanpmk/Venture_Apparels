@@ -47,7 +47,18 @@ router.get('/edit/:ObjectId',productController.loadEditProduct)
 
 router.post('/update/:ObjectId',productController.upadateProduct)
 
-router.get('/delete/:ObjectId',productController.softDeleteProduct)
+router.get('/deactivate/:ObjectId',productController.deactivateProduct)
+
+router.get('/activate/:ObjectId',productController.activateProduct)
+
+router.get('/list-category',categoryController.listCategoryAdminSide)
+
+router.get('/edit-category/:ObjectId',categoryController.loadEditCategory)
+
+router.post('/update-category/:ObjectId',categoryController.upadateCategory)
+
+router.get('/deactivate-category/:ObjectId',categoryController.deactivateCategory)
+
+router.get('/activate-category/:ObjectId',categoryController.activateCategory)
 
 module.exports = router;
-  

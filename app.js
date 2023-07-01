@@ -9,7 +9,6 @@ const session = require("express-session");
 const ejs = require("ejs");
 const expressLayouts = require('express-ejs-layouts')
 
-// const sessionHandler = require("./config/sessionhandler");
 
 
 
@@ -26,7 +25,7 @@ app.set('views', './views');
 
 
 app.use(expressLayouts); // Use express-ejs-layouts middleware
-app.set('layout', 'layouts/admin-layout');
+app.set('layout', 'layouts/adminLayout');
 
 app.locals.partialsDir = './views/partials';
  
