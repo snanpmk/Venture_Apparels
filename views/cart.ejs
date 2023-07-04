@@ -13,12 +13,15 @@
             <tr>
               <th class="d-none d-sm-table-cell"></th>
               <th class="ps-sm-3">Details</th>
+              <th>price</th>
               <th>Qty</th>
+              <th>Total</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <% products.forEach(product => { %>
+            <% products.forEach((product, index) => { %> <% const item =
+            cart.items[index]; %>
             <tr>
               <!-- image -->
               <td class="d-none d-sm-table-cell">
@@ -37,11 +40,20 @@
               </td>
               <!-- Details -->
 
+              <!-- price -->
+              <td>
+                <div class="px-3">
+                  <span class="small text-muted mt-1"
+                    >$<%= product.price %></span
+                  >
+                </div>
+              </td>
+              <!-- /price -->
               <!-- Qty -->
               <td>
                 <div class="px-3">
                   <span class="small text-muted mt-1"
-                    ><%= cart.items.quantity %> @ $<%= product.price %></span
+                    ><%= item.quantity %></span
                   >
                 </div>
               </td>
@@ -53,7 +65,7 @@
                   class="d-flex justify-content-between flex-column align-items-end h-100"
                 >
                   <i class="ri-close-circle-line ri-lg"></i>
-                  <p class="fw-bolder mt-3 m-sm-0">$1129.99</p>
+                  <p class="fw-bolder mt-3 m-sm-0">$<%= item.totalPrice %></p>
                 </div>
               </td>
               <!-- /Actions -->
@@ -63,6 +75,8 @@
         </table>
       </div>
     </div>
+   
+
     <!-- /Cart Items -->
     <div class="col-12 col-lg-6 col-xl-5">
       <div class="bg-dark p-4 p-md-5 text-white">
