@@ -4,25 +4,32 @@ const Product = require("../models/productModel");
 const viewCart = async function (req, res) {
   try {
     const userId = req.session.userId;
-
+    console.log(userId);
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
     );
-    const products = cart.items.map((item) => item.productId);
+    let grandTotal = 0;
+    let subtotal = 0;
+
     cart.items = cart.items.map((item) => {
       const productPrice = item.productId.price;
       const totalPrice = productPrice * item.quantity;
-      item.totalPrice = totalPrice; // Update totalPrice in the item
-      console.log(item.totalPrice);
+      item.totalPrice = totalPrice;
+      subtotal += totalPrice;
+      grandTotal = subtotal + 45.89;
       return item;
     });
-    console.log(cart.items);
+
     await cart.save(); // Save the updated cart
+    
+    // Assuming you have a `products` array from somewhere
     res.render("cart", {
       layout: "layouts/userLayout",
-      products: products,
+      products: cart.items,
       cart: cart,
       item: cart.items,
+      subtotal: subtotal,
+      grandTotal: grandTotal,
     });
   } catch (err) {
     console.log("error in viewing cart", err);
