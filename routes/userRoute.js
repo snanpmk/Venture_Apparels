@@ -13,14 +13,15 @@ router.post("/login", userController.login);
 
 router.get("/login-phone",userController.loadLoginPhone);
 
+router.get("/enter-otp",userController.enterOtp)
+
 router.post("/getotp",userController.sendOtpLogin)
 
 router.post("/verify-otp", userController.verifyOtp)
 
 router.post("/signup", userController.RegisterUser);
 
-
-router.get("/getotp",userController.testRender);
+router.get("/getotp",userController.sendOtpSignup);
 
 router.get("/test",userController.testRender);
 

@@ -23,3 +23,16 @@ a:hover {
   text-decoration: none;
   color: rgb(41, 147, 76);
 }
+.container-fluid.h-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Use min-height instead of height to avoid affecting other contents */
+}
+
+img.img-fluid {
+  max-width: 100%; /* Use max-width instead of height to maintain aspect ratio */
+  height: auto;
+  object-fit: cover;
+}
+

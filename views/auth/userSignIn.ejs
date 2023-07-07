@@ -38,6 +38,7 @@
                   placeholder="First and last name"
                   required
                 />
+                <p id="nameValidMessage" style="color: red"></p>
 
                 <label class="form-label" for="phoneNumber">Phone Number</label>
                 <div class="input-group">
@@ -64,16 +65,18 @@
                   />
                 </div>
 
+                <p id="phoneNumberValidMessage" style="color: red"></p>
+
                 <label class="form-label" for="email">Email</label>
                 <input
                   class="form-control"
-                  type="email"
                   id="email"
                   name="email"
+                  type="email"
                   required
                   placeholder="Enter your email"
-                  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                 />
+                <p id="emailValidMessage" style="color: red"></p>
 
                 <label class="form-label" for="password">Password</label>
                 <input
@@ -81,10 +84,13 @@
                   type="password"
                   id="password"
                   name="password"
-                  minlength="6"
                   required
                   placeholder="Enter your password"
                 />
+                <p
+                  id="passwordStrengthMessage"
+                  style="width: 20rem; color: red"
+                ></p>
 
                 <label class="form-label" for="confirmPassword"
                   >Confirm Password</label
@@ -102,20 +108,18 @@
                 <p id="passwordMatchMessage" style="color: red; display: none">
                   Passwords do not match.
                 </p>
-
-                <p>Passwords must be at least 6 characters.</p>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <!-- ///form for account creation -->
-
             <br />
-
-           <div id="errorContainer">
-            <p id="errorMessage" style="display: none; color: red;"></p>
-           </div>
+            <div id="errorContainer">
+              <p id="errorMessage" style="display: none; color: red"></p>
+            </div>
             <div class="mt-4">
-              <p>Already have an account? <a href="/login">Sign in</a></p>
+              <p>
+                Already have an account?
+                <a href="/login" style="color: blue">Sign in</a>
+              </p>
             </div>
           </div>
         </div>
