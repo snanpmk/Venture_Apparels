@@ -33,6 +33,7 @@ router.post("/add", upload.single("image"), productController.uploadProduct);
 
 router.get("/list", productController.listAllProducts);
 
+// all products usersisde
 router.get("/allcategory", productController.userViewCategory);
 
 router.get("/add-category", categoryController.loadAddCategory);

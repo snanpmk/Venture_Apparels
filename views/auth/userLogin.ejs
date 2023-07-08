@@ -32,9 +32,9 @@
                     type="email"
                     id="email"
                     name="email"
+                      
                     required
                     placeholder="Enter your email"
-                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                   />
 
                   <label class="form-label" for="password">Password</label>
@@ -43,7 +43,6 @@
                     type="password"
                     id="password"
                     name="password"
-                    minlength="6"
                     required
                     placeholder="Enter your password"
                   />
@@ -66,16 +65,14 @@
                   <a href="/signup" class="no-underline">Join us</a>
                 </p>
               </div>
-              <div id="errorContainer">
-                <p id="errorMessage" style="color: red"></p>
-              </div>
+              <p id="errorMessage" style="color: red"></p>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <script src="/javascripts/login.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="/javascripts/signup.js"></script>
   </body>
 </html>

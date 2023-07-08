@@ -1,9 +1,10 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 
+
 const viewCart = async function (req, res) {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId ;
     console.log(userId);
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
@@ -71,7 +72,19 @@ const addToCart = async function (req, res) {
   }
 };
 
+const updateQuantity = async function (req, res) {
+  try {
+    const productId = req.params.ObjectId;
+    const product = Product.findById({productId})
+    console.log(product);
+  } catch (error) {
+    console.log("error in updating the product quantity",error);
+  }
+}
+
+
 module.exports = {
   viewCart,
   addToCart,
+  updateQuantity
 };

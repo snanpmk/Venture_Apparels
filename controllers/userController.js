@@ -8,6 +8,7 @@ const servicesSid = process.env.SERVICES_SID;
 const twilio = require("twilio");
 const client = twilio(accountSid, authToken);
 
+// load user landing page
 const loadHome = async function (req, res) {
   try {
     const products = await Product.find().sort({ upload: -1 }).limit(7);
@@ -17,6 +18,7 @@ const loadHome = async function (req, res) {
   }
 };
 
+// load user signup
 const loadSignUp = async function (req, res) {
   try {
     res.render("auth/userSignIn");
@@ -25,6 +27,7 @@ const loadSignUp = async function (req, res) {
   }
 };
 
+// hashing password
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -34,6 +37,7 @@ const securePassword = async (password) => {
   }
 };
 
+// user Sign up
 const RegisterUser = async function (req, res) {
   try {
     const existingUserEmail = await User.findOne({ email: req.body.email });
@@ -79,38 +83,34 @@ const RegisterUser = async function (req, res) {
   }
 };
 
-const enterOtp = async function (req, res) {
-  try {
-    res.render("auth/userOtpVerification");
-  } catch (err) {
-    console.log("error in loading otp input form", err);
-  }
-};
-
+// send otp while signup
 const sendOtpSignup = async function (req, res) {
   try {
     console.log("send otp function is called..........");
     const phoneNumber = req.body.countryCode + req.body.phoneNumber;
     req.session.phoneNumber = phoneNumber;
     console.log(req.session.phoneNumber + "from the sendOtpSignup");
-    
-    // client.verify.v2
-    //   .services(servicesSid)
-    //   .verifications.create({ to: phoneNumber, channel: "sms" })
-    //   .then((verification) => {
-    //       console.log(verification.sid);
-    //       return true;
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //         return false;
-    //       });
-    return res.status(200).json({ success:true,message: "OTP sent successfully" });
+
+    client.verify.v2
+      .services(servicesSid)
+      .verifications.create({ to: phoneNumber, channel: "sms" })
+      .then((verification) => {
+          console.log(verification.sid);
+          return true;
+        })
+        .catch((error) => {
+            console.log(error);
+            return false;
+          });
+    return res
+      .status(200)
+      .json({ success: true, message: "OTP sent successfully" });
   } catch (error) {
-    res.status(500).json({ success:false,error });
+    res.status(500).json({ success: false, error });
   }
 };
 
+// load user login page
 const loadLogin = async function (req, res) {
   try {
     res.render("auth/userLogin");
@@ -119,38 +119,38 @@ const loadLogin = async function (req, res) {
   }
 };
 
+// verifying login using email and password
 const login = async function (req, res) {
   try {
     const email = req.body.email;
     const password = req.body.password;
     const user = await User.findOne({ email: email });
-    req.session.userId = user.id;
-    // console.log(req.session.userId);
 
     if (!user) {
-      return res.render("auth/userLogin", {
-        message: "Invalid email or password",
-      });
+      return res.status(500).json({ error: "User not found" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      console.log("Invalid email or password");
-      return res.render("auth/userLogin", {
-        message: "Invalid email or password",
-      });
+      res.status(500).json({ error: "Incorrect password" });
     } else {
-      console.log("Login successful");
-      req.session.user = user;
-      console.log(req.session.user.id);
-      return res.redirect("/");
+      if(user && user.id) {
+        req.session.userId = user.id;
+        req.session.userloggedIn = true;
+        console.log(req.session.userId);
+      }
+      res
+        .status(200)
+        .json({ success: true, message: "logged in successfully" });
+     
     }
   } catch (err) {
     console.log("Error in login", err);
   }
 };
 
+// load users login with phonenumber
 const loadLoginPhone = async function (req, res) {
   try {
     res.render("auth/userOtpLogin");
@@ -159,6 +159,7 @@ const loadLoginPhone = async function (req, res) {
   }
 };
 
+// sending otp while login
 const sendOtpLogin = async function (req, res) {
   console.log("send otp function is called..........");
   const phoneNumber = req.body.countryCode + req.body.phoneNumber;
@@ -173,46 +174,56 @@ const sendOtpLogin = async function (req, res) {
 
   req.session.phoneNumber = phoneNumber;
   console.log(req.session.phoneNumber + "from the sendOtpLogin");
-  // client.verify.v2
-  //   .services(servicesSid)
-  //   .verifications.create({ to: phoneNumber, channel: "sms" })
-  //   .then((verification) => {
-  //     console.log(verification.sid);
-  //     return true;
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //     return false;
-  //   });
+  client.verify.v2
+    .services(servicesSid)
+    .verifications.create({ to: phoneNumber, channel: "sms" })
+    .then((verification) => {
+      console.log(verification.sid);
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
   res.render("auth/userOtpVerification");
 };
 
+// load the otp entering page
+const enterOtp = async function (req, res) {
+  try {
+    res.render("auth/userOtpVerification");
+  } catch (err) {
+    console.log("error in loading otp input form", err);
+  }
+};
+
+// verifying the otp
 const verifyOtp = async function (req, res) {
   try {
     const phoneNumber = req.session.phoneNumber;
     const otp = req.body.otp;
     console.log(phoneNumber + " " + otp);
-    // // client.verify.v2
-    // //   .services(servicesSid)
-    // //   .verificationChecks.create({ to: phoneNumber, code: otp })
-    // //   .then((verification_check) => {
-    // //     console.log(verification_check.status);
-    // //     if (verification_check.status === "approved") {
-    // //       // Redirect to the landing page after OTP is approved
-    // //       res.redirect("/");
-
-    // //     } else {
-    // //       // Handle the case when OTP is not approved, e.g., render an error page
-    // //       res.render("auth/userOtpVerification", { message: "Invalid OTP" });
-    // //     }
-    // //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     // Handle the error if needed
-    //     res.render("auth/userOtpVeri fication", {
-    //       message: "OTP verification failed",
-    //     });
-    //   });
+    client.verify.v2
+      .services(servicesSid)
+      .verificationChecks.create({ to: phoneNumber, code: otp })
+      .then((verification_check) => {
+        console.log(verification_check.status);
+        if (verification_check.status === "approved") {
+          req.session.userloggedIn = true;
+          // Redirect to the landing page after OTP is approved
+          res.redirect("/");
+        } else {
+          // Handle the case when OTP is not approved, e.g., render an error page
+          res.render("auth/userOtpVerification", { message: "Invalid OTP" });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle the error if needed
+        res.render("auth/userOtpVeri fication", {
+          message: "OTP verification failed",
+        });
+      });
   } catch (err) {
     console.log("Error in verifying OTP", err);
     // Handle the error if needed

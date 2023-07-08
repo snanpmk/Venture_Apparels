@@ -68,7 +68,7 @@ const productDetail = async function (req, res) {
 
 const uploadProduct = async function (req, res) {
   try {
-    const { name, price, description } = req.body;
+    const { name, price,stock, description } = req.body;
     const image = req.file.filename; // Retrieve the uploaded image filename
     console.log(image);
 
@@ -76,6 +76,7 @@ const uploadProduct = async function (req, res) {
     const product = new Product({
       name,
       price,
+      stock,
       description,
       image,
       category: new ObjectId(req.body.category),
@@ -108,9 +109,12 @@ const upadateProduct = async function (req, res) {
     const productId = req.params.ObjectId;
     const name = req.body.name;
     const price = req.body.price;
+    const stock = req.body.stock
     const description = req.body.description;
     const category = req.body.category;
-    const image = req.body.image;
+
+    console.log(stock);
+
 
     const product = await Product.findOne({ _id: productId });
 
@@ -118,7 +122,7 @@ const upadateProduct = async function (req, res) {
     product.description = description;
     product.category = category;
     product.price = price;
-    product.image = image;
+    product.stock = stock;
 
     await product.save();
     console.log(product);

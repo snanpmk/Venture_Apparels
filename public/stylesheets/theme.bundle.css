@@ -3195,6 +3195,8 @@ progress {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
+  width: 4rem;
+
 }
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
@@ -3202,6 +3204,7 @@ progress {
   -webkit-margin-end: 0.5rem;
   margin-inline-end: 0.5rem;
 }
+
 .form-control-sm::-webkit-file-upload-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;

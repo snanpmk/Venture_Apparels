@@ -16,7 +16,7 @@ nameInput.addEventListener("input", function () {
     nameValidMessage.style.display = "block";
     nameValidMessage.textContent = "Please enter a valid name";
   }
-});
+});   
 
 nameInput.addEventListener("blur", function () {
   const name = nameInput.value.trim();
@@ -38,11 +38,14 @@ function validateName(name) {
 // Phone Number validation
 const countryCodeSelect = document.querySelector("#countryCode");
 const phoneNumberInput = document.querySelector("#phoneNumber");
-const phoneNumberValidMessage = document.querySelector("#phoneNumberValidMessage");
+const phoneNumberValidMessage = document.querySelector(
+  "#phoneNumberValidMessage"
+);
 
 countryCodeSelect.addEventListener("change", function () {
   const countryCode = countryCodeSelect.value;
-  const country = countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+  const country =
+    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
   const requiredLength = getRequiredPhoneNumberLength(country);
 
   phoneNumberInput.placeholder = `Enter your phone number (${countryCode})`;
@@ -52,7 +55,8 @@ countryCodeSelect.addEventListener("change", function () {
 
 phoneNumberInput.addEventListener("input", function () {
   const phoneNumber = phoneNumberInput.value;
-  const country = countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+  const country =
+    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
   const requiredLength = getRequiredPhoneNumberLength(country);
 
   validatePhoneNumber(requiredLength, phoneNumber);
@@ -67,7 +71,6 @@ phoneNumberInput.addEventListener("blur", function () {
     phoneNumberValidMessage.textContent = "Your Phone number is required";
   }
 });
-
 
 function getRequiredPhoneNumberLength(country) {
   const requiredLengths = {
@@ -144,7 +147,9 @@ function validateEmail(email) {
 const passwordInput = document.querySelector("#password");
 const confirmPasswordInput = document.querySelector("#confirmPassword");
 const passwordMatchMessage = document.querySelector("#passwordMatchMessage");
-const passwordStrengthMessage = document.querySelector("#passwordStrengthMessage");
+const passwordStrengthMessage = document.querySelector(
+  "#passwordStrengthMessage"
+);
 
 passwordInput.addEventListener("input", function () {
   const password = passwordInput.value;
@@ -168,7 +173,8 @@ passwordInput.addEventListener("input", function () {
 
   if (passwordErrorMessages.length > 0) {
     passwordInput.classList.add("is-invalid");
-    passwordStrengthMessage.textContent = "Password must " + passwordErrorMessages.join(", ");
+    passwordStrengthMessage.textContent =
+      "Password must " + passwordErrorMessages.join(", ");
     passwordStrengthMessage.style.display = "block";
   } else {
     passwordInput.classList.remove("is-invalid");
@@ -191,7 +197,6 @@ passwordInput.addEventListener("blur", function () {
     passwordStrengthMessage.textContent = "Your password is required";
   }
 });
-
 
 confirmPasswordInput.addEventListener("input", function () {
   const password = passwordInput.value;
@@ -218,7 +223,6 @@ function showError(message) {
   }, 3000);
 }
 
-
 // Form submission
 const form = document.querySelector("form");
 form.addEventListener("submit", async function (event) {
@@ -238,7 +242,8 @@ form.addEventListener("submit", async function (event) {
   const confirmPassword = confirmPasswordInput.value;
 
   // Validate phone number one more time before submitting
-  const country = countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+  const country =
+    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
   const requiredLength = getRequiredPhoneNumberLength(country);
   validatePhoneNumber(requiredLength, phoneNumber);
 
@@ -263,7 +268,7 @@ form.addEventListener("submit", async function (event) {
       }),
     });
     const data = await response.json();
-console.log(data);
+    console.log(data);
     if (data.success) {
       console.log("Signup successful");
       window.location.href = "/enter-otp";

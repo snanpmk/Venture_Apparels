@@ -2,15 +2,17 @@ var express = require("express");
 var router = express.Router();
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController")
+const sessionMiddleware = require("../middlewares/sessionMiddleware")
 
-router.get("/", userController.loadHome);
+
+router.get("/",userController.loadHome);
 
 router.get("/signup", userController.loadSignUp);
 
 router.get("/login", userController.loadLogin);
  
-router.post("/login", userController.login);
-
+router.post("/login", userController.login); 
+  
 router.get("/login-phone",userController.loadLoginPhone);
 
 router.get("/enter-otp",userController.enterOtp)
