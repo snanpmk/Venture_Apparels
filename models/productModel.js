@@ -22,9 +22,9 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  stock:{
+  stock: {
     type: Number,
-    default:0,
+    default: 0,
   },
   deleted: {
     type: Boolean,
@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
   deletedAt: {
     type: Date,
     default: null,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

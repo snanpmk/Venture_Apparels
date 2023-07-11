@@ -36,6 +36,8 @@ router.get("/list", productController.listAllProducts);
 // all products usersisde
 router.get("/allcategory", productController.userViewCategory);
 
+router.post("/allcategory", productController.userViewCategory);
+
 router.get("/add-category", categoryController.loadAddCategory);
 
 router.post("/add-category", categoryController.addCategory);
@@ -64,5 +66,6 @@ router.get(
 );
 
 router.get("/activate-category/:ObjectId", categoryController.activateCategory);
+
 
 module.exports = router;

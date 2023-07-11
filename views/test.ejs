@@ -1,132 +1,276 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create Account</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
-  </head>
-  <body>
-    <section>
-      <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-9 col-lg-6 col-xl-5">
-            <img
-              src="/images/background/signup (2).jpg"
-              class="img-fluid"
-              alt="Sample image"
-              width="600"
-              style="border-radius: 25px"
-            />
-          </div>
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <!-- form for account creation -->
-            <form
-              method="post"
-              action="/signup"
-              onsubmit="return validateForm()"
-            >
-              <div class="form-group">
-                <label class="form-label" for="name">Your name</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="First and last name"
-                  required
-                />
-                <p id="nameValidMessage" style="color: red"></p>
+<!-- Main Section-->
+<section class="mt-5 container">
+  <!-- Page Content Goes Here -->
 
-                <label class="form-label" for="phoneNumber">Phone Number</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <select
-                      class="custom-select"
-                      id="countryCode"
-                      name="countryCode"
-                    >
-                      <option value="+91">+91</option>
-                      <option value="+1">+1</option>
-                      <option value="+44">+44</option>
-                      <option value="+86">+86</option>
-                      <option value="+81">+81</option>
-                    </select>
-                  </div>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    placeholder="Mobile number"
-                    required
+  <h1 class="mb-6 display-5 fw-bold text-center">Your Cart</h1>
+
+  <div class="row g-4 g-md-8">
+    <!-- Cart Items -->
+    <div class="col-12 col-lg-6 col-xl-7">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="d-none d-sm-table-cell">Image</th>
+              <th class="ps-sm-3">Details</th>
+              <th>price</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% products.forEach((item) => { %>
+            <tr>
+              <!-- image -->
+              <td class="d-none d-sm-table-cell">
+                <picture class="d-block bg-light p-3 f-w-20">
+                  <img
+                    class="img-fluid"
+                    src="/<%= item.productId.image %>"
+                    alt=""
                   />
+                </picture>
+              </td>
+              <!-- image -->
+
+              <!-- Details -->
+              <td>
+                <div class="ps-sm-3">
+                  <h6 class="mb-2 fw-bolder"><%= item.productId.name %></h6>
+                  <small class="d-block text-muted">Mens / Blue / Medium</small>
                 </div>
+              </td>
+              <!-- Details -->
 
-                <p id="phoneNumberValidMessage" style="color: red"></p>
+              <!-- price -->
+              <td>
+                <div class="">
+                  <span class="small text-muted mt-1"
+                    >$<%= item.productId.price %></span
+                  >
+                </div>
+              </td>
+              <!-- /price -->
+              <!-- Qty -->
+              <td>
+                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                  <button
+                    class="btn btn-link px-2"
+                    onclick="changeQuantity(event, '<%= item.productId._id %>')"
+                    data-action="decrement"
+                  >
+                    <i class="fas fa-minus"></i>
+                  </button>
 
-                <label class="form-label" for="email">Email</label>
-                <input
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="Enter your email"
-                />
-                <p id="emailValidMessage" style="color: red"></p>
+                  <input
+                    id="quantity-<%= item._id %>"
+                    min="0"
+                    name="quantity"
+                    value="1"
+                    type="number"
+                    class="form-control form-control-sm"
+                  />
 
-                <label class="form-label" for="password">Password</label>
-                <input
-                  class="form-control"
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                  placeholder="Enter your password"
-                />
-                <p
-                  id="passwordStrengthMessage"
-                  style="width: 20rem; color: red"
-                ></p>
+                  <button
+                    class="btn btn-link px-2"
+                    onclick="changeQuantity(event, '<%= item.productId._id %>')"
+                    data-action="increment"
+                  >
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </td>
 
-                <label class="form-label" for="confirmPassword"
-                  >Confirm Password</label
+              <!-- /Qty -->
+              <!-- Actions -->
+              <td class="f-h-0">
+                <div
+                  class="d-flex justify-content-between flex-column align-items-end h-100"
                 >
-                <input
-                  class="form-control"
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  minlength="6"
-                  required
-                  placeholder="Confirm your password"
-                />
+                  <i class="ri-close-circle-line ri-lg"></i>
+                  <p class="fw-bolder mt-3 m-sm-0">$<%= item.totalPrice %></p>
+                </div>
+              </td>
+              <!-- /Actions -->
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-                <p id="passwordMatchMessage" style="color: red; display: none">
-                  Passwords do not match.
-                </p>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <br />
-            <div id="errorContainer">
-              <p id="errorMessage" style="display: none; color: red"></p>
+    <!-- /Cart Items -->
+    <div class="col-12 col-lg-6 col-xl-5">
+      <div class="bg-dark p-4 p-md-5 text-white">
+        <h3 class="fs-3 fw-bold m-0 text-center">Order Summary</h3>
+        <div class="py-3 border-bottom-white-opacity">
+          <div
+            class="d-flex justify-content-between align-items-center mb-2 flex-column flex-sm-row"
+          >
+            <p class="m-0 fw-bolder fs-6">Subtotal</p>
+            <p class="m-0 fs-6 fw-bolder">$<%= subtotal %></p>
+          </div>
+          <div
+            class="d-flex justify-content-between align-items-center flex-column flex-sm-row mt-3 m-sm-0"
+          >
+            <p class="m-0 fw-bolder fs-6">Shipping</p>
+            <span class="text-white opacity-75 small"
+              >Will be set at checkout</span
+            >
+          </div>
+        </div>
+        <div class="py-3 border-bottom-white-opacity">
+          <div
+            class="d-flex justify-content-between align-items-center flex-column flex-sm-row"
+          >
+            <div>
+              <p class="m-0 fs-5 fw-bold">Grand Total</p>
+              <span class="text-white opacity-75 small"
+                >Inc $45.89 sales tax</span
+              >
             </div>
-            <div class="mt-4">
-              <p>
-                Already have an account?
-                <a href="/login" style="color: blue">Sign in</a>
-              </p>
+            <p class="mt-3 m-sm-0 fs-5 fw-bold">$<%= grandTotal %></p>
+          </div>
+        </div>
+
+        <!-- Coupon Code-->
+        <button
+          class="btn btn-link p-0 mt-2 text-white fw-bolder text-decoration-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseExample"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
+          Have a coupon code?
+        </button>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body bg-transparent p-0">
+            <div class="input-group mb-0 mt-2">
+              <input
+                type="text"
+                class="form-control border-0"
+                placeholder="Enter coupon code"
+              />
+              <button
+                class="btn btn-white text-dark px-3 btn-sm border-0 d-flex justify-content-center align-items-center"
+              >
+                <i class="ri-checkbox-circle-line ri-lg"></i>
+              </button>
             </div>
           </div>
         </div>
+        <!-- / Coupon Code-->
+
+        <!-- Checkout Button-->
+        <a
+          href="./checkout.html"
+          class="btn btn-white w-100 text-center mt-3"
+          role="button"
+          ><i class="ri-secure-payment-line align-bottom"></i> Proceed to
+          checkout</a
+        >
+        <a
+          href="./checkout.html"
+          class="btn btn-orange w-100 text-center mt-3"
+          role="button"
+          ><i class="ri-paypal-line align-bottom"></i> Checkout with PayPal</a
+        >
+        <!-- Checkout Button-->
       </div>
-    </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="/javascripts/signup.js"></script>
-  </body>
-</html>
+
+      <!-- Payment Icons-->
+      <ul class="list-unstyled d-flex justify-content-center mt-3">
+        <li class="mx-1 border d-flex align-items-center p-2">
+          <i class="pi pi-paypal"></i>
+        </li>
+        <li class="mx-1 border d-flex align-items-center p-2">
+          <i class="pi pi-mastercard"></i>
+        </li>
+        <li class="mx-1 border d-flex align-items-center p-2">
+          <i class="pi pi-american-express"></i>
+        </li>
+        <li class="mx-1 border d-flex align-items-center p-2">
+          <i class="pi pi-visa"></i>
+        </li>
+      </ul>
+      <!-- / Payment Icons-->
+    </div>
+    <!-- Cart Summary -->
+
+    <!-- /Cart Summary -->
+  </div>
+
+  <!-- /Page Content -->
+</section>
+<!-- / Main Section-->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function changeQuantity(event, itemId) {
+      console.log(event + "" + itemId);
+      const input = event.target.parentNode.querySelector(
+        'input[type="number"]'
+      );
+      const action = event.target.dataset.action;
+      let quantity = parseInt(input.value);
+      console.log(
+        "sssssssssssssssssiiiiiiiiiiiiiiiiiiinnnnnnnnnnnnaaaaaaaaaaaaaaaannnnnnnnnnnnnnn"
+      );
+
+      if (action === "increment") {
+        quantity++;
+      } else if (action === "decrement") {
+        quantity--;
+        if (quantity < 0) quantity = 0;
+      }
+
+      input.value = quantity;
+
+      // Make a server request to update the price accordingly
+      fetch(`/cart/update-quantity/${itemId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response data, if needed
+          console.log(data);
+
+          // Update the total price in the UI
+          const totalPriceCell =
+            event.target.parentNode.parentNode.querySelector(".total-price");
+          totalPriceCell.textContent = `$${data.totalPrice}`;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+
+    // Attach event listeners to the buttons
+    const decrementButtons = document.querySelectorAll(
+      '[data-action="decrement"]'
+    );
+    const incrementButtons = document.querySelectorAll(
+      '[data-action="increment"]'
+    );
+
+    decrementButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        const itemId = this.dataset.itemId;
+        changeQuantity(event, itemId);
+      });
+    });
+
+    incrementButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        const itemId = this.dataset.itemId;
+        changeQuantity(event, itemId);
+      });
+    });
+  });
+</script>

@@ -95,13 +95,13 @@ const sendOtpSignup = async function (req, res) {
       .services(servicesSid)
       .verifications.create({ to: phoneNumber, channel: "sms" })
       .then((verification) => {
-          console.log(verification.sid);
-          return true;
-        })
-        .catch((error) => {
-            console.log(error);
-            return false;
-          });
+        console.log(verification.sid);
+        return true;
+      })
+      .catch((error) => {
+        console.log(error);
+        return false;
+      });
     return res
       .status(200)
       .json({ success: true, message: "OTP sent successfully" });
@@ -135,7 +135,7 @@ const login = async function (req, res) {
     if (!isPasswordValid) {
       res.status(500).json({ error: "Incorrect password" });
     } else {
-      if(user && user.id) {
+      if (user && user.id) {
         req.session.userId = user.id;
         req.session.userloggedIn = true;
         console.log(req.session.userId);
@@ -143,7 +143,6 @@ const login = async function (req, res) {
       res
         .status(200)
         .json({ success: true, message: "logged in successfully" });
-     
     }
   } catch (err) {
     console.log("Error in login", err);
@@ -233,13 +232,7 @@ const verifyOtp = async function (req, res) {
   }
 };
 
-const testRender = async function (req, res) {
-  try {
-    return res.render("test");
-  } catch (err) {
-    console.log("Error registering user", err);
-  }
-};
+const testRender = async function (req, res) {};
 
 module.exports = {
   loadHome,

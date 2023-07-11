@@ -25,7 +25,7 @@ router.post("/signup", userController.RegisterUser);
 
 router.get("/getotp",userController.sendOtpSignup);
 
-router.get("/test",userController.testRender);
+router.get("/test",sessionMiddleware.isLoggedIn,userController.testRender);
 
 
 module.exports = router;

@@ -70,7 +70,7 @@
                       href="/product/category/<%= category.name %>"
                       name="categoryName"
                     >
-                      <span 
+                      <span
                         ><i
                           class="ri-arrow-right-s-line align-bottom ms-n1"
                         ></i>
@@ -680,7 +680,7 @@
 
       <!-- Category Products-->
       <div class="col-12 col-lg-9">
-        <!-- Top Toolbar-->
+        <!-- Top Toolbar -->
         <div class="mb-4 d-md-flex justify-content-between align-items-center">
           <div
             class="d-flex justify-content-start align-items-center flex-grow-1 mb-4 mb-md-0"
@@ -696,11 +696,12 @@
             </ul>
             <span
               class="fw-bolder text-muted-hover text-decoration-underline ms-2 cursor-pointer small"
-              >Clear All</span
             >
+              Clear All
+            </span>
           </div>
           <div class="d-flex align-items-center flex-column flex-md-row">
-            <!-- Filter Trigger-->
+            <!-- Filter Trigger -->
             <button
               class="btn bg-light p-3 d-flex d-lg-none align-items-center fs-xs fw-bold text-uppercase w-100 mb-2 mb-md-0 w-md-auto"
               type="button"
@@ -710,12 +711,12 @@
             >
               <i class="ri-equalizer-line me-2"></i> Filters
             </button>
-            <!-- / Filter Trigger-->
+            <!-- / Filter Trigger -->
             <div
               class="dropdown ms-md-2 lh-1 p-3 bg-light w-100 mb-2 mb-md-0 w-md-auto"
             >
               <p
-                class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0"
+                class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0 dropdown-toggle"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -728,28 +729,34 @@
                   <a
                     class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
                     href="#"
-                    >Price: Hi Low</a
+                    data-sort-by="highToLow"
                   >
+                    Price: High to Low
+                  </a>
                 </li>
                 <li>
                   <a
                     class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
                     href="#"
-                    >Price: Low Hi</a
+                    data-sort-by="lowToHigh"
                   >
+                    Price: Low to High
+                  </a>
                 </li>
                 <li>
                   <a
                     class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
                     href="#"
-                    >Name</a
+                    data-sort-by="releaseDate"
                   >
+                    Release Date
+                  </a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <!-- / Top Toolbar-->
+        <!-- / Top Toolbar -->
 
         <!-- Products-->
         <div class="row g-4 mb-5">
@@ -822,7 +829,7 @@
                 </div>
                 <a
                   class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center"
-                  href="./product.html"
+                  href="/product/product-detail"
                   ><%= product.name %></a
                 >
                 <p class="fw-bolder m-0 mt-2">$<%= product.price %></p>
@@ -1367,3 +1374,49 @@
   </div>
 </section>
 <!-- / Main Section-->
+
+<script>
+  // Add event listeners to the sorting options
+  const sortOptions = document.querySelectorAll(".dropdown-item");
+  for (const option of sortOptions) {
+    option.addEventListener("click", function (event) {
+      event.preventDefault();   
+      const sortOption = this.getAttribute("data-sort-by");
+      fetchProducts(sortOption);
+    });
+  }
+
+  // Function to fetch products based on the selected sort option
+  const fetchProducts = async function(sortOption) {
+    try {
+      console.log('skjdvnksjbv'+sortOption);
+      const url = "/product/allcategory"; // Set the route for the POST request
+      const method = "post"; // Set the HTTP method to POST
+      const headers = {
+        "Content-Type": "application/json", // Set the desired headers
+      };
+      // const body = JSON.stringify(sortOption);
+    
+      fetch(url, {
+      method,
+      headers,
+      body:JSON.stringify({sortOption})
+    }).then((res)=>res.json())
+    .then(data=>{
+      console.log(data);
+      if (data.success) {
+      console.log("sort successful");
+      window.location.href = "/product/allcategory";
+    } else {
+      console.log("sort failed");
+      // showError(data.error);
+    }
+    })
+    
+    // return
+   
+    } catch (error) {
+      console.log("error in fetching products by given sort method", error);
+    }
+  }
+</script>

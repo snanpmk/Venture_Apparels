@@ -75,6 +75,7 @@ const addToCart = async function (req, res) {
 const updateQuantity = async function (req, res) {
   try {
     const productId = req.params.ObjectId;
+    console.log();
     const product = Product.findById({productId})
     console.log(product);
   } catch (error) {

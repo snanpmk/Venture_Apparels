@@ -37,6 +37,36 @@ const loadAddProduct = async function (req, res) {
 
 const userViewCategory = async function (req, res) {
   try {
+
+    let {sortOption} = req.body;
+
+    if(sortOption) {
+      switch (sortOption) {
+        case "lowToHigh":
+          sort = { price: 1 };
+          break;
+        case "highToLow":
+          sort = { price: -1 };
+          break;
+        default:
+          sort = {};
+          break;
+      }
+      const sortedProducts = await Product.find().sort(sort);
+      const categories = await Category.find();
+
+      res.render("category/allCategory", {
+        layout: "layouts/userLayout",
+        title: "Category",
+        products: sortedProducts,
+        categories: categories,
+        
+      });
+
+      // return res.json({success:true,sortedProducts});
+
+    }
+    else {
     const products = await Product.find();
     const categories = await Category.find();
     console.log(products);
@@ -46,6 +76,7 @@ const userViewCategory = async function (req, res) {
       products: products,
       categories: categories,
     });
+  }
   } catch (err) {
     console.log("error in loading user category view", err);
   }
@@ -53,7 +84,7 @@ const userViewCategory = async function (req, res) {
 
 const productDetail = async function (req, res) {
   try {
-    const productId = req.params.ObjectId;    
+    const productId = req.params.ObjectId;
     console.log(productId);
     const product = await Product.findOne({ _id: productId });
     console.log(product);
@@ -68,7 +99,7 @@ const productDetail = async function (req, res) {
 
 const uploadProduct = async function (req, res) {
   try {
-    const { name, price,stock, description } = req.body;
+    const { name, price, stock, description } = req.body;
     const image = req.file.filename; // Retrieve the uploaded image filename
     console.log(image);
 
@@ -109,12 +140,11 @@ const upadateProduct = async function (req, res) {
     const productId = req.params.ObjectId;
     const name = req.body.name;
     const price = req.body.price;
-    const stock = req.body.stock
+    const stock = req.body.stock;
     const description = req.body.description;
     const category = req.body.category;
 
     console.log(stock);
-
 
     const product = await Product.findOne({ _id: productId });
 
@@ -169,6 +199,42 @@ const activateProduct = async function (req, res) {
   }
 };
 
+// const sort = async function (req, res) {
+//   try {
+//     // console.log(req.body);
+//     const {sortOption} = req.body;
+//     // Create a sort object based on the specified criteria
+//     let sort;
+//     switch (sortOption) {
+//       case "lowToHigh":
+//         console.log('//////1');
+//         sort = { price: 1 };
+//         break;
+//       case "highToLow":
+//         console.log('//////1');
+//         sort = { price: -1 };
+//         break;
+//       default:
+//         sort = {};
+//         break;
+//     }
+//     const sortedProducts = await Product.find().sort(sort);
+
+//     // return
+//     console.log(sortedProducts);
+//     res.render("category/allCategory", {
+//       layout: "layouts/userLayout",
+//       title: "Category",
+//       products: sortedProducts,
+//       categories: categories,
+//     });
+//     return res.json({success:true,sortedProducts});
+
+//   } catch (err) {
+//     console.log("error in sorting the products", err);
+//   }
+// };
+
 module.exports = {
   listAllProducts,
   uploadProduct,
@@ -179,4 +245,5 @@ module.exports = {
   upadateProduct,
   deactivateProduct,
   activateProduct,
+  
 };
