@@ -35,48 +35,27 @@ const loadAddProduct = async function (req, res) {
   }
 };
 
+
+
 const userViewCategory = async function (req, res) {
+  const currentPage = req.query.page || 1;
+  const productsPerPage = 6;
   try {
+    const skip = (currentPage - 1) * productsPerPage;
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
 
-    let {sortOption} = req.body;
 
-    if(sortOption) {
-      switch (sortOption) {
-        case "lowToHigh":
-          sort = { price: 1 };
-          break;
-        case "highToLow":
-          sort = { price: -1 };
-          break;
-        default:
-          sort = {};
-          break;
-      }
-      const sortedProducts = await Product.find().sort(sort);
-      const categories = await Category.find();
-
-      res.render("category/allCategory", {
-        layout: "layouts/userLayout",
-        title: "Category",
-        products: sortedProducts,
-        categories: categories,
-        
-      });
-
-      // return res.json({success:true,sortedProducts});
-
-    }
-    else {
-    const products = await Product.find();
+    const products = await Product.find().limit(productsPerPage).skip(skip);
     const categories = await Category.find();
-    console.log(products);
     res.render("category/allCategory", {
       layout: "layouts/userLayout",
       title: "Category",
       products: products,
       categories: categories,
+      currentPage:currentPage,
+      totalPages:totalPages,
     });
-  }
   } catch (err) {
     console.log("error in loading user category view", err);
   }
@@ -115,7 +94,7 @@ const uploadProduct = async function (req, res) {
 
     // Save the product to the database
     const savedProduct = await product.save();
-
+    res.redirect("/product/list")
     res.status(201).json(savedProduct);
     console.log(product);
   } catch (err) {
@@ -156,6 +135,7 @@ const upadateProduct = async function (req, res) {
 
     await product.save();
     console.log(product);
+    res.redirect("/product/list");
   } catch (err) {
     console.log("error in updating product", err);
   }
@@ -174,7 +154,7 @@ const deactivateProduct = async function (req, res) {
       { new: true }
     );
     console.log(product);
-    res.json(product);
+    res.redirect("/product/list");
   } catch (err) {
     console.log("Error in soft deleting product", err);
     res.status(500).json({ error: "Internal server error" });
@@ -193,47 +173,73 @@ const activateProduct = async function (req, res) {
       { new: true }
     );
     console.log(product);
-    res.json(product);
+    res.redirect("/product/list");
   } catch (err) {
     console.log("error in activating product", err);
   }
 };
 
-// const sort = async function (req, res) {
-//   try {
-//     // console.log(req.body);
-//     const {sortOption} = req.body;
-//     // Create a sort object based on the specified criteria
-//     let sort;
-//     switch (sortOption) {
-//       case "lowToHigh":
-//         console.log('//////1');
-//         sort = { price: 1 };
-//         break;
-//       case "highToLow":
-//         console.log('//////1');
-//         sort = { price: -1 };
-//         break;
-//       default:
-//         sort = {};
-//         break;
-//     }
-//     const sortedProducts = await Product.find().sort(sort);
+const sort = async function (req, res) {
+  try {
+    // console.log(req.body);
+    const { sortOption } = req.body;
+    // Create a sort object based on the specified criteria
+    let sort;
+    switch (sortOption) {
+      case "lowToHigh":
+        sort = { price: 1 };
+        break;
+      case "highToLow":
+        sort = { price: -1 };
+        break;
+      case "releaseDate":
+        sort = { createdAt: -1 };
+        break;
+      default:
+        sort = {};
+        break;
+    }
+    const sortedProducts = await Product.find().sort(sort);
+    console.log(sortedProducts);
+    const categories = await Category.find;
+    // return
+    console.log(sortedProducts);
 
-//     // return
-//     console.log(sortedProducts);
-//     res.render("category/allCategory", {
-//       layout: "layouts/userLayout",
-//       title: "Category",
-//       products: sortedProducts,
-//       categories: categories,
-//     });
-//     return res.json({success:true,sortedProducts});
+    return res.json({
+      success: true,
+      layout: "layouts/userLayout",
+      title: "Category",
+      products: sortedProducts, 
+      categories: categories,
+    });
+  } catch (err) {
+    console.log("error in sorting the products", err);
+  } 
+};
 
-//   } catch (err) {
-//     console.log("error in sorting the products", err);
-//   }
-// };
+const filterPrice = async function (req,res) {
+  try {
+    const { min, max } = req.body;
+
+    const filteredProducts = await Product.find({
+      price: { $gte: parseFloat(min), $lte: parseFloat(max) },
+    });
+
+    const categories = await Category.find;
+    // return
+    // console.log();
+
+    return res.json({
+      success: true,
+      layout: "layouts/userLayout",
+      title: "Category",
+      products: filteredProducts, 
+      categories: categories,
+    });
+  } catch (error) {
+    console.log("error in filtering with price", error);
+  }
+}
 
 module.exports = {
   listAllProducts,
@@ -245,5 +251,6 @@ module.exports = {
   upadateProduct,
   deactivateProduct,
   activateProduct,
-  
+  sort,
+  filterPrice,
 };

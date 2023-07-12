@@ -9,13 +9,13 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     required: true,
-  },
+  }, 
   price: {
     type: Number,
     required: true,
   },
   description: {
-    type: String,
+    type: String, 
     required: true,
   },
   image: {

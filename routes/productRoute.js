@@ -67,5 +67,8 @@ router.get(
 
 router.get("/activate-category/:ObjectId", categoryController.activateCategory);
 
+router.post("/sort", productController.sort)
+
+router.post("/filter-price",productController.filterPrice)
 
 module.exports = router;

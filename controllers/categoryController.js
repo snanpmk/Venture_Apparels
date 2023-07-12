@@ -29,7 +29,7 @@ const addCategory = async (req, res) => {
     });
     
     const savedCategory = await category.save();
-    res.status(201).json(savedCategory);
+    res.redirect("/product/list-category")
     console.log(savedCategory);
   } catch (err) {
     console.error(err);
@@ -122,7 +122,8 @@ const deactivateCategory = async function (req, res) {
       },
       { new: true }
     );
-    res.json(category);
+    res.redirect("/product/list-category")
+
   } catch (err) {
     console.log("Error in soft deleting Category", err);
     res.status(500).json({ error: "Internal server error" });
@@ -140,7 +141,7 @@ const activateCategory = async function(req,res) {
       },
       { new: true }
     );
-    res.json(category);
+    res.redirect("/product/list-category")
   } catch (err) {
     console.log("error in activating Category",err);
   }

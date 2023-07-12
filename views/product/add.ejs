@@ -16,7 +16,7 @@
       </style>
 
       <div class="container mt-4">
-        <form method="POST" enctype="multipart/form-data" action="/product/add">
+        <form method="POST" enctype="multipart/form-data" action="/product/add" onsubmit="return validateForm()">
           <div class="form-group">
             <label for="name">Name:</label>
             <input
@@ -35,7 +35,9 @@
               id="price"
               name="price"
               required
+              oninput="validatePrice()"
             />
+            <p id="priceError" style="color: red; display: none;">Price should not be less than 0.</p>
           </div>
           <div class="form-group">
             <label for="stock">Stock:</label>
@@ -45,7 +47,9 @@
               id="stock"
               name="stock"
               required
+              oninput="validateStock()"
             />
+            <p id="stockError" style="color: red; display: none;">Stock should not be less than 0.</p>
           </div>
           <div class="form-group">
             <label for="description">Description:</label>
@@ -54,6 +58,7 @@
               id="description"
               name="description"
               required
+
             ></textarea>
           </div>
           <div class="form-group">
@@ -64,7 +69,6 @@
               name="category"
               required
               style="color: black;"
-              
             >
               <option value="" selected disabled>Choose a category</option>
               <% categories.forEach(category=>{ %>
@@ -98,3 +102,38 @@
     </div>
   </div>
 </div>
+
+<script>
+  function validatePrice() {
+    var priceInput = document.getElementById("price");
+    var priceError = document.getElementById("priceError");
+
+    if (priceInput.value < 0) {
+      priceError.style.display = "block";
+    } else {
+      priceError.style.display = "none";
+    }
+  }
+
+  function validateStock() {
+    var stockInput = document.getElementById("stock");
+    var stockError = document.getElementById("stockError");
+
+    if (stockInput.value < 0) {
+      stockError.style.display = "block";
+    } else {
+      stockError.style.display = "none";
+    }
+  }
+
+  function validateForm() {
+    var priceInput = document.getElementById("price");
+    var stockInput = document.getElementById("stock");
+
+    if (priceInput.value < 0 || stockInput.value < 0) {
+      return false;
+    }
+
+    return true;
+  }
+</script>

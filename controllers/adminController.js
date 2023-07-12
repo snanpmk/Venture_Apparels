@@ -1,3 +1,4 @@
+const { render } = require("ejs");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
@@ -41,14 +42,17 @@ const adminLogin = async function (req, res) {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (isPasswordValid) {
-      if (user.is_verified === 1) {
-        res.send("welcome admin");
-      }
+    if (!isPasswordValid) {
+      res.status(500).json({ error: "Incorrect password" });
     } else {
-      return res.render("auth/adminSignIn", {
-        message: "Invalid username or password",
-      });
+      if (user && user.id) {
+        req.session.userId = user.id;
+        req.session.adminLoggedIn = true;
+        console.log(req.session.userId);
+      }
+      res
+        .redirect("/admin/dashboard")
+        
     }
   } catch (err) {
     console.log("admin login error", err);
@@ -103,20 +107,19 @@ const loadUpdateUser = async (req, res) => {
   } catch (error) {
     return res.status(500).render("admin/userList", {
       message: "Error editing user",
-     
     });
   }
 };
 
-const deleteUser = async function ( req, res ){
+const deleteUser = async function (req, res) {
   try {
     const id = req.params.id;
-    await User.deleteOne({_id : id})
-    res.redirect('/admin/list-user')
+    await User.deleteOne({ _id: id });
+    res.redirect("/admin/list-user");
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 module.exports = {
   adminLogin,
@@ -124,6 +127,6 @@ module.exports = {
   loadDashboard,
   listAllUsers,
   loadEditUser,
-  loadUpdateUser, 
-  deleteUser
+  loadUpdateUser,
+  deleteUser,
 };
