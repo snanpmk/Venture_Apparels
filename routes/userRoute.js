@@ -22,10 +22,12 @@ router.post("/getotp",userController.sendOtpLogin)
 router.post("/verify-otp", userController.verifyOtp)
 
 router.post("/signup", userController.RegisterUser);
-
+ 
 router.get("/getotp",userController.sendOtpSignup);
 
-router.get("/test",sessionMiddleware.isLoggedIn,userController.testRender);
+router.post("/search",userController.searchProducts)
+
+ 
 
 
 module.exports = router;

@@ -290,7 +290,6 @@
             </div>
             <!-- / Brands Filter -->
 
-           
             <!-- Sizes Filter -->
             <div class="py-4 widget-filter border-top">
               <a
@@ -716,27 +715,27 @@
         </div>
         <!-- / Products -->
 
-        <!-- Pagiation-->
-        <nav class="border-top mt-5 pt-5 d-flex justify-content-between align-items-center" aria-label="Category Pagination">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#"><i class="ri-arrow-left-line align-bottom"></i> Prev</a>
-            </li>
-          </ul>
-          <ul class="pagination">
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                <a class="page-link" href="/product/allcategory?page=<%= i %>"><%= i %></a>
-              </li>
-            <% } %>
-          </ul>
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#">Next <i class="ri-arrow-right-line align-bottom"></i></a>
-            </li>
-          </ul>
-        </nav>
-        
+        <!-- Pagination -->
+<nav class="border-top mt-5 pt-5 d-flex justify-content-between align-items-center" aria-label="Category Pagination">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" id="prevPageLink" pg="<%= currentPage %> - 1" href=""><i class="ri-arrow-left-line align-bottom"></i> Prev</a>
+    </li>
+  </ul>
+  <ul class="pagination">
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item">
+        <a class="page-link" href="/product/allcategory?page=<%= i %>"><%= i %></a>
+      </li>
+    <% } %>
+  </ul>
+  
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" id="nextPageLink" pg="<%= currentPage %> + 1" href="#">Next <i class="ri-arrow-right-line align-bottom"></i></a>
+    </li>
+  </ul>
+</nav>
 
         <!-- Related Categories-->
         <div class="border-top mt-5 pt-5">
@@ -911,7 +910,26 @@
   }
 </script>
 
-
 <script>
-    
+  const prevPageLink = document.getElementById('prevPageLink');
+  const nextPageLink = document.getElementById('nextPageLink');
+
+  prevPageLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    const currentPage = parseInt(prevPageLink.getAttribute('pg'));
+    if (currentPage >= 1) {
+      const prevPage = currentPage - 1;
+      window.location.href = `/product/allcategory?page=${prevPage}`;
+    }
+  });
+
+  nextPageLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    const currentPage = parseInt(nextPageLink.getAttribute('pg'));
+    const totalPages = document.querySelectorAll('.pagination li.page-item').length;
+    if (currentPage <= totalPages) {
+      const nextPage = currentPage + 1;
+      window.location.href = `/product/allcategory?page=${nextPage}`;
+    }
+  });
 </script>

@@ -62,7 +62,6 @@ const adminLogin = async function (req, res) {
 const listAllUsers = async function (req, res) {
   try {
     const users = await User.find();
-    console.log(users);
     res.render("admin/userList", { allUsers: users });
   } catch (err) {
     console.log("error in listing useres", err);
@@ -111,13 +110,39 @@ const loadUpdateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async function (req, res) {
+const deactivateUser = async function (req, res) {
   try {
-    const id = req.params.id;
-    await User.deleteOne({ _id: id });
-    res.redirect("/admin/list-user");
-  } catch (error) {
-    console.log(error.message);
+    const userId = req.params.ObjectId;
+    console.log(userId);
+    const product = await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        deleted: true,
+        deletedAt: new Date(),
+      },
+      { new: true }
+    );
+    res.redirect("/admin/users");
+  } catch (err) {
+    console.log("Error in soft deleting user", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const activateUser = async function (req, res) {
+  try {
+    const userId = req.params.ObjectId;
+    const user = await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        deleted: false,
+        deletedAt: new Date(),
+      },
+      { new: true }
+    );
+    res.redirect("/admin/users");
+  } catch (err) {
+    console.log("error in activating user",err);
   }
 };
 
@@ -128,5 +153,6 @@ module.exports = {
   listAllUsers,
   loadEditUser,
   loadUpdateUser,
-  deleteUser,
+  activateUser,
+  deactivateUser
 };

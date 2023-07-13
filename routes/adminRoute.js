@@ -9,13 +9,15 @@ router.post('/',adminController.adminLogin)
 
 router.get('/dashboard',sessionMiddleware.isAdminLoggedIn,adminController.loadDashboard)
 
-router.get('/list-user',adminController.listAllUsers)
+router.get('/users',adminController.listAllUsers)
 
 router.get('/edit-user/:id',adminController.loadEditUser);
 
 router.post('/edit-user/:id',adminController.loadUpdateUser);
 
-router.get('/delete-user/:id',adminController.deleteUser)
+router.get("/activate-user/:ObjectId", adminController.activateUser);
+
+router.get("/deactivate-user/:ObjectId", adminController.deactivateUser); 
 
 
 

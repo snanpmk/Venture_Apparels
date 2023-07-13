@@ -131,7 +131,7 @@ const login = async function (req, res) {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-  
+
     if (!isPasswordValid) {
       res.status(500).json({ error: "Incorrect password" });
     } else {
@@ -231,8 +231,22 @@ const verifyOtp = async function (req, res) {
     });
   }
 };
-
-const testRender = async function (req, res) {};
+  
+const searchProducts = async function (req, res) {
+  try {
+    const { searchTerm } = req.body;
+    console.log(searchTerm);
+    const searchRegex = new RegExp(`^${searchTerm}`, 'i');
+    const searchResults = await Product.find({ name: searchRegex });
+    return res.json({
+      success:true,
+      products:searchProducts,
+    })
+    
+  } catch (error) {
+    console.log("error in searching products", error);
+  }
+};
 
 module.exports = {
   loadHome,
@@ -244,6 +258,6 @@ module.exports = {
   sendOtpLogin,
   sendOtpSignup,
   verifyOtp,
-  testRender,
   enterOtp,
+  searchProducts,
 };
