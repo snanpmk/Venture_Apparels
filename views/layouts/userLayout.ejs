@@ -269,9 +269,9 @@
                     <!-- Navbar Search-->
                     <li class="ms-1 d-inline-block">
                         <button
-                            class=""
-                            data-pr-search>
-                            <i class="ri-search-2-line ri-lg align-middle"></i>
+                            onclick="navigateToSearchPage()"
+                            >
+                            <i class="ri-search-2-line"></i>
                         </button>
                     </li>
                     <!-- /Navbar Search-->
@@ -316,6 +316,13 @@
     
     <!-- Theme JS -->
     <script src="/javascripts/theme.bundle.js"></script>
+
+    <script>
+         function navigateToSearchPage() {
+      // Replace "search.html" with the actual URL of your search page
+      window.location.href = "/search";
+    }
+    </script>
   <%- body %> 
 
 </html>

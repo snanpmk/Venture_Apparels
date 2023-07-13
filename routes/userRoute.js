@@ -27,6 +27,8 @@ router.get("/getotp",userController.sendOtpSignup);
 
 router.post("/search",userController.searchProducts)
 
+router.get("/search",userController.loadSearchProducts)
+
  
 
 

@@ -231,18 +231,26 @@ const verifyOtp = async function (req, res) {
     });
   }
 };
-  
+
+const loadSearchProducts = async function(req,res) {
+try{
+  const products = await Product.find()
+  res.render("search",{
+     layout: "layouts/userLayout",
+     products:products,
+    })
+} catch(error) {
+  console.log("error in loading search page");
+}
+}
+
 const searchProducts = async function (req, res) {
   try {
     const { searchTerm } = req.body;
     console.log(searchTerm);
     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
     const searchResults = await Product.find({ name: searchRegex });
-    return res.json({
-      success:true,
-      products:searchProducts,
-    })
-    
+    console.log(searchResults);
   } catch (error) {
     console.log("error in searching products", error);
   }
@@ -259,5 +267,6 @@ module.exports = {
   sendOtpSignup,
   verifyOtp,
   enterOtp,
+  loadSearchProducts,
   searchProducts,
 };
