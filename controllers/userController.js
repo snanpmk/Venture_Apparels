@@ -232,25 +232,33 @@ const verifyOtp = async function (req, res) {
   }
 };
 
-const loadSearchProducts = async function(req,res) {
-try{
-  const products = await Product.find()
-  res.render("search",{
-     layout: "layouts/userLayout",
-     products:products,
-    })
-} catch(error) {
-  console.log("error in loading search page");
-}
-}
+const loadSearchProducts = async function (req, res) {
+  try {
+    const products = await Product.find();
+    res.render("search", {
+      layout: "layouts/userLayout",
+      products: products,
+    });
+  } catch (error) {
+    console.log("error in loading search page");
+  }
+};
 
 const searchProducts = async function (req, res) {
   try {
     const { searchTerm } = req.body;
     console.log(searchTerm);
-    const searchRegex = new RegExp(`^${searchTerm}`, 'i');
-    const searchResults = await Product.find({ name: searchRegex });
-    console.log(searchResults);
+    if (searchTerm) {
+      const searchRegex = new RegExp(`^${searchTerm}`, "i");
+      const searchResults = await Product.find({ name: searchRegex });
+      console.log(searchResults);
+
+      return res.json({
+        success: true,
+        layout: "layouts/userLayout",
+        products: searchResults,
+      });
+    }
   } catch (error) {
     console.log("error in searching products", error);
   }
