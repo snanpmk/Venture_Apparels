@@ -1,10 +1,9 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 
-
 const viewCart = async function (req, res) {
   try {
-    const userId = req.session.userId ;
+    const userId = req.session.userId;
     console.log(userId);
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
@@ -22,7 +21,7 @@ const viewCart = async function (req, res) {
     });
 
     await cart.save(); // Save the updated cart
-    
+
     // Assuming you have a `products` array from somewhere
     res.render("cart", {
       layout: "layouts/userLayout",
@@ -41,6 +40,7 @@ const addToCart = async function (req, res) {
   try {
     const userId = req.session.userId;
     const productId = req.params.ObjectId;
+
 
     console.log(userId + "❤️❤️❤️" + productId);
 
@@ -61,10 +61,31 @@ const addToCart = async function (req, res) {
     }
 
     await cart.save();
+
+    let grandTotal = 0;
+    let subtotal = 0;
+
+    cart.items = cart.items.map((item) => {
+      const productPrice = item.productId.price;
+      const totalPrice = productPrice * item.quantity;
+      item.totalPrice = totalPrice;
+      subtotal += totalPrice;
+      grandTotal = subtotal + 45.89;
+
+    })
+    
     res
       .status(200)
-      redirect("/view")
-      .json({ message: "Product added to cart successfully", cart });
+      .render("cart", {
+        layout: "layouts/userLayout",
+        products: cart.items,
+        cart: cart,
+        item: cart.items,
+        subtotal: subtotal,
+        grandTotal: grandTotal,
+        productId:productId,
+
+      })
   } catch (err) {
     console.log("error in adding to the cart", err);
     res
@@ -77,16 +98,15 @@ const updateQuantity = async function (req, res) {
   try {
     const productId = req.params.ObjectId;
     console.log();
-    const product = Product.findById({productId})
+    const product = Product.findById({ productId });
     console.log(product);
   } catch (error) {
-    console.log("error in updating the product quantity",error);
+    console.log("error in updating the product quantity", error);
   }
-}
-
+};
 
 module.exports = {
   viewCart,
   addToCart,
-  updateQuantity
+  updateQuantity,
 };
