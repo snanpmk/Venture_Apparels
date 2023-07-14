@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Number } = require('twilio/lib/twiml/VoiceResponse');
 
 const cartSchema = new mongoose.Schema({
   userId: {
