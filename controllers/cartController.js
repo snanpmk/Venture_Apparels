@@ -10,7 +10,7 @@ const viewCart = async function (req, res) {
       "items.productId"
     );
 
-    if(cart){
+    if (cart) {
       let grandTotal = 0;
       let subtotal = 0;
       for (const item of cart.items) {
@@ -20,9 +20,9 @@ const viewCart = async function (req, res) {
         subtotal += totalPrice;
       }
       grandTotal = subtotal + 45.89;
-  
+
       await cart.save();
-  
+
       res.render("cart", {
         layout: "layouts/userLayout",
         products: cart.items,
@@ -31,15 +31,13 @@ const viewCart = async function (req, res) {
         subtotal: subtotal,
         grandTotal: grandTotal,
       });
-    }
-    else {
+    } else {
       const uesrCart = await Cart.create({ userId });
       res.render("cart", {
         layout: "layouts/userLayout",
         item: uesrCart.items,
       });
     }
-    
   } catch (err) {
     console.log("error in viewing cart", err);
   }
@@ -88,10 +86,36 @@ const addToCart = async function (req, res) {
 
 const updateQuantity = async function (req, res) {
   try {
-    const productId = req.params.ObjectId;
-    console.log();
-    const product = Product.findById({ productId });
-    console.log(product);
+    const productId = req.body.productId;
+    const quantity = req.body.quantity;
+    console.log(productId + "    💕💕💕        " + quantity);
+
+    const userId = req.session.userId;
+    console.log("user id in update cart : " + userId);
+
+    const cart = await Cart.findOne({ userId: userId }).populate(
+      "items.productId"
+    );
+
+    if (cart) {
+      let grandTotal = 0;
+      let subtotal = 0;
+      for (const item of cart.items) {
+        item.quantity = quantity;
+        const productPrice = item.productId.price;
+        const totalPrice = productPrice * quantity;
+        item.totalPrice = totalPrice;
+        subtotal += totalPrice;
+      }
+      grandTotal = subtotal + 45.89;
+
+      await cart.save();
+    }
+    console.log(cart);
+
+    return res.json({
+      cart:cart
+    })
   } catch (error) {
     console.log("error in updating the product quantity", error);
   }

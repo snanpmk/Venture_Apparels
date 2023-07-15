@@ -8,6 +8,6 @@ router.get("/view",sessionMiddleware.isLoggedIn,cartController.viewCart);
 
 router.get("/add/:ObjectId",sessionMiddleware.isLoggedIn,cartController.addToCart);
 
-router.post("/update-quantity/:ObjectId",cartController.updateQuantity)
+router.post("/update",cartController.updateQuantity)
 
 module.exports = router;

@@ -77,13 +77,13 @@
                     </button>
 
                     <input
-                      id="quantity-<%= item._id %>"
+                      id="quantity"
                       min="0"
                       name="quantity"
                       value="<%= item.quantity %>"
                       type="number"
                       class="form-control form-control-sm input-quantity"
-                      onchange="changeQuantity(event, '<%= item._id %>', 'change')"
+                      data-product-id="<%= item.productId._id %>"
                     />
 
                     <button
@@ -100,9 +100,9 @@
                 <!-- Total -->
                 <td>
                   <div class="px-3">
-                    <span class="small text-muted mt-1"
-                      >$<%= item.totalPrice %></span
-                    >
+                    <span id="total-price-<%= item.productId._id %>"
+                       class="small text-muted mt-1">$<%= item.totalPrice %></span>
+
                   </div>
                 </td>
                 <!-- /Total -->
@@ -233,18 +233,50 @@
 </section>
 <!-- / Main Section-->
 <script>
-  function changeQuantity(event, productId, action) {
-    const quantityInput = document.getElementById(`quantity-${productId}`);
+  function changeQuantity(productId, action) {
+    const quantityInput = document.getElementById('quantity');
+    console.log(quantityInput);
     let quantity = parseInt(quantityInput.value);
-
+    console.log(quantity);
     if (action === "decrement") {
       quantity = Math.max(0, quantity - 1);
     } else if (action === "increment") {
       quantity += 1;
-    } else if (action === "change") {
-      quantity = parseInt(event.target.value);
     }
 
     quantityInput.value = quantity;
+
+    // Create the data to be sent in the fetch request
+    const data = {
+      productId: productId,
+      quantity: quantity
+    };
+
+    // Send the fetch request
+    fetch("/cart/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(data => {
+        location.reload();
+      })
+      .catch(error => {
+        // Handle errors
+        console.error(error);
+      });
   }
+
+  // Add event listeners to the quantity inputs
+  document.querySelectorAll(".input-quantity").forEach(input => {
+    input.addEventListener("input", event => {
+      const productId = event.target.dataset.productId;
+      console.log(productId);
+      changeQuantity(productId, "change");
+    });
+  });
 </script>
+
