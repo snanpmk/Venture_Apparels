@@ -1,145 +1,131 @@
 <!-- Main Section-->
+
 <section class="mt-5 container">
   <!-- Page Content Goes Here -->
 
   <h1 class="mb-6 display-5 fw-bold text-center">Your Cart</h1>
 
-  <div class="row g-4 g-md-8">
+  <% if (item.length===0) { %>
+    <div class="row g-4 g-md-8">
+      <div class="col-12 text-center">
+        <img src="\images\cart\Empty Cart.png" alt="Empty Cart" class="img-fluid mx-auto d-block" style="max-height: 50vh;margin-top: 2rem;">
+      </div>
+    </div>
+    <% } else { %>
     <!-- Cart Items -->
-      <style>
-      .btn-link {
-    background-color: #012041;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 0.25rem;
-    padding: 0.375rem 0.75rem;
-    margin-right: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    <div class="row g-4 g-md-8">
+      <div class="col-12 col-lg-6 col-xl-7">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="ps-sm-3"></th>
+                <th class="ps-sm-3">Details</th>
+                <th class="ps-sm-3">Price</th>
+                <th class="ps-sm-3">Qty</th>
+                <th class="ps-sm-3">Total</th>
+                <th class="ps-sm-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach((item) => { %>
+              <tr>
+                <!-- Image -->
+                <td class="d-none d-sm-table-cell">
+                  <picture class="d-block bg-light p-3 f-w-20">
+                    <img
+                      class="img-fluid"
+                      src="/<%= item.productId.image %>"
+                      alt=""
+                    />
+                  </picture>
+                </td>
+                <!-- /Image -->
 
-  .d-flex {
-    display: flex;
-    align-items: center;
-  }
+                <!-- Details -->
+                <td>
+                  <div class="ps-sm-3">
+                    <h6 class="mb-2 fw-bolder"><%= item.productId.name %></h6>
+                    <small class="d-block text-muted"
+                      >Mens / Blue / Medium</small
+                    >
+                  </div>
+                </td>
+                <!-- /Details -->
 
-  .input-group {
-    width: 100%;
-  }
+                <!-- Price -->
+                <td>
+                  <div class="px-3">
+                    <span class="small text-muted mt-1"
+                      >$<%= item.productId.price %></span
+                    >
+                  </div>
+                </td>
+                <!-- /Price -->
 
-  .form-control-sm {
-    height: auto;
-    padding: 0.375rem 0.75rem;
-    line-height: 1.5;
-    font-size: 0.875rem;
-    flex: 1;
-  }
+                <!-- Qty -->
+                <td>
+                  <div
+                    class="col-md-3 col-lg-3 col-xl-2 d-flex align-items-center"
+                  >
+                    <button
+                      class="btn btn-link px-2"
+                      onclick="changeQuantity(event, '<%= item.productId._id %>', 'decrement')"
+                      data-action="decrement"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </button>
 
-  .btn-link i {
-    pointer-events: none;
-  }
+                    <input
+                      id="quantity-<%= item._id %>"
+                      min="0"
+                      name="quantity"
+                      value="<%= item.quantity %>"
+                      type="number"
+                      class="form-control form-control-sm input-quantity"
+                      onchange="changeQuantity(event, '<%= item._id %>', 'change')"
+                    />
 
-  .btn-link:not(:disabled):not(.disabled) {
-    color: white;
-    text-decoration: none;
-  }
+                    <button
+                      class="btn btn-link px-2"
+                      onclick="changeQuantity(event, '<%= item.productId._id %>', 'increment')"
+                      data-action="increment"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </td>
+                <!-- /Qty -->
 
-  .btn-link:not(:disabled):not(.disabled):hover {
-    background-color: #0056b3;
-  }
+                <!-- Total -->
+                <td>
+                  <div class="px-3">
+                    <span class="small text-muted mt-1"
+                      >$<%= item.totalPrice %></span
+                    >
+                  </div>
+                </td>
+                <!-- /Total -->
 
-  .btn-link:focus,
-  .btn-link:hover {
-    text-decoration: none;
-  }
-
-
-      </style>
-          <div class="col-12 col-lg-6 col-xl-7">
-
-   <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th class="d-none d-sm-table-cell">Image</th>
-          <th class="ps-sm-3">Details</th>
-          <th>price</th>
-          <th>Qty</th>
-          <th>Total</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% products.forEach((item) => { %>
-        <tr>
-          <!-- image -->
-          <td class="d-none d-sm-table-cell">
-            <picture class="d-block bg-light p-3 f-w-20">
-              <img
-                class="img-fluid"
-                src="/<%= item.productId.image %>"
-                alt=""
-              />
-            </picture>
-          </td>
-          <!-- image -->
-
-          <!-- Details -->
-          <td>
-            <div class="ps-sm-3">
-              <h6 class="mb-2 fw-bolder"><%= item.productId.name %></h6>
-              <small class="d-block text-muted">Mens / Blue / Medium</small>
-            </div>
-          </td>
-          <!-- Details -->
-
-          <!-- price -->
-          <td>
-            <div class="px-3">
-              <span class="small text-muted mt-1"
-                >$<%= item.productId.price %></span
-              >
-            </div>
-          </td>
-          <!-- /price -->
-          <!-- Qty -->
-          <td>
-            <td>
-              <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                <button class="btn btn-link px-2" onclick="changeQuantity(event, '<%= item.productId._id %>')" data-action="decrement">
-                  <i class="fas fa-minus"></i>
-                </button>
-
-                <input id="quantity-<%= item._id %>" min="0" name="quantity" value="<%= item.productId.quantity %>" type="number" class="form-control form-control-sm" onchange="changeQuantity(event, '<%= item._id %>')" />
-
-                <button class="btn btn-link px-2" onclick="changeQuantity(event, '<%= item.productId._id %>')" data-action="increment">
-                  <i class="fas fa-plus"></i>
-                </button>
-              </div>
-            </td>
-          </td>
-          <!-- /Qty -->
-
-          <!-- Actions -->
-          <td class="f-h-0">
-            <div
-              class="d-flex justify-content-between flex-column align-items-end h-100"
-            >
-              <i class="ri-close-circle-line ri-lg"></i>
-              <p class="fw-bolder mt-3 m-sm-0">$<%= item.totalPrice %></p>
-            </div>
-          </td>
-          <!-- /Actions -->
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
-  </div>
+                <!-- Actions -->
+                <td style="padding-left: 25px">
+                  <button
+                    class="btn btn-link px-2"
+                    onclick="deleteItem('<%= item.productId._id %>')"
+                  >
+                    <i class="ri-close-circle-line ri-lg"></i>
+                  </button>
+                </td>
+                <!-- /Actions -->
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+    </div>
 
     <!-- /Cart Items -->
+
     <div class="col-12 col-lg-6 col-xl-5">
       <div class="bg-dark p-4 p-md-5 text-white">
         <h3 class="fs-3 fw-bold m-0 text-center">Order Summary</h3>
@@ -236,45 +222,29 @@
       </ul>
       <!-- / Payment Icons-->
     </div>
+  </div>
+
     <!-- Cart Summary -->
 
     <!-- /Cart Summary -->
   </div>
-
+  <% } %>
   <!-- /Page Content -->
 </section>
 <!-- / Main Section-->
-
 <script>
- function changeQuantity(event, itemId) {
-    const input = event.target.parentNode.querySelector('input[type=number]');
-    const action = event.target.dataset.action;
-    let quantity = parseInt(input.value);
+  function changeQuantity(event, productId, action) {
+    const quantityInput = document.getElementById(`quantity-${productId}`);
+    let quantity = parseInt(quantityInput.value);
 
-    if (action === "increment") {
-      quantity++;
-    } else if (action === "decrement") {
-      quantity--;
-      if (quantity < 0) quantity = 0;
+    if (action === "decrement") {
+      quantity = Math.max(0, quantity - 1);
+    } else if (action === "increment") {
+      quantity += 1;
+    } else if (action === "change") {
+      quantity = parseInt(event.target.value);
     }
 
-    input.value = quantity;
-
-    // Make a server request to update the price accordingly
-    fetch(`/cart/update-quantity/${productId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ quantity }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response data, if needed
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    quantityInput.value = quantity;
   }
 </script>

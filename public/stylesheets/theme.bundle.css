@@ -1,3 +1,24 @@
+.quantityInput {
+  width: 3rem;
+}
+.changebtn1 {
+  height: 25px;
+  color: white;
+  background-color: #1c212c;
+  border: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 48px;
+}
+.changebtn2 {
+  height: 25px;
+  color: white;
+  background-color: #1c212c;
+  border: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 48px;
+}
 .animation-float {
   -webkit-animation: float 3s ease-in-out infinite;
   animation: float 3s ease-in-out infinite;
@@ -3196,7 +3217,6 @@ progress {
   font-size: 0.875rem;
   border-radius: 0.2rem;
   width: 4rem;
-
 }
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;

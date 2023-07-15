@@ -4,33 +4,42 @@ const Product = require("../models/productModel");
 const viewCart = async function (req, res) {
   try {
     const userId = req.session.userId;
-    console.log(userId);
+    console.log(userId + "user id from the view cart");
+
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
     );
-    let grandTotal = 0;
-    let subtotal = 0;
 
-    cart.items = cart.items.map((item) => {
-      const productPrice = item.productId.price;
-      const totalPrice = productPrice * item.quantity;
-      item.totalPrice = totalPrice;
-      subtotal += totalPrice;
+    if(cart){
+      let grandTotal = 0;
+      let subtotal = 0;
+      for (const item of cart.items) {
+        const productPrice = item.productId.price;
+        const totalPrice = productPrice * item.quantity;
+        item.totalPrice = totalPrice;
+        subtotal += totalPrice;
+      }
       grandTotal = subtotal + 45.89;
-      return item;
-    });
-
-    await cart.save(); // Save the updated cart
-
-    // Assuming you have a `products` array from somewhere
-    res.render("cart", {
-      layout: "layouts/userLayout",
-      products: cart.items,
-      cart: cart,
-      item: cart.items,
-      subtotal: subtotal,
-      grandTotal: grandTotal,
-    });
+  
+      await cart.save();
+  
+      res.render("cart", {
+        layout: "layouts/userLayout",
+        products: cart.items,
+        cart: cart,
+        item: cart.items,
+        subtotal: subtotal,
+        grandTotal: grandTotal,
+      });
+    }
+    else {
+      const uesrCart = await Cart.create({ userId });
+      res.render("cart", {
+        layout: "layouts/userLayout",
+        item: uesrCart.items,
+      });
+    }
+    
   } catch (err) {
     console.log("error in viewing cart", err);
   }
@@ -41,56 +50,39 @@ const addToCart = async function (req, res) {
     const userId = req.session.userId;
     const productId = req.params.ObjectId;
 
-
-    console.log(userId + "❤️❤️❤️" + productId);
+    console.log("❤️userid:" + userId);
+    console.log("💕productId:" + productId);
 
     let cart = await Cart.findOne({ userId: userId });
+
+    // if cart not exist create one
     if (!cart) {
       cart = await Cart.create({ userId });
     }
 
-    const existingItem = cart.items.find(
-      (item) => item.productId.toString() === productId
+    // if cart exist check for product exists
+    const itemIndex = cart.items.findIndex((item) =>
+      item.productId.equals(productId)
     );
-    if (existingItem) {
-      // Increase the quantity by 1 when viewing the cart
-      existingItem.quantity += 1;
+
+    if (itemIndex > -1) {
+      // If product already in cart, update its quantity and price
+      cart.items[itemIndex].quantity += 1;
+      cart.items[itemIndex].price = productId.price;
     } else {
-      // If the product doesn't exist, add a new item to the cart
-      cart.items.push({ productId, quantity: 1 }); // Initialize quantity to 1 for new items
+      // If product not in cart, add new item to the items array
+      cart.items.push({
+        productId: productId,
+      });
     }
 
+    // Save the updated cart
     await cart.save();
 
-    let grandTotal = 0;
-    let subtotal = 0;
-
-    cart.items = cart.items.map((item) => {
-      const productPrice = item.productId.price;
-      const totalPrice = productPrice * item.quantity;
-      item.totalPrice = totalPrice;
-      subtotal += totalPrice;
-      grandTotal = subtotal + 45.89;
-
-    })
-    
-    res
-      .status(200)
-      .render("cart", {
-        layout: "layouts/userLayout",
-        products: cart.items,
-        cart: cart,
-        item: cart.items,
-        subtotal: subtotal,
-        grandTotal: grandTotal,
-        productId:productId,
-
-      })
+    // show the cart after adding the product
+    res.redirect("/cart/view");
   } catch (err) {
     console.log("error in adding to the cart", err);
-    res
-      .status(500)
-      .json({ error: "An error occurred while adding the product to cart" });
   }
 };
 
