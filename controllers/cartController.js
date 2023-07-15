@@ -88,7 +88,6 @@ const updateQuantity = async function (req, res) {
   try {
     const productId = req.body.productId;
     const quantity = req.body.quantity;
-    console.log(productId + "    💕💕💕        " + quantity);
 
     const userId = req.session.userId;
     console.log("user id in update cart : " + userId);
@@ -100,22 +99,29 @@ const updateQuantity = async function (req, res) {
     if (cart) {
       let grandTotal = 0;
       let subtotal = 0;
-      for (const item of cart.items) {
-        item.quantity = quantity;
-        const productPrice = item.productId.price;
-        const totalPrice = productPrice * quantity;
-        item.totalPrice = totalPrice;
-        subtotal += totalPrice;
+      let totalPrice=0;
+      const itemToUpdate=cart.items.find(item=>item.productId._id.toString()===productId);
+      if(itemToUpdate){
+        itemToUpdate.quantity = quantity;
+        const productPrice = itemToUpdate.productId.price;
+        totalPrice = productPrice * quantity;
+        itemToUpdate.totalPrice=totalPrice;
       }
+      cart.items.forEach(item=>{
+        subtotal+=item.totalPrice;
+      });
       grandTotal = subtotal + 45.89;
 
-      await cart.save();
-    }
-    console.log(cart);
-
+    await cart.save();
     return res.json({
-      cart:cart
+      totalPrice:totalPrice,
+      subtotal:subtotal,
+      grandTotal:grandTotal,
+      productId:productId,
     })
+
+  }
+
   } catch (error) {
     console.log("error in updating the product quantity", error);
   }
