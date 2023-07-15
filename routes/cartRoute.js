@@ -10,4 +10,6 @@ router.get("/add/:ObjectId",sessionMiddleware.isLoggedIn,cartController.addToCar
 
 router.post("/update",cartController.updateQuantity)
 
+router.delete("/",cartController.deleteItem)
+
 module.exports = router;

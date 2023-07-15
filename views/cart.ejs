@@ -247,4 +247,42 @@
       changeQuantity(event, productId, "change");
     });
   });
+
+
+ 
+
+</script>
+
+<script>
+  function deleteItem(productId) {
+  // Create the data to be sent in the fetch request
+  const data = {
+    productId: productId
+  };
+
+  // Send the fetch request to delete the item
+  fetch("/cart", {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      const subtotalElement = document.querySelector('.js-subtotal');
+        subtotalElement.textContent = `$${data.subtotal}`;
+
+        const grandTotalElement = document.querySelector('.js-grand-total');
+        grandTotalElement.textContent = `$${data.grandTotal}`;
+
+        location.reload()
+    })
+    .catch(error => {
+      // Handle errors
+      console.error(error);
+    });
+}
+
 </script>

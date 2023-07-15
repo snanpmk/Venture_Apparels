@@ -127,8 +127,40 @@ const updateQuantity = async function (req, res) {
   }
 };
 
+const deleteItem = async function (req,res) {
+  try {
+    const productId = req.body.productId;
+    const userId = req.session.userId;
+
+    // Find the user's cart and remove the item with the given productId
+    const cart = await Cart.findOneAndUpdate(
+      { userId: userId },
+      { $pull: { items: { productId: productId } } },
+      { new: true }
+    ).populate("items.productId");
+
+    // Recalculate the subtotal and grand total
+    let subtotal = 0;
+    let grandTotal = 0;
+    for (const item of cart.items) {
+      subtotal += item.productId.price * item.quantity;
+    }
+    grandTotal = subtotal + 45.89;
+
+    await cart.save();
+
+    return res.json({
+      subtotal: subtotal,
+      grandTotal: grandTotal
+    });
+  } catch (error) {
+    console.log("error in deleting item",error);
+  }
+}
+
 module.exports = {
   viewCart,
   addToCart,
   updateQuantity,
+  deleteItem
 };
