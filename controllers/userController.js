@@ -288,7 +288,6 @@ const loadCheckout = async function (req, res) {
 
   const addresses = await Address.find();
   const products = cart.items.map((item) => item.productId);
-
   console.log(products);
 
   res.render("checkout", {
@@ -340,6 +339,15 @@ const addAddress = async function (req, res) {
   }
 };
 
+const getEditAdressData = async function (req,res) {
+  try {
+    const addressId = req.params.ObjectId
+
+  } catch (error) {
+    console.log("error in getEditAdressData",error);
+  }
+}
+
 module.exports = {
   loadHome,
   loadSignUp,
@@ -355,4 +363,5 @@ module.exports = {
   searchProducts,
   loadCheckout,
   addAddress,
+  getEditAdressData
 };

@@ -33,6 +33,10 @@ router.get("/checkout",sessionMiddleware.isLoggedIn,userController.loadCheckout)
 
 router.post("/add-address",userController.addAddress) 
 
+router.get("/edit-address",userController.addAddress) 
+
+router.post("/edit-address/:ObjectId",userController.getEditAdressData) 
+
 
 
 module.exports = router;
