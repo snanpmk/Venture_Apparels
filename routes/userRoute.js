@@ -29,7 +29,10 @@ router.post("/search",userController.searchProducts)
 
 router.get("/search",userController.loadSearchProducts)
 
- 
+router.get("/checkout",sessionMiddleware.isLoggedIn,userController.loadCheckout) 
+
+router.post("/add-address",userController.addAddress) 
+
 
 
 module.exports = router;

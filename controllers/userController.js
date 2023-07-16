@@ -7,6 +7,8 @@ const authToken = process.env.AUTH_TOKEN;
 const servicesSid = process.env.SERVICES_SID;
 const twilio = require("twilio");
 const client = twilio(accountSid, authToken);
+const Address = require("../models/addressSchema");
+const Cart = require("../models/cartModel");
 
 // load user landing page
 const loadHome = async function (req, res) {
@@ -264,6 +266,80 @@ const searchProducts = async function (req, res) {
   }
 };
 
+const loadCheckout = async function (req, res) {
+  try{
+    const userId = req.session.userId;
+  console.log(userId + "user id from the view cart");
+
+  const cart = await Cart.findOne({ userId: userId }).populate("items.productId");
+  let grandTotal = 0;
+  let subtotal = 0;
+
+  for (const item of cart.items) {
+    const productPrice = item.productId.price;
+    const totalPrice = productPrice * item.quantity;
+    item.totalPrice = totalPrice;
+    subtotal += totalPrice;
+  }
+
+  grandTotal = subtotal + 45.89 + 8.95;
+  grandTotal=grandTotal.toFixed(2)
+  await cart.save();
+
+  const addresses = await Address.find();
+  const products = cart.items.map((item) => item.productId);
+
+  console.log(products);
+
+  res.render("checkout", {
+    layout: "layouts/userLayout",
+    addresses: addresses,
+    products: products,
+    grandTotal: grandTotal,
+    subtotal: subtotal,
+  });
+  } catch (err) {
+    console.log("error in loading checkout",err);
+  }
+};
+
+
+const addAddress = async function (req, res) {
+  try {
+    const {
+      email,
+      firstName,
+      lastName,
+      address,
+      country,
+      phoneNumber,
+      state,
+      zipCode,
+      useForBilling,
+    } = req.body;
+
+    // Create a new address document
+    const newAddress = new Address({
+      email: email,
+      fname: firstName,
+      lname: lastName,
+      address: address,
+      country: country,
+      state: state,
+      zipcode: zipCode,
+      user: userId,
+      phoneNumber: phoneNumber,
+      isBillingAddress: useForBilling,
+    });
+
+    await newAddress.save();
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.log("error in adding address", err);
+  }
+};
+
 module.exports = {
   loadHome,
   loadSignUp,
@@ -277,4 +353,6 @@ module.exports = {
   enterOtp,
   loadSearchProducts,
   searchProducts,
+  loadCheckout,
+  addAddress,
 };
