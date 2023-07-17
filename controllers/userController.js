@@ -269,7 +269,7 @@ const searchProducts = async function (req, res) {
 const loadCheckout = async function (req, res) {
   try{
     const userId = req.session.userId;
-  console.log(userId + "user id from the view cart");
+  console.log(userId + "user id from the load check out ");
 
   const cart = await Cart.findOne({ userId: userId }).populate("items.productId");
   let grandTotal = 0;
@@ -288,6 +288,7 @@ const loadCheckout = async function (req, res) {
 
   const addresses = await Address.find();
   const products = cart.items.map((item) => item.productId);
+
   console.log(products);
 
   res.render("checkout", {
@@ -302,9 +303,10 @@ const loadCheckout = async function (req, res) {
   }
 };
 
-
-const addAddress = async function (req, res) {
+// Define the controller function
+const addAddress = async (req, res) => {
   try {
+
     const {
       email,
       firstName,
@@ -315,8 +317,10 @@ const addAddress = async function (req, res) {
       state,
       zipCode,
       useForBilling,
-    } = req.body;
-
+    } = req.body
+    console.log("❤️❤️❤️❤️❤️❤️:fjadskhfkjsahfkjahjfaskhdjkfkhadskhfkj");
+    console.log(req.body.email);
+    
     // Create a new address document
     const newAddress = new Address({
       email: email,
@@ -326,27 +330,58 @@ const addAddress = async function (req, res) {
       country: country,
       state: state,
       zipcode: zipCode,
-      user: userId,
+      user: req.session.userId,
       phoneNumber: phoneNumber,
       isBillingAddress: useForBilling,
     });
-
     await newAddress.save();
-
+    
+    console.log("❤️❤️❤️❤️❤️❤️");
+    
     return res.json({ success: true });
-  } catch (err) {
-    console.log("error in adding address", err);
+  } catch (error) {
+    console.log('Error in adding address', error);
+    return res.status(500).json({ error: 'An error occurred while adding the address' });
   }
 };
+
+
+
 
 const getEditAdressData = async function (req,res) {
   try {
     const addressId = req.params.ObjectId
-
+    console.log(addressId);
+    const address = await Address.findById({_id:addressId})
+    return res.json(address)
   } catch (error) {
     console.log("error in getEditAdressData",error);
   }
 }
+
+const submitAddress = async function (req,res) {
+  try {
+    const addressId = req.params.ObjectId
+    console.log(addressId,"from submit address");
+    
+    const {
+      email,
+      firstName,
+      lastName,
+      address,
+      country,
+      phoneNumber,
+      state,
+      zipCode,
+      useForBilling,
+    } = req.body
+
+    console.log(email );
+  } catch (err) {
+    console.log("error in submitting address",error);
+  }
+}  
+
 
 module.exports = {
   loadHome,
@@ -363,5 +398,6 @@ module.exports = {
   searchProducts,
   loadCheckout,
   addAddress,
-  getEditAdressData
+  getEditAdressData,
+  submitAddress
 };

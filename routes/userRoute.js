@@ -33,9 +33,9 @@ router.get("/checkout",sessionMiddleware.isLoggedIn,userController.loadCheckout)
 
 router.post("/add-address",userController.addAddress) 
 
-router.get("/edit-address",userController.addAddress) 
+router.get("/get-address/:ObjectId",userController.getEditAdressData) 
 
-router.post("/edit-address/:ObjectId",userController.getEditAdressData) 
+router.post("/submit-address/:ObjectId",userController.submitAddress) 
 
 
 

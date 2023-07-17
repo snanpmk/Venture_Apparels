@@ -136,10 +136,13 @@
           <div style="margin-bottom: 0%" class="d-flex justify-content-end">
             <button
               class="btn btn-primary me-2 edit-btn edit-btn-<%= address.id %>"
+              id="editAddressButton"
               style="display: none"
+              onclick="openEditModal('<%= address.id %>')"
             >
               <a style="text-decoration: none; color: #fff">Edit</a>
             </button>
+
             <button
               class="btn btn-danger remove-btn remove-btn-<%= address.id %>"
               style="display: none"
@@ -151,140 +154,6 @@
       </div>
       <!-- /address card -->
       <% }); %>
-
-      <!-- Edit Address Modal -->
-      <div id="editModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-          <!-- Modal header -->
-          <div class="modal-header">
-            <h5 class="modal-title">Edit Address</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <!-- Modal body -->
-          <div class="modal-body">
-            <form method="post" action="/edit-address" id="editAddressForm">
-              <!-- Add hidden input field for address ID -->
-              <input type="hidden" id="addressId" name="addressId" value="" />
-              <div class="form-group col-12">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="Email"
-                  placeholder="you@example.com"
-                  required=""
-                />
-              </div>
-              <div class="form-group col-12">
-                <label for="phoneNumber" class="form-label"
-                  >Mobile Number</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="phoneNumber"
-                  required=""
-                />
-              </div>
-              <div class="form-group d-flex">
-                <!-- First name -->
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="firstName" class="form-label">First name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="firstName"
-                      placeholder=""
-                      value=""
-                      required=""
-                    />
-                  </div>
-                </div>
-                <!-- Last Name-->
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label for="lastName" class="form-label">Last name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lastName"
-                      placeholder=""
-                      value=""
-                      required=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="form-group col-12">
-                <label for="address" class="form-label">Address</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="address"
-                  placeholder="123 Some Street Somewhere"
-                  required=""
-                />
-              </div>
-
-              <div class="form-group col-12">
-                <label for="address" class="form-label">Country</label>
-                <select class="form-control" id="country" required="">
-                  <option value="">Please Select...</option>
-                  <option>India</option>
-                  <option>United States</option>
-                </select>
-              </div>
-              <div class="d-flex">
-                <div class="form-group col-6">
-                  <label for="address" class="form-label">State</label>
-                  <select class="form-control" id="state" required="">
-                    <option value="">Please Select...</option>
-                    <option>Goa</option>
-                    <option>Gujarat</option>
-                    <option>Karnataka</option>
-                    <option>Kerala</option>
-                    <option>Tamil Nadu</option>
-                  </select>
-                </div>
-
-                <div class="form-group col-6">
-                  <label for="address" class="form-label"
-                    >Zip / Post Code</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="zipCode"
-                    required=""
-                  />
-                </div>
-              </div>
-              <div class="form-group col-12">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="same-address"
-                  checked
-                />
-                <label class="form-check-label" for="same-address"
-                  >Use for billing address</label
-                >
-              </div>
-              <button type="submit" class="btn btn-success">Submit</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Save Changes</button>
-          </div>
-        </div>
-      </div>
 
       <!-- The Modal -->
       <div id="myModal" class="modal">
@@ -368,7 +237,7 @@
                 </div>
 
                 <div class="form-group col-12">
-                  <label for="address" class="form-label">Country</label>
+                  <label for="country" class="form-label">Country</label>
                   <select class="form-control" id="country" required="">
                     <option value="">Please Select...</option>
                     <option>India</option>
@@ -420,6 +289,138 @@
       </div>
     </div>
     <!-- / Select Address -->
+
+    <!-- Edit Address Modal -->
+    <div id="editModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <!-- Modal header -->
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Address</h5>
+          <button
+            type="button"
+            class="btn-close-editModal"
+            data-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <!--Edit Modal body -->
+        <div class="modal-body">
+          <form method="post" action="/edit-address" id="editAddressForm">
+            <!-- Add hidden input field for address ID -->
+            <input type="hidden" id="addressId" name="addressId" value="" />
+            <div class="form-group col-12">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editEmail"
+                value=""
+                required=""
+              />
+            </div>
+            <div class="form-group col-12">
+              <label for="phoneNumber" class="form-label">Mobile Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editPhoneNumber"
+                required=""
+              />
+            </div>
+            <div class="form-group d-flex">
+              <!-- First name -->
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="editFirstName" class="form-label"
+                    >First name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstName"
+                    placeholder=""
+                    value=""
+                    required=""
+                  />
+                </div>
+              </div>
+              <!-- Last Name-->
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="lastName" class="form-label">Last name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editLastName"
+                    placeholder=""
+                    value=""
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="address" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editAddress"
+                placeholder="123 Some Street Somewhere"
+                required=""
+              />
+            </div>
+
+            <div class="form-group col-12">
+              <label for="address" class="form-label">Country</label>
+              <select class="form-control" id="editCountry" required="">
+                <option value="">Please Select...</option>
+                <option>India</option>
+                <option>United States</option>
+              </select>
+            </div>
+            <div class="d-flex">
+              <div class="form-group col-6">
+                <label for="address" class="form-label">State</label>
+                <select class="form-control" id="editState" required="">
+                  <option value="">Please Select...</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Tamil Nadu</option>
+                </select>
+              </div>
+
+              <div class="form-group col-6">
+                <label for="address" class="form-label">Zip / Post Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editZipCode"
+                  required=""
+                />
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                value=""
+                id="editSameAddress"
+                checked
+              />
+              <label class="form-check-label" for="same-address"
+                >Use for billing address</label
+              >
+            </div>
+            <button type="submit" id="submitAddressButton" class="btn btn-success">Save Changes</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
 
     <!-- Checkout Panel Summary -->
     <div class="col-lg-5">
@@ -527,7 +528,8 @@
 </script>
 
 <script>
-  // Get the modal element
+  // script for the Add Address
+
   var modal = document.getElementById("myModal");
 
   // Get the button that opens the modal
@@ -569,6 +571,7 @@
       const state = document.getElementById("state").value;
       const zipCode = document.getElementById("zipCode").value;
       const useForBilling = document.getElementById("same-address").checked;
+      console.log(email + firstName + country);
 
       // Construct the address object
       const addressData = {
@@ -582,6 +585,7 @@
         zipCode,
         useForBilling,
       };
+      console.log(addressData);
 
       // Make a fetch request to the "/add-address" URL
       fetch("/add-address", {
@@ -597,15 +601,17 @@
           console.log(data);
           // Close the modal after successful submission if desired
           modal.style.display = "none";
+          window.location.reload();
         })
         .catch((error) => {
           // Handle any errors
           console.error(error);
         });
     });
+  console.log("fdsafdsaf");
 </script>
 
-<script>
+<!-- <script>
   // Open the edit modal and fetch user data
   function openEditModal(addressId) {
     const modal = document.getElementById("editModal");
@@ -614,19 +620,21 @@
     // Set the address ID in the hidden input field
     addressIdInput.value = addressId;
 
+    console.log(addressId);
+
     // Make a fetch request to get the user data for the given address ID
-    fetch(`/get-address/${addressId}`)
+    fetch(`/edit-address/${addressId}`)   
       .then((response) => response.json())
       .then((data) => {
         // Update the form fields with the fetched user data
-        document.getElementById("firstName").value = data.firstName;
-        document.getElementById("lastName").value = data.lastName;
-        document.getElementById("email").value = data.email;
-        document.getElementById("phoneNumber").value = data.phoneNumber;
-        document.getElementById("country").value = data.country;
-        document.getElementById("state").value = data.state;
-        document.getElementById("zipCode").value = data.zipCode;
-        document.getElementById("same-address").value = data.same - address;
+        document.getElementById("editfirstName").value = data.firstName;
+        document.getElementById("editlastName").value = data.lastName;
+        document.getElementById("editemail").value = data.email;
+        document.getElementById("editphoneNumber").value = data.phoneNumber;
+        document.getElementById("editcountry").value = data.country;
+        document.getElementById("editstate").value = data.state;
+        document.getElementById("editzipCode").value = data.zipCode;
+        document.getElementById("editsame-address").value = data.isBillingAddress;
 
         // Show the modal
         modal.style.display = "block";
@@ -679,4 +687,5 @@
           console.error(error);
         });
     });
-</script>
+</script> -->
+<script src="/javascripts/editAddressModal.js"></script>
