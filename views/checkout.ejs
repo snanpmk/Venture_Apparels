@@ -115,7 +115,6 @@
               data-address-id="<%= address.id %>"
               onchange="selectAddress('<%= address.id %>')"
             />
-
             <label class="form-check-label" for="card2">
               <h5 class="card-title">
                 <%= address.fname %> <%= address.lname %>
@@ -155,6 +154,7 @@
       <!-- /address card -->
       <% }); %>
 
+      <!-- Add address modaal -->
       <!-- The Modal -->
       <div id="myModal" class="modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -306,7 +306,7 @@
         </div>
         <!--Edit Modal body -->
         <div class="modal-body">
-          <form method="post" action="/edit-address" id="editAddressForm">
+          <form method="post" action="/submit-address" id="editAddressForm">
             <!-- Add hidden input field for address ID -->
             <input type="hidden" id="addressId" name="addressId" value="" />
             <div class="form-group col-12">
@@ -338,7 +338,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="firstName"
+                    id="editFirstName"
                     placeholder=""
                     value=""
                     required=""
@@ -381,7 +381,7 @@
             </div>
             <div class="d-flex">
               <div class="form-group col-6">
-                <label for="address" class="form-label">State</label>
+                <label for="state" class="form-label">State</label>
                 <select class="form-control" id="editState" required="">
                   <option value="">Please Select...</option>
                   <option>Goa</option>
@@ -414,11 +414,16 @@
                 >Use for billing address</label
               >
             </div>
-            <button type="submit" id="submitAddressButton" class="btn btn-success">Save Changes</button>
+            <a
+              type="submit"
+              id="submitAddressButton"
+              class="btn btn-success"
+            >
+              Save Changes
+          </a>
           </form>
         </div>
-        <div class="modal-footer">
-        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
 
@@ -601,14 +606,12 @@
           console.log(data);
           // Close the modal after successful submission if desired
           modal.style.display = "none";
-          window.location.reload();
         })
         .catch((error) => {
           // Handle any errors
           console.error(error);
         });
     });
-  console.log("fdsafdsaf");
 </script>
 
 <!-- <script>
@@ -688,4 +691,127 @@
         });
     });
 </script> -->
-<script src="/javascripts/editAddressModal.js"></script>
+<script>
+  var addressId;
+  function openEditModal(id) {
+
+    addressId = id;
+    // Get the form input elements
+    var emailInput = document.getElementById("editEmail");
+    var firstNameInput = document.getElementById("editFirstName");
+    var lastNameInput = document.getElementById("editLastName");
+    var addressInput = document.getElementById("editAddress");
+    var phoneNumberInput = document.getElementById("editPhoneNumber");
+    var countryInput = document.getElementById("editCountry");
+    var stateInput = document.getElementById("editState");
+    var zipCodeInput = document.getElementById("editZipCode");
+    var useForBillingCheckbox = document.getElementById("editSameAddress");
+
+    // Make a fetch request to retrieve the address data by ID
+    console.log(id + " address id from the open edit model");
+    fetch(`/get-address/${id}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // Set the form input values to the address data from the response
+        emailInput.value = data.address.email;
+        firstNameInput.value = data.address.fname;
+        lastNameInput.value = data.address.lname;
+        addressInput.value = data.address.address;
+        phoneNumberInput.value = data.address.phoneNumber;
+        countryInput.value = data.address.country;
+        stateInput.value = data.address.state;
+        zipCodeInput.value = data.address.zipcode;
+        useForBillingCheckbox.checked = data.address.isBillingAddress;
+        console.log(emailInput.value);
+        console.log(phoneNumberInput.value);
+        console.log(stateInput.value);
+        console.log(countryInput.value);
+        console.log(zipCodeInput.value);
+        console.log(addressInput.value);
+        console.log(useForBillingCheckbox.value);
+        // Open the modal
+        let modal = document.getElementById("editModal");
+
+        modal.style.display = "block";
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("editModal");
+    var btn = document.getElementById("editAddressButton");
+    var closeBtn = document.getElementsByClassName("btn-close-editModal")[0];
+
+    // Close the modal when the close button is clicked
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    // Close the modal when the user clicks outside of it
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+
+  var emailInput = document.getElementById("editEmail");
+    var firstNameInput = document.getElementById("editFirstName");
+    var lastNameInput = document.getElementById("editLastName");
+    var addressInput = document.getElementById("editAddress");
+    var phoneNumberInput = document.getElementById("editPhoneNumber");
+    var countryInput = document.getElementById("editCountry");
+    var stateInput = document.getElementById("editState");
+    var zipCodeInput = document.getElementById("editZipCode");
+    var useForBillingCheckbox = document.getElementById("editSameAddress");
+
+
+  const editAddressForm = document.getElementById("editAddressForm");
+
+  var submitBtn = document.getElementById("submitAddressButton");
+  submitBtn.addEventListener("click", function () {
+
+    const formData = {
+    email: emailInput.value,
+    firstName: firstNameInput.value,
+    lastName: lastNameInput.value,
+    address: addressInput.value,
+    phoneNumber: phoneNumberInput.value,
+    country: countryInput.value,
+    state: stateInput.value,
+    zipCode: zipCodeInput.value,
+    useForBilling: useForBillingCheckbox.checked,
+  };
+
+  var modal = document.getElementById("editModal");
+  console.log(addressId + "🚀🚀🚀🚀🚀");
+  console.log(formData + "😒😒😒😒😒😒😒");
+    console.log(formData+"👌👌👌👌");
+
+    // Make a fetch request to submit the data to the backend
+    fetch(`/submit-address/${addressId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) =>{return response.json()})
+      .then((data) => {
+        // Handle the response data
+        console.log(data);
+        // Close the modal after successful submission if desired
+        window.location.reload()
+        modal.style.display = "none";
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  });
+</script>

@@ -267,46 +267,47 @@ const searchProducts = async function (req, res) {
 };
 
 const loadCheckout = async function (req, res) {
-  try{
+  try {
     const userId = req.session.userId;
-  console.log(userId + "user id from the load check out ");
+    console.log(userId + "user id from the load check out ");
 
-  const cart = await Cart.findOne({ userId: userId }).populate("items.productId");
-  let grandTotal = 0;
-  let subtotal = 0;
+    const cart = await Cart.findOne({ userId: userId }).populate(
+      "items.productId"
+    );
+    let grandTotal = 0;
+    let subtotal = 0;
 
-  for (const item of cart.items) {
-    const productPrice = item.productId.price;
-    const totalPrice = productPrice * item.quantity;
-    item.totalPrice = totalPrice;
-    subtotal += totalPrice;
-  }
+    for (const item of cart.items) {
+      const productPrice = item.productId.price;
+      const totalPrice = productPrice * item.quantity;
+      item.totalPrice = totalPrice;
+      subtotal += totalPrice;
+    }
 
-  grandTotal = subtotal + 45.89 + 8.95;
-  grandTotal=grandTotal.toFixed(2)
-  await cart.save();
+    grandTotal = subtotal + 45.89 + 8.95;
+    grandTotal = grandTotal.toFixed(2);
+    await cart.save();
 
-  const addresses = await Address.find();
-  const products = cart.items.map((item) => item.productId);
+    const addresses = await Address.find();
+    const products = cart.items.map((item) => item.productId);
 
-  console.log(products);
+    console.log(products);
 
-  res.render("checkout", {
-    layout: "layouts/userLayout",
-    addresses: addresses,
-    products: products,
-    grandTotal: grandTotal,
-    subtotal: subtotal,
-  });
+    res.render("checkout", {
+      layout: "layouts/userLayout",
+      addresses: addresses,
+      products: products,
+      grandTotal: grandTotal,
+      subtotal: subtotal,
+    });
   } catch (err) {
-    console.log("error in loading checkout",err);
+    console.log("error in loading checkout", err);
   }
 };
 
 // Define the controller function
 const addAddress = async (req, res) => {
   try {
-
     const {
       email,
       firstName,
@@ -317,10 +318,10 @@ const addAddress = async (req, res) => {
       state,
       zipCode,
       useForBilling,
-    } = req.body
+    } = req.body;
     console.log("❤️❤️❤️❤️❤️❤️:fjadskhfkjsahfkjahjfaskhdjkfkhadskhfkj");
     console.log(req.body.email);
-    
+
     // Create a new address document
     const newAddress = new Address({
       email: email,
@@ -335,52 +336,78 @@ const addAddress = async (req, res) => {
       isBillingAddress: useForBilling,
     });
     await newAddress.save();
-    
+
     console.log("❤️❤️❤️❤️❤️❤️");
-    
+
     return res.json({ success: true });
   } catch (error) {
-    console.log('Error in adding address', error);
-    return res.status(500).json({ error: 'An error occurred while adding the address' });
+    console.log("Error in adding address", error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while adding the address" });
+  }
+};
+
+const getEditAdressData = async function (req, res) {
+  try {
+    const addressId = req.params.ObjectId;
+    console.log(addressId);
+    const address = await Address.findById({ _id: addressId });
+    console.log(address+"fsdafs😂😂😂😂😂😂😂");
+    return res.json({address});
+  } catch (error) {
+    console.log("error in getEditAdressData", error);
+  }
+};
+const submitAddress = async function (req, res) {
+  try {
+    const userId = req.session.userId;
+    console.log(userId);
+    const addressId = req.params.ObjectId;
+    console.log(addressId, "from submit address");
+
+    const formData = req.body;
+    console.log(formData);
+
+    // Access the form data values
+    const email = formData.email;
+    const firstName = formData.firstName;
+    const lastName = formData.lastName;
+    const address = formData.address;
+    const country = formData.country;
+    const phoneNumber = formData.phoneNumber;
+    const state = formData.state;
+    const zipCode = formData.zipCode;
+    const useForBilling = formData.useForBilling;
+
+    const updatedAddress = await Address.findByIdAndUpdate(
+      addressId,
+      {
+        email: email,
+        fname: firstName,
+        lname: lastName,
+        address: address,
+        country: country,
+        phoneNumber: phoneNumber,
+        state: state,
+        zipcode: zipCode,
+        isBillingAddress: useForBilling,
+        user: userId,
+      },
+      { new: true }
+    );
+
+    console.log("Updated address:", updatedAddress);
+
+    // Return the updated address as a response if needed
+    res.json(updatedAddress);
+  } catch (err) {
+    console.log("error in submitting address", err);
+    res.status(500).json({ error: "Error submitting address" });
   }
 };
 
 
-
-
-const getEditAdressData = async function (req,res) {
-  try {
-    const addressId = req.params.ObjectId
-    console.log(addressId);
-    const address = await Address.findById({_id:addressId})
-    return res.json(address)
-  } catch (error) {
-    console.log("error in getEditAdressData",error);
-  }
-}
-
-const submitAddress = async function (req,res) {
-  try {
-    const addressId = req.params.ObjectId
-    console.log(addressId,"from submit address");
-    
-    const {
-      email,
-      firstName,
-      lastName,
-      address,
-      country,
-      phoneNumber,
-      state,
-      zipCode,
-      useForBilling,
-    } = req.body
-
-    console.log(email );
-  } catch (err) {
-    console.log("error in submitting address",error);
-  }
-}  
 
 
 module.exports = {
@@ -399,5 +426,5 @@ module.exports = {
   loadCheckout,
   addAddress,
   getEditAdressData,
-  submitAddress
+  submitAddress,
 };

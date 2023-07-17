@@ -14,7 +14,7 @@ module.exports.connect = async function () {
       useUnifiedTopology: true,
     });
     state.db = mongoose.connection;
-    console.log("Connected to MongoDB successfully!🚀");
+    console.log("Connected to MongoDB successfully!🚀                                                             ");
   } catch (err) {
     console.error("Failed to connect to MongoDB:", err);
     throw err;
