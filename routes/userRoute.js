@@ -39,8 +39,8 @@ router.post("/submit-address/:ObjectId",userController.submitAddress)
 
 router.delete("/delete-address",userController.deleteAddress)
 
+router.post("/process-order",orderController.processOrder)
 
-router.get("/test",orderController.testrender)
 
 
 

@@ -3,6 +3,11 @@
     color: black;
     vertical-align: middle !important;
   }
+  .col-lg-5 {
+    flex: 0 0 auto;
+    width: 41.6666666667%;
+    padding-top: 1.5rem;
+  }
 
   .card {
     margin-bottom: 2vh !important;
@@ -112,6 +117,7 @@
               type="radio"
               name="card-selection"
               id="radio-<%= address.id %>"
+              data-address="<%= JSON.stringify(address) %>"
               data-address-id="<%= address.id %>"
               onchange="selectAddress('<%= address.id %>')"
             />
@@ -147,7 +153,6 @@
               class="btn btn-danger remove-btn remove-btn-<%= address.id %> remove-address-button"
               style="display: none"
               data-address-id="<%= address.id %>"
-
             >
               Remove
             </button>
@@ -480,6 +485,51 @@
             <p class="m-0 fs-5 fw-bold">$<%= grandTotal %></p>
           </div>
         </div>
+        <!-- Payment Options -->
+        <div class="col-lg-12 mt-4">
+          <h5 class="card-title">Payment</h5>
+          <div class="card">
+            <div class="card-body">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="payment-option"
+                  value="credit-card"
+                  id="creditCard"
+                />
+                <label class="form-check-label" for="payment-option1">
+                  Credit Card
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="payment-option"
+                  value="cashOnDelivery"
+                  id="cashOnDelivery"
+                />
+                <label class="form-check-label" for="payment-option2">
+                  Cash on Delivery
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="payment-option"
+                  value="bank-transfer"
+                  id="bankTransfer"
+                />
+                <label class="form-check-label" for="payment-option3">
+                  Bank Transfer
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Payment Options -->
         <div class="py-3 border-bottom">
           <div class="input-group mb-0">
             <input
@@ -503,7 +553,13 @@
             <a href="#">terms & conditions</a></label
           >
         </div>
-        <a href="#" class="btn btn-dark w-100" role="button">Complete Order</a>
+        <button
+          id="completeOrderButton"
+          class="btn btn-dark w-100"
+          type="button"
+        >
+          Complete Order
+        </button>
       </div>
     </div>
     <!-- / Checkout Panel Summary -->
@@ -704,55 +760,122 @@
 </script>
 <script>
   function deleteAddress(addressId) {
-  fetch("/delete-address", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ addressId }), // Wrap the addressId in an object or use { "addressId": addressId }
-  })
-    .then((response) => {
-      if (response.ok) {
-        window.location.reload();
-        return response.json();
-      } else {
-        throw new Error("Error: " + response.status);
-      }
+    fetch("/delete-address", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ addressId }), // Wrap the addressId in an object or use { "addressId": addressId }
     })
-    .catch((error) => {
-      console.error(error);
-      // Handle any errors that occurred during the request
-    });
-}
-document.addEventListener("DOMContentLoaded", function () {
-  const removeAddressButtons = document.querySelectorAll(".remove-address-button");
-
-  removeAddressButtons.forEach(function (removeAddressButton) {
-    removeAddressButton.addEventListener("click", showDeleteConfirmation);
-  });
-
-  function showDeleteConfirmation(event) {
-    const addressId = event.target.dataset.addressId;
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this address!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-      dangerMode: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // User clicked the confirmation button
-        deleteAddress(addressId);
-      } else {
-        // User clicked the cancel button
-        // Do nothing or handle the cancellation
-      }
-    });
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+          return response.json();
+        } else {
+          throw new Error("Error: " + response.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle any errors that occurred during the request
+      });
   }
+  document.addEventListener("DOMContentLoaded", function () {
+    const removeAddressButtons = document.querySelectorAll(
+      ".remove-address-button"
+    );
+
+    removeAddressButtons.forEach(function (removeAddressButton) {
+      removeAddressButton.addEventListener("click", showDeleteConfirmation);
+    });
+
+    function showDeleteConfirmation(event) {
+      const addressId = event.target.dataset.addressId;
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this address!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        dangerMode: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // User clicked the confirmation button
+          deleteAddress(addressId);
+        } else {
+          // User clicked the cancel button
+          // Do nothing or handle the cancellation
+        }
+      });
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  // Get a reference to the "Complete Order" button
+  const completeOrderButton = document.getElementById("completeOrderButton");
+
+  // Add an event listener to the button
+  completeOrderButton.addEventListener("click", () => {
+    // Retrieve the selected payment method
+    const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
+    const creditCardRadio = document.getElementById("creditCard");
+    const bankTransferRadio = document.getElementById("bankTransfer");
+
+    let paymentMethod;
+    if (cashOnDeliveryRadio.checked) {
+      paymentMethod = cashOnDeliveryRadio.value;
+    } else if (creditCardRadio.checked) {
+      paymentMethod = creditCardRadio.value;
+    } else if (bankTransferRadio.checked) {
+      paymentMethod = bankTransferRadio.value;
+    }
+
+    // Retrieve the selected address
+    const selectedAddressRadio = document.querySelector(
+      'input[name="card-selection"]:checked'
+    );
+
+    if (selectedAddressRadio) {
+      const selectedAddress = JSON.parse(selectedAddressRadio.dataset.address);
+
+      const data = {
+        paymentMethod: paymentMethod,
+        address: selectedAddress,
+      };
+
+      console.log(data);
+
+      // Fetch request to the server
+      fetch("/process-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Redirect to the order success page or handle the response as needed
+            window.location.href = "/order-success";
+          } else {
+            // Handle the error response from the server
+            console.error("Error:", response.statusText);
+            // Show an error message or perform any necessary actions
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Show an error message or perform any necessary actions
+        });
+    } else {
+      console.log("No address selected");
+      // Handle the case where no address is selected
+    }
+  });
 });
 
 </script>
-

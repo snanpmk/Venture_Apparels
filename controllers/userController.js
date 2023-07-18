@@ -426,11 +426,6 @@ const deleteAddress = async function (req, res) {
 };
 
 
-
-
-
-
-
 module.exports = {
   loadHome,
   loadSignUp,
