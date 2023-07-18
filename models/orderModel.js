@@ -46,6 +46,15 @@ const orderSchema = new mongoose.Schema({
     ],
     default: 'pending',
   },
+  paymentMethod:{
+    type: String,
+    enum:[
+      'COD',
+      'bankTransfer',
+      'credit-cart'
+
+    ]
+  },
   orderNumber: { type: Number },
   date: {
     type: Date,

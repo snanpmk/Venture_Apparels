@@ -1,0 +1,188 @@
+<div class="container-fluid">
+  <style>
+    body {
+      background: #f9f9f9;
+    }
+    .card {
+      box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 0 solid rgba(0, 0, 0, 0.125);
+      border-radius: 1rem;
+    }
+    .text-reset {
+      --bs-text-opacity: 1;
+      color: inherit !important;
+    }
+    a {
+      color: #5465ff;
+      text-decoration: none;
+    }
+  </style>
+  <div class="container">
+    <!-- Title -->
+    <div class="d-flex justify-content-between align-items-center py-3">
+      <h2 class="h5 mb-0">
+        <a href="#" class="text-muted"></a> Order #<%= orderNumber %>
+      </h2>
+    </div>
+
+    <!-- Main content -->
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Details -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="mb-3 d-flex justify-content-between">
+              <div>
+                <span class="me-3" style="font-weight: bolder;"><%= orderDate %></span>
+                <span class="me-3">#<%= orderNumber %></span>
+                <span class="me-3"><%= paymentMethod %></span>
+                <span class="badge rounded-pill bg-info"><%= orderStatus %></span>
+            </div>
+              <div class="d-flex">
+                <button
+                  class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"
+                >
+                  <i class="bi bi-download"></i>
+                  <span class="text">Invoice</span>
+                </button>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-link p-0 text-muted"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#"
+                        ><i class="bi bi-pencil"></i> Edit</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"
+                        ><i class="bi bi-printer"></i> Print</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <table class="table table-borderless">
+              <tbody>
+                <% orderData.items.forEach(item => { %>
+
+                <tr>
+                  <td>
+                    <div class="d-flex mb-2">
+                      <div class="flex-shrink-0">
+                        <img
+                        alt=""
+                        style="width: 50px;"
+                        width="20px"
+                        class="img-fluid"
+                        src="/<%= item.product.image %>">
+                        
+                      </div>
+                      <div class="flex-lg-grow-1 ms-3" style="padding-top: 20px;">
+                        <h4 class="small mb-0">
+                          <a href="#" class="text-reset"
+                          style="font-weight: 400;font-size: 18px;"
+                            ><%= item.product.name %></a
+                          >
+                        </h4>
+                        <span class="small"></span>
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= item.quantity %></td>
+                  <td class="text-end">$<%= item.totalPrice %></td>
+                </tr>
+                <% }) %>
+
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2">Subtotal</td>
+                  <td class="text-end">$<%= subtotal %></td>
+                </tr>
+                <tr>
+                  <td colspan="2">Shipping</td>
+                  <td class="text-end">$8.95</td>
+                </tr>
+                <tr>
+                  <td colspan="2">Discount (Code: NEWYEAR)</td>
+                  <td class="text-danger text-end">-$dummy data</td>
+                </tr>
+                <tr class="fw-bold">
+                  <td colspan="2">TOTAL</td>
+                  <td class="text-end">$<%= grandTotal %></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- Payment -->
+        
+      </div>
+      <div class="col-lg-4">
+        <!-- Customer Notes -->
+        <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h3 class="h6">Payment Method</h3>
+                  <p>
+                    <%= paymentMethod %> <br />
+                    Total: $<%= grandTotal %>
+                    <span class="badge bg-success rounded-pill">PAID</span>
+                  </p>
+                </div>
+                <div class="col-lg-6">
+                  <h3 class="h6">Billing address</h3>
+                  <address>
+                    <strong><%= shippingAddress.fname %> <%= shippingAddress.lname %></strong><br />
+                    <%= shippingAddress.address %><br />
+                    <%= shippingAddress.country %>, <%= shippingAddress.state %> <%= shippingAddress.zipcode %><br />
+                    <abbr title="Phone">+91</abbr> <%= shippingAddress.phoneNumber %>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="card mb-4">
+          <!-- Shipping information -->
+          <div class="card-body">
+            <h3 class="h6">Shipping Information</h3>
+            <strong></strong>
+            <span
+              ><a href="#" class="text-decoration-underline" target="_blank"
+                ></a
+              >
+              <i class="bi bi-box-arrow-up-right"></i>
+            </span>
+            <hr />
+            <h3 class="h6">Address</h3>
+            <address>
+                <strong><%= shippingAddress.fname %> <%= shippingAddress.lname %></strong><br />
+                <%= shippingAddress.address %><br />
+                <%= shippingAddress.country %>, <%= shippingAddress.state %> <%= shippingAddress.zipcode %><br />
+                <abbr title="Phone">+91</abbr> <%= shippingAddress.phoneNumber %>
+              </address>
+          </div>
+        </div>
+      </div>
+
+      <!-- ////////////////////// -->
+    </div>
+  </div>
+</div>
