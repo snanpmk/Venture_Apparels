@@ -143,8 +143,11 @@
             </button>
 
             <button
-              class="btn btn-danger remove-btn remove-btn-<%= address.id %>"
+              id="removeAddressButton"
+              class="btn btn-danger remove-btn remove-btn-<%= address.id %> remove-address-button"
               style="display: none"
+              data-address-id="<%= address.id %>"
+
             >
               Remove
             </button>
@@ -414,13 +417,9 @@
                 >Use for billing address</label
               >
             </div>
-            <a
-              type="submit"
-              id="submitAddressButton"
-              class="btn btn-success"
-            >
+            <a type="submit" id="submitAddressButton" class="btn btn-success">
               Save Changes
-          </a>
+            </a>
           </form>
         </div>
         <div class="modal-footer"></div>
@@ -500,7 +499,8 @@
             checked
           />
           <label class="form-check-label fw-bolder" for="accept-terms"
-            >I agree to Alpine's <a href="#">terms & conditions</a></label
+            >I agree to Venture Apparels's
+            <a href="#">terms & conditions</a></label
           >
         </div>
         <a href="#" class="btn btn-dark w-100" role="button">Complete Order</a>
@@ -513,8 +513,8 @@
 </section>
 
 <script>
+  // Script to show and hide edit and remove buttons
   function selectAddress(addressId) {
-    // Hide all edit and remove buttons
     const editButtons = document.querySelectorAll(".edit-btn");
     const removeButtons = document.querySelectorAll(".remove-btn");
     editButtons.forEach((button) => {
@@ -524,7 +524,6 @@
       button.style.display = "none";
     });
 
-    // Show edit and remove buttons for the selected address
     const editButton = document.querySelector(".edit-btn-" + addressId);
     const removeButton = document.querySelector(".remove-btn-" + addressId);
     editButton.style.display = "block";
@@ -536,37 +535,27 @@
   // script for the Add Address
 
   var modal = document.getElementById("myModal");
-
-  // Get the button that opens the modal
   var btn = document.getElementById("addNewAddress");
-
-  // Get the close button
   var closeBtn = document.getElementsByClassName("btn-close")[0];
 
-  // Open the modal when the button is clicked
   btn.addEventListener("click", function () {
     modal.style.display = "block";
   });
 
-  // Close the modal when the close button is clicked
   closeBtn.addEventListener("click", function () {
     modal.style.display = "none";
   });
 
-  // Close the modal when the user clicks outside of it
   window.addEventListener("click", function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
   });
-
-  // Submit the form data
   document
     .getElementById("addressForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
-      // Get the form input values
       const email = document.getElementById("Email").value;
       const firstName = document.getElementById("firstName").value;
       const lastName = document.getElementById("lastName").value;
@@ -578,7 +567,6 @@
       const useForBilling = document.getElementById("same-address").checked;
       console.log(email + firstName + country);
 
-      // Construct the address object
       const addressData = {
         email,
         firstName,
@@ -592,7 +580,6 @@
       };
       console.log(addressData);
 
-      // Make a fetch request to the "/add-address" URL
       fetch("/add-address", {
         method: "POST",
         headers: {
@@ -602,101 +589,20 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          // Handle the response data
-          console.log(data);
-          // Close the modal after successful submission if desired
+          window.location.reload();
           modal.style.display = "none";
         })
         .catch((error) => {
-          // Handle any errors
           console.error(error);
         });
     });
 </script>
 
-<!-- <script>
-  // Open the edit modal and fetch user data
-  function openEditModal(addressId) {
-    const modal = document.getElementById("editModal");
-    const addressIdInput = document.getElementById("addressId");
-
-    // Set the address ID in the hidden input field
-    addressIdInput.value = addressId;
-
-    console.log(addressId);
-
-    // Make a fetch request to get the user data for the given address ID
-    fetch(`/edit-address/${addressId}`)   
-      .then((response) => response.json())
-      .then((data) => {
-        // Update the form fields with the fetched user data
-        document.getElementById("editfirstName").value = data.firstName;
-        document.getElementById("editlastName").value = data.lastName;
-        document.getElementById("editemail").value = data.email;
-        document.getElementById("editphoneNumber").value = data.phoneNumber;
-        document.getElementById("editcountry").value = data.country;
-        document.getElementById("editstate").value = data.state;
-        document.getElementById("editzipCode").value = data.zipCode;
-        document.getElementById("editsame-address").value = data.isBillingAddress;
-
-        // Show the modal
-        modal.style.display = "block";
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-  // Submit the edit address form data
-  document
-    .getElementById("editAddressForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      // Get the form input values
-      const addressId = document.getElementById("addressId").value;
-      const firstName = document.getElementById("firstName").value;
-      const lastName = document.getElementById("lastName").value;
-      const address = document.getElementById("address").value;
-      // ... Get other form values
-
-      // Construct the address object
-      const addressData = {
-        addressId,
-        firstName,
-        lastName,
-        address,
-        // ... Include other form values
-      };
-
-      // Make a fetch request to the "/edit-address" URL
-      fetch("/edit-address", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(addressData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Handle the response data
-          console.log(data);
-          // Close the modal after successful submission if desired
-          const modal = document.getElementById("editModal");
-          modal.style.display = "none";
-        })
-        .catch((error) => {
-          // Handle any errors
-          console.error(error);
-        });
-    });
-</script> -->
 <script>
+  // script of edit address modal
   var addressId;
   function openEditModal(id) {
-
     addressId = id;
-    // Get the form input elements
     var emailInput = document.getElementById("editEmail");
     var firstNameInput = document.getElementById("editFirstName");
     var lastNameInput = document.getElementById("editLastName");
@@ -707,15 +613,12 @@
     var zipCodeInput = document.getElementById("editZipCode");
     var useForBillingCheckbox = document.getElementById("editSameAddress");
 
-    // Make a fetch request to retrieve the address data by ID
     console.log(id + " address id from the open edit model");
     fetch(`/get-address/${id}`)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        // Set the form input values to the address data from the response
         emailInput.value = data.address.email;
         firstNameInput.value = data.address.fname;
         lastNameInput.value = data.address.lname;
@@ -725,14 +628,7 @@
         stateInput.value = data.address.state;
         zipCodeInput.value = data.address.zipcode;
         useForBillingCheckbox.checked = data.address.isBillingAddress;
-        console.log(emailInput.value);
-        console.log(phoneNumberInput.value);
-        console.log(stateInput.value);
-        console.log(countryInput.value);
-        console.log(zipCodeInput.value);
-        console.log(addressInput.value);
-        console.log(useForBillingCheckbox.value);
-        // Open the modal
+
         let modal = document.getElementById("editModal");
 
         modal.style.display = "block";
@@ -747,12 +643,10 @@
     var btn = document.getElementById("editAddressButton");
     var closeBtn = document.getElementsByClassName("btn-close-editModal")[0];
 
-    // Close the modal when the close button is clicked
     closeBtn.addEventListener("click", function () {
       modal.style.display = "none";
     });
 
-    // Close the modal when the user clicks outside of it
     window.addEventListener("click", function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
@@ -761,39 +655,33 @@
   });
 
   var emailInput = document.getElementById("editEmail");
-    var firstNameInput = document.getElementById("editFirstName");
-    var lastNameInput = document.getElementById("editLastName");
-    var addressInput = document.getElementById("editAddress");
-    var phoneNumberInput = document.getElementById("editPhoneNumber");
-    var countryInput = document.getElementById("editCountry");
-    var stateInput = document.getElementById("editState");
-    var zipCodeInput = document.getElementById("editZipCode");
-    var useForBillingCheckbox = document.getElementById("editSameAddress");
-
+  var firstNameInput = document.getElementById("editFirstName");
+  var lastNameInput = document.getElementById("editLastName");
+  var addressInput = document.getElementById("editAddress");
+  var phoneNumberInput = document.getElementById("editPhoneNumber");
+  var countryInput = document.getElementById("editCountry");
+  var stateInput = document.getElementById("editState");
+  var zipCodeInput = document.getElementById("editZipCode");
+  var useForBillingCheckbox = document.getElementById("editSameAddress");
 
   const editAddressForm = document.getElementById("editAddressForm");
 
   var submitBtn = document.getElementById("submitAddressButton");
   submitBtn.addEventListener("click", function () {
-
     const formData = {
-    email: emailInput.value,
-    firstName: firstNameInput.value,
-    lastName: lastNameInput.value,
-    address: addressInput.value,
-    phoneNumber: phoneNumberInput.value,
-    country: countryInput.value,
-    state: stateInput.value,
-    zipCode: zipCodeInput.value,
-    useForBilling: useForBillingCheckbox.checked,
-  };
+      email: emailInput.value,
+      firstName: firstNameInput.value,
+      lastName: lastNameInput.value,
+      address: addressInput.value,
+      phoneNumber: phoneNumberInput.value,
+      country: countryInput.value,
+      state: stateInput.value,
+      zipCode: zipCodeInput.value,
+      useForBilling: useForBillingCheckbox.checked,
+    };
 
-  var modal = document.getElementById("editModal");
-  console.log(addressId + "🚀🚀🚀🚀🚀");
-  console.log(formData + "😒😒😒😒😒😒😒");
-    console.log(formData+"👌👌👌👌");
+    var modal = document.getElementById("editModal");
 
-    // Make a fetch request to submit the data to the backend
     fetch(`/submit-address/${addressId}`, {
       method: "POST",
       headers: {
@@ -801,17 +689,70 @@
       },
       body: JSON.stringify(formData),
     })
-      .then((response) =>{return response.json()})
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
-        // Handle the response data
         console.log(data);
-        // Close the modal after successful submission if desired
-        window.location.reload()
+        window.location.reload();
         modal.style.display = "none";
       })
       .catch((error) => {
         console.error(error);
       });
-
   });
 </script>
+<script>
+  function deleteAddress(addressId) {
+  fetch("/delete-address", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ addressId }), // Wrap the addressId in an object or use { "addressId": addressId }
+  })
+    .then((response) => {
+      if (response.ok) {
+        window.location.reload();
+        return response.json();
+      } else {
+        throw new Error("Error: " + response.status);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      // Handle any errors that occurred during the request
+    });
+}
+document.addEventListener("DOMContentLoaded", function () {
+  const removeAddressButtons = document.querySelectorAll(".remove-address-button");
+
+  removeAddressButtons.forEach(function (removeAddressButton) {
+    removeAddressButton.addEventListener("click", showDeleteConfirmation);
+  });
+
+  function showDeleteConfirmation(event) {
+    const addressId = event.target.dataset.addressId;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this address!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      dangerMode: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User clicked the confirmation button
+        deleteAddress(addressId);
+      } else {
+        // User clicked the cancel button
+        // Do nothing or handle the cancellation
+      }
+    });
+  }
+});
+
+</script>
+

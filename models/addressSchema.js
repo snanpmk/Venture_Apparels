@@ -40,6 +40,10 @@ const addressSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const Address = mongoose.model("Address", addressSchema);

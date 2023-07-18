@@ -288,7 +288,7 @@ const loadCheckout = async function (req, res) {
     grandTotal = grandTotal.toFixed(2);
     await cart.save();
 
-    const addresses = await Address.find();
+    const addresses = await Address.find({ isDeleted: false });
     const products = cart.items.map((item) => item.productId);
 
     console.log(products);
@@ -353,8 +353,8 @@ const getEditAdressData = async function (req, res) {
     const addressId = req.params.ObjectId;
     console.log(addressId);
     const address = await Address.findById({ _id: addressId });
-    console.log(address+"fsdafs😂😂😂😂😂😂😂");
-    return res.json({address});
+    console.log(address + "fsdafs😂😂😂😂😂😂😂");
+    return res.json({ address });
   } catch (error) {
     console.log("error in getEditAdressData", error);
   }
@@ -407,6 +407,27 @@ const submitAddress = async function (req, res) {
   }
 };
 
+const deleteAddress = async function (req, res) {
+  try {
+    const addressId = req.body.addressId;
+    const address = await Address.findOne({ _id: addressId });
+
+    if (address) {
+      address.isDeleted = true;
+      await address.save();
+      res.status(200).json({ message: "Address successfully deleted" });
+    } else {
+      res.status(404).json({ message: "Address not found" });
+    }
+  } catch (error) {
+    console.log("Error in deleting address", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+
+
 
 
 
@@ -427,4 +448,5 @@ module.exports = {
   addAddress,
   getEditAdressData,
   submitAddress,
+  deleteAddress,
 };

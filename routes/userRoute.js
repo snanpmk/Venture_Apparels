@@ -3,7 +3,7 @@ var router = express.Router();
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController")
 const sessionMiddleware = require("../middlewares/sessionMiddleware")
-
+const orderController = require("../controllers/orderController")
 
 router.get("/",userController.loadHome);
 
@@ -36,6 +36,11 @@ router.post("/add-address",userController.addAddress)
 router.get("/get-address/:ObjectId",userController.getEditAdressData) 
 
 router.post("/submit-address/:ObjectId",userController.submitAddress) 
+
+router.delete("/delete-address",userController.deleteAddress)
+
+
+router.get("/test",orderController.testrender)
 
 
 
