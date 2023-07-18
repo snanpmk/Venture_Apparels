@@ -41,6 +41,9 @@ router.delete("/delete-address",userController.deleteAddress)
 
 router.post("/process-order",orderController.processOrder)
 
+router.get("/order-success/:ObjectId",orderController.loadSuccessPage)
+
+router.get("/order-details", orderController.orderDetail);
 
 
 

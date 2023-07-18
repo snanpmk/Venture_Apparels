@@ -857,10 +857,13 @@
         },
         body: JSON.stringify(data),
       })
-        .then((response) => {
-          if (response.ok) {
-            // Redirect to the order success page or handle the response as needed
-            window.location.href = "/order-success";
+        .then(async(response) => {
+          const res=await response.json();
+          console.log(res);
+          if (res.success) {
+            const orderId=res.orderId;
+            console.log("succcessss");
+            window.location.href = `/order-success/${orderId}`;
           } else {
             // Handle the error response from the server
             console.error("Error:", response.statusText);

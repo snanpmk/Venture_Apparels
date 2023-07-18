@@ -1,7 +1,7 @@
 <body>
   <main class="main page-404">
     <div class="container">
-      <!-- <input type="hidden" id="orderId" value="<%= orderId" /> -->
+      <input type="hidden" id="orderId" value="<%= orderId %>" />
       <div class="vh-100 d-flex justify-content-center align-items-center">
         <div class="col-md-4">
           <div class="border border-3 border-success"></div>
@@ -36,12 +36,12 @@
   </main>
   <script>
 
-    // let orderIdInput = document.getElementById("orderId")
-    // let orderId = orderIdInput.vaue
-    // console.log(orderId);
+    let orderIdInput = document.getElementById("orderId")
+    let orderId = orderIdInput.value
+    console.log(orderId);
 
     var countdownElement = document.getElementById("countdown");
-    var countdownTime = 3;
+    var countdownTime = 1;
     countdownElement.textContent = countdownTime;
 
     var countdownInterval = setInterval(function () {
@@ -59,7 +59,7 @@
           var nameParts = lastPart.split("?");
           id = nameParts[0];
         }
-        window.location.href = `/order-details?id=${id}`;
+         window.location.href = `/order-details?id=${orderId}`;
       }
     }, 2000);
   </script>
