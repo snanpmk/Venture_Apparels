@@ -1,6 +1,7 @@
 const { render } = require("ejs");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const Order = require("../models/orderModel")
 
 const loadAdminLogin = function (req, res) {
   try {
@@ -146,6 +147,24 @@ const activateUser = async function (req, res) {
   }
 };
 
+
+const listAllOrders = async (req, res) => {
+  try {
+    const userId = req.session.userId
+    const orders = await Order.find()
+    .populate('shippingAddress', 'fname lname email address state country')
+    .populate('items.product', 'image name price')
+    .sort({ date: -1 });
+    res.render("admin/orderListAdmin",{
+      allorders: orders,
+
+    })
+  } catch(error) {
+    console.log("error in listing orders ",error);
+  }
+
+};
+
 module.exports = {
   adminLogin,
   loadAdminLogin,
@@ -154,5 +173,6 @@ module.exports = {
   loadEditUser,
   loadUpdateUser,
   activateUser,
-  deactivateUser
+  deactivateUser,
+  listAllOrders
 };

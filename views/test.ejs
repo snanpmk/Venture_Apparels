@@ -1,143 +1,44 @@
-<!-- orderDetail.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <link rel="stylesheet" href="admin/assets/libs/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
 
-<section class="mt-50 mb-50">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="order_review">
-            <div class="mb-20">
-              <h4>Your Orders</h4>
-            </div>
-            <div class="table-responsive order_table text-center">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th colspan="2">Product</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% orderData.items.forEach(item => { %>
-                    <tr>
-                      <td class="image product-thumbnail">
-                        <img alt="<%= item.product.productName %>" src="<%= item.product.productImageUrls[0] %>">
-                      </td>
-                      <td>
-                        <h5 class="product-name">
-                          <a href="/product/<%= item.product.slug %>"><%= item.product.productName %></a>
-                        </h5>
-                        <span class="product-qty">x <%= item.quantity %></span>
-                      </td>
-                      <td class="price" data-title="Price" data-price="<%= item.product.productPrice %>">₹<%= item.price %></td>
-                    </tr>
-                  <% }) %>
-                  <tr>
-                    <th>SubTotal</th>
-                    <td class="product-subtotal" colspan="2">₹<%= orderData.subtotal || 0 %></td>
-                  </tr>
-                  <tr>
-                    <th>Discount</th>
-                    <td class="product-subtotal" colspan="2">₹<%= Math.floor(orderData.discount || 0) %></td>
-                  </tr>
-                  <tr>
-                    <th>Wallet</th>
-                    <td class="product-subtotal" colspan="2">₹<%= Math.floor(orderData.wallet || 0) %></td>
-                  </tr>
-                  <tr>
-                    <th>Shipping</th>
-                    <td colspan="2"><em>Free Shipping</em></td>
-                  </tr>
-                  <tr>
-                    <th>Total</th>
-                    <td colspan="2" class="product-subtotal">
-                      <span class="font-xl text-brand fw-900" id="totalAmountSpn">₹<%= Math.floor(orderData.total || 0) %></span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <div class="order_review">
-            <div class="mb-25">
-              <h4>SHIPPED TO</h4>
-            </div>
-            <div class="row card-row">
-              <div id="cardBodyId" class="col-md-6">
-                <div class="card mb-3 my-custom-card-class" addressId="<%= shippingAddress._id %>">
-                  <div class="card-body">
-                    <label>
-                      <p>
-                        <strong>Name: </strong>
-                        <%= shippingAddress.fname %> <%= shippingAddress.lname %><br>
-                        <strong>Phone: </strong>
-                        <%= shippingAddress.phoneNumber %><br>
-                        <strong>Email: </strong>
-                        <%= shippingAddress.email %><br>
-                        <strong>Street: </strong>
-                        <%= shippingAddress.address %>,
-                        <%= shippingAddress.city %>,
-                        <%= shippingAddress.state %>,
-                        <%= shippingAddress.country %>,
-                        <%= shippingAddress.zipcode %><br>
-                      </p>
-                    </label>
-                  </div>
-                </div>
-              </div>
-  
-              <div>
-                <h4 class="mb-1">PAYMENT METHOD</h4>
-                <strong>Payment method:
-                  <% if (orderData.paymentMethod === 'cashOnDelivery') { %>
-                    <span class="badge bg-danger">COD</span>
-                  <% } else if (orderData.paymentMethod === 'razorpay') { %>
-                    <span class="badge bg-danger">RAZORPAY</span>
-                  <% } %>
-                </strong>
-                <br>
-                <strong>Payment status:
-                  <span class="badge <%= orderData.paymentStatus === 'success' ? 'bg-success' : 'bg-danger' %>">
-                    <%= orderData.paymentStatus %>
-                  </span> 
-                </strong>
-                <br>
-                <strong>Order Status:
-                  <% if (orderData.status === 'pending') { %>
-                    <span class="badge bg-primary">Pending Confirmation</span> - Your order is awaiting confirmation.
-                  <% } else if (orderData.status === 'processing') { %>
-                    <span class="badge bg-info">Processing</span> - Your order is being processed.
-                  <% } else if (orderData.status === 'shipped') { %>
-                    <span class="badge bg-success">Shipped</span> - Your order has been shipped.
-                  <% } else if (orderData.status === 'delivered') { %>
-                    <span class="badge bg-success">Delivered</span> - Your order has been delivered.
-                  <% } else if (orderData.status === 'canceled') { %>
-                    <span class="badge bg-danger">Canceled</span> - Your order has been canceled.
-                  <% } else if (orderData.status === 'cancelPending') { %>
-                    <span class="badge bg-warning">Cancellation Pending</span> - Your cancellation request is being processed.
-                  <% } else if (orderData.status === 'returnPending') { %>
-                    <span class="badge bg-warning">Return Pending</span> - Your return request is being processed.
-                  <% } else if (orderData.status === 'returned') { %>
-                    <span class="badge bg-secondary">Returned</span> - Your order has been returned.
-                  <% } else { %>
-                    <span class="badge bg-dark">Unknown</span> - The status of your order is unknown.
-                  <% } %>
-                </strong>
-                <br><br>
-                <strong>TransactionId:
-                  <span class="text-grey-5"><%= orderData.transactionId %></span>
-                </strong><br>
-                <strong>OrderId:
-                  <span class="text-grey-5"><%= orderData.orderNumber %></span>
-                </strong><br>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">My Website</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+      <!-- You can add additional elements on the right side of the navbar here -->
     </div>
-  </section>
-  
+  </div>
+</nav>
+
+<!-- Your content goes here -->
+
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Add other script tags here if needed -->
+
+</body>
+</html>

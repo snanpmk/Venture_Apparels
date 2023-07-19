@@ -9,21 +9,46 @@
   <link rel="stylesheet" href="/stylesheets/admin/styles.min.css" />
   
 </head>
+<style>
+  .mt-2 {
+    margin-top: 2.5rem !important;
+}
+</style>
+<body style="background-color: rgb(255, 255, 255);">
+  <nav style="background-color: #182533; padding: 10px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
+      <!-- Left part of the navbar with the profile icon -->
+      <div style="display: flex; align-items: center;">
+        <img src="/path/to/profile-icon.png" alt="Profile Icon" style="height: 30px; width: 30px; margin-right: 10px;">
+        <!-- Add any additional elements for the left part here -->
+      </div>
 
-<body style="background-color: rgb(240, 240, 240);">
+      <!-- Center part of the navbar with the search option -->
+      <div style="flex: 1; text-align: end;">
+        <input type="text" placeholder="Search..." style="padding: 8px;width: 28rem;border-radius: 2rem;">
+        <!-- Add any additional elements for the center part here -->
+      </div>
+
+      <!-- Right part of the navbar (empty if no additional elements) -->
+      <div>
+        <!-- Add any additional elements for the right part here -->
+      </div>
+    </div>
+  </nav>
+  <div style="margin-top: 10px;">
   <%- body %> 
-  
+</div>
 </body>
 
 
 
-<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/sidebarmenu.js"></script>
-<script src="../assets/js/app.min.js"></script>
-<script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-<script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-<script src="../assets/js/dashboard.js"></script>
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="admin/assets/js/sidebarmenu.js"></script>
+  <script src="admin/assets/js/app.min.js"></script>
+  <script src="admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="admin/assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="admin/assets/js/dashboard.js"></script>
 </body>
 
 </html>

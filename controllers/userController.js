@@ -468,7 +468,7 @@ const logout = async function (req, res) {
         console.log("error in logout", err);
       } else {
         res.clearCookie("connect.sid"); // Clear the session cookie
-        res.redirect("/login"); // Redirect to the login page or any other desired page
+        res.redirect("/"); // Redirect to the login page or any other desired page
       }
     });
   } catch (err) {
@@ -476,6 +476,10 @@ const logout = async function (req, res) {
   }
 };
 
+
+const test = function(req,res) {
+  res.render("test")
+}
 
 module.exports = {
   loadHome,
@@ -496,5 +500,6 @@ module.exports = {
   submitAddress,
   deleteAddress,
   userProfile,
-  logout
+  logout,
+  test
 };

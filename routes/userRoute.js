@@ -49,6 +49,8 @@ router.get("/user-profile",sessionMiddleware.isLoggedIn,userController.userProfi
 
 router.get("/logout",userController.logout)
 
+router.get("/test",userController.test)
+
 
 
 module.exports = router;

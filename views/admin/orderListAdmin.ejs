@@ -1,0 +1,115 @@
+<style>
+  .rounded-pill {
+    border-radius: var(--bs-border-radius-pill) !important;
+    font-size: smaller;
+    font-weight: 700;
+    font-family: monospace; 
+}
+.fw-semibold {
+    font-weight: 400 !important;
+}
+.table > :not(caption) > * > * {
+    padding: 16px 19px;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: var(--bs-border-width);
+    -webkit-box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+    text-align: center;
+}
+</style>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2">
+        <%- include('../partials/adminSidebar') %> 
+        
+      </div>
+      <div class="col-md-10">
+        
+        <h3 class="mb-4">View Orders</h3>
+        <div class="container">
+        <div class="table-responsive">
+        <table class="table text-nowrap mb-0 align-middle">
+          <thead class="text-dark fs-4">
+            <tr>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">ORDER NUMBER</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">USER</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">PRODUCT</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">QTY</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">SHIPPING ADDRESS</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">STATUS</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">PAYMENT</h6>
+              </th>
+              <th class="border-bottom-0">
+                <h6 class="fw-semibold mb-0">DATE</h6>
+              </th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <% allorders.forEach((order) => { %>
+              <% order.items.forEach((item) => { %>
+
+          <!-- list orders here -->
+          <tr>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-normal">#<%= order.orderNumber %></p>
+            </td>
+              <td class="border-bottom-0" style="width: 20px !important;">
+                <h6 class="fw-semibold mb-1"><%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %></h6>
+                  <span class="fw-normal"><%= order.shippingAddress.email %></span>                          
+                </td>
+              <td class="border-bottom-0">
+                <div style="display: flex;flex-direction: column;" class="d-flex align-items-center gap-2">
+                  <img style="width: 4rem;" src="/<%= item.product.image %>" alt="">
+                  <h6 style="text-transform: uppercase;"><%= item.product.name %></h6>
+                </div>
+              </td>
+              <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-0 fs-4"><%= item.quantity %></h6>
+              </td>
+              <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-0 fs-4"><%= order.shippingAddress.address %><br> <%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></h6>
+              </td>
+              <td class="border-bottom-0">
+                <span style="text-transform: uppercase;" class="badge rounded-pill bg-info"><%= order.status %></span>
+
+              </td>
+              <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-0 fs-4"><%= order.paymentMethod %></h6>
+              </td>
+              <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-0 fs-4"><%= order.date.toDateString() %></h6>
+              </td>
+            </tr> 
+            <% }); %>
+            <% }); %>
+            <!-- list orders here -->
+          </tbody>
+        </table>
+        </div>
+      </div>
+          </div>
+          
+      </div>
+    </div>
+  </div>
+  <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="admin/assets/js/sidebarmenu.js"></script>
+  <script src="admin/assets/js/app.min.js"></script>
+  <script src="admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="admin/assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="admin/assets/js/dashboard.js"></script>

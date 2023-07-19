@@ -19,6 +19,8 @@ router.get("/activate-user/:ObjectId", adminController.activateUser);
 
 router.get("/deactivate-user/:ObjectId", adminController.deactivateUser); 
 
+router.get("/orders", adminController.listAllOrders); 
+
 
 
 
