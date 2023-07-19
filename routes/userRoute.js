@@ -45,6 +45,8 @@ router.get("/order-success/:ObjectId",orderController.loadSuccessPage)
 
 router.get("/order-details", orderController.orderDetail);
 
+router.get("/user-profile",sessionMiddleware.isLoggedIn,userController.userProfile)
+
 
 
 module.exports = router;

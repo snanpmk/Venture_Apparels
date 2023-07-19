@@ -13,9 +13,9 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  phoneNumber:{
-    type:String,
-    required:true
+  phoneNumber: {
+    type: String,
+    required: true,
   },
   address: {
     type: String,
@@ -43,10 +43,13 @@ const addressSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false,
-  }
+  },
+  defaultAddress: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Address = mongoose.model("Address", addressSchema);
 
 module.exports = Address;
-    

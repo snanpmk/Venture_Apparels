@@ -9,7 +9,7 @@ const twilio = require("twilio");
 const client = twilio(accountSid, authToken);
 const Address = require("../models/addressSchema");
 const Cart = require("../models/cartModel");
-
+const Order = require("../models/orderModel");
 // load user landing page
 const loadHome = async function (req, res) {
   try {
@@ -308,6 +308,17 @@ const loadCheckout = async function (req, res) {
 // Define the controller function
 const addAddress = async (req, res) => {
   try {
+    const userId = req.session.userId;
+    let defaultAddress = false;
+
+    const addresses = await Address.find({ user: userId });
+    console.log(addresses);
+
+    if (!addresses || addresses.length === 0) {
+      defaultAddress = true;
+    }
+
+    console.log(defaultAddress);
     const {
       email,
       firstName,
@@ -334,6 +345,7 @@ const addAddress = async (req, res) => {
       user: req.session.userId,
       phoneNumber: phoneNumber,
       isBillingAddress: useForBilling,
+      defaultAddress: defaultAddress,
     });
     await newAddress.save();
 
@@ -425,6 +437,29 @@ const deleteAddress = async function (req, res) {
   }
 };
 
+const userProfile = async function (req, res) {
+  try {
+    const userId = req.session.userId;
+    const defaultAddress = await Address.findOne({ defaultAddress: true });
+    const allAddress = await Address.find();
+    const orders = await Order.find({ user: userId })
+      .populate('shippingAddress', 'fname lname email address state country')
+      .populate('items.product', 'image name price')
+      .sort({ date: -1 });
+
+    console.log(orders + '❤️❤️❤️❤️❤️');
+    console.log(defaultAddress);
+
+    res.render('profile', {
+      layout: 'layouts/userLayout',
+      address: defaultAddress,
+      allAddress: allAddress,
+      allorders: orders,
+    });
+  } catch (err) {
+    console.log('error in visiting user profile', err);
+  }
+};
 
 module.exports = {
   loadHome,
@@ -444,4 +479,5 @@ module.exports = {
   getEditAdressData,
   submitAddress,
   deleteAddress,
+  userProfile,
 };

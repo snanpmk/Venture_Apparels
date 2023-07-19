@@ -1,0 +1,495 @@
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+  body {
+    background: #f9f9f9;
+  }
+  @media (max-width: 767px) {
+    body {
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+  }
+  @media (min-width: 768px) {
+    .p-md-2 {
+      padding: 2.5rem !important;
+    }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    min-width: 22px;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    margin-bottom: 4vh;
+    border-radius: 1.5rem;
+    .border-secondary,
+    .border-secondary-active:active,
+    .border-secondary-focus:focus,
+    .border-secondary-hover:hover {
+      border-color: #dedede !important;
+    }
+  }
+  .shadow {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  }
+  .profile-tab-nav {
+    border-right: 0.2px solid #d4d4d4;
+  }
+
+  .profile-tab-nav {
+    min-width: 250px;
+  }
+
+  .tab-content {
+    flex: 1;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-pills a.nav-link {
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    color: #333;
+  }
+  .nav-pills a.nav-link i {
+    width: 20px;
+  }
+
+  .img-circle img {
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    border: 5px solid #fff;
+  }
+</style>
+
+<section class="py-3 my-3">
+  <div class="container">
+    <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+      <div class="profile-tab-nav border-right border-secondary">
+        <div class="p-4">
+          <div class="img-circle text-center mb-3">
+            <img
+              src="https://img.freepik.com/premium-vector/people-saving-money_24908-51569.jpg?w=740"
+              alt="Image"
+              class="shadow"
+            />
+          </div>
+          <h4 class="text-center"><%= address.fname %> <%= address.lname %></h4>
+        </div>
+        <div
+          class="nav flex-column nav-pills"
+          id="v-pills-tab"
+          role="tablist"
+          aria-orientation="vertical"
+        >
+          <a
+            class="nav-link active"
+            id="account-tab"
+            data-bs-toggle="pill"
+            href="#account"
+            role="tab"
+            aria-controls="account"
+            aria-selected="true"
+          >
+            <i class="fa fa-home text-center mr-1"></i>
+            Account
+          </a>
+          <a
+            class="nav-link"
+            id="password-tab"
+            data-bs-toggle="pill"
+            href="#password"
+            role="tab"
+            aria-controls="password"
+            aria-selected="false"
+          >
+            <i class="fa fa-key text-center mr-1"></i>
+            Password
+          </a>
+          <a
+            class="nav-link"
+            id="security-tab"
+            data-bs-toggle="pill"
+            href="#security"
+            role="tab"
+            aria-controls="security"
+            aria-selected="false"
+          >
+            <i class="fa fa-user text-center mr-1"></i>
+            Security
+          </a>
+          <a
+            class="nav-link"
+            id="application-tab"
+            data-bs-toggle="pill"
+            href="#application"
+            role="tab"
+            aria-controls="application"
+            aria-selected="false"
+          >
+            <i class="fa fa-tv text-center mr-1"></i>
+            Shipping Address
+          </a>
+          <a
+            class="nav-link"
+            id="notification-tab"
+            data-bs-toggle="pill"
+            href="#notification"
+            role="tab"
+            aria-controls="notification"
+            aria-selected="false"
+          >
+            <i class="fa fa-bell text-center mr-1"></i>
+            View Orders
+          </a>
+          <a class="nav-link" id="notification-tab">
+            <i class="fa fa-bell text-center mr-1"></i>
+            Log Out
+          </a>
+        </div>
+      </div>
+      <div class="tab-content p-md-2" id="v-pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="account"
+          role="tabpanel"
+          aria-labelledby="account-tab"
+        >
+          <h3 class="mb-4">Account Settings</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editFirstName"
+                  value="<%= address.fname %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editLastName"
+                  value="<%= address.lname %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editEmail"
+                  value="<%= address.email %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editPhoneNumber"
+                  value="<%= address.phoneNumber %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="company" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editAddress"
+                  value="<%= address.address %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="company" class="form-label">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editCountry"
+                  value="<%= address.country %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="company" class="form-label">State</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editState"
+                  value="<%= address.state %>"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="company" class="form-label">Zip/Post</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editZipCode"
+                  value="<%= address.zipcode %>"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              id="submitAddressButton"
+              data-address-id="<%= address._id %>"
+              class="btn btn-primary"
+            >
+              Update
+            </button>
+            <button class="btn btn-success">Cancel</button>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="password"
+          role="tabpanel"
+          aria-labelledby="password-tab"
+        >
+          <h3 class="mb-4">Password Settings</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="oldPassword" class="form-label">Old password</label>
+                <input type="password" class="form-control" id="oldPassword" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New password</label>
+                <input type="password" class="form-control" id="newPassword" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm new password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary">Update</button>
+            <button class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="security"
+          role="tabpanel"
+          aria-labelledby="security-tab"
+        >
+          <h3 class="mb-4">Security Settings</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="login" class="form-label">Login</label>
+                <input type="text" class="form-control" id="login" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="twoFactorAuth" class="form-label"
+                  >Two-factor auth</label
+                >
+                <input type="text" class="form-control" id="twoFactorAuth" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="recovery"
+                  />
+                  <label class="form-check-label" for="recovery">
+                    Recovery
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary">Update</button>
+            <button class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="application"
+          role="tabpanel"
+          aria-labelledby="application-tab"
+        >
+          <h3 class="mb-4">Shipping Address</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <% for (let i = 0; i < allAddress.length; i++) { %>
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <% if (i === 0) { %>
+                          Default Address
+                        <% } else { %>
+                          Address <%= i %>
+                        <% } %>
+                      </h5>
+                      <p class="card-text">
+                        <%= allAddress[i].fname %> <%= allAddress[i].lname %>,
+                      </p>
+                      <p class="card-text">
+                        <%= allAddress[i].address %>, <%= allAddress[i].state %>,
+                        <%= allAddress[i].country %>
+                      </p>
+                      <p class="card-text">
+                        <%= allAddress[i].phoneNumber %>, <%= allAddress[i].zipcode %>
+                      </p>
+                    </div>
+                  </div>
+                <% } %>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="tab-pane fade"
+          id="notification"
+          role="tabpanel"
+          aria-labelledby="notification-tab"
+        >
+          <h3 class="mb-4">View Orders</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Order Number</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Shipping Address</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% allorders.forEach((order) => { %>
+                <% order.items.forEach((item) => { %>
+                  <tr>
+                    <td><img style="width: 3rem;" src="/<%= item.product.image %>" alt=""></td>
+                    <td>#<%= order.orderNumber %></td>
+                    <% if (order.shippingAddress) { %>
+                      <td><%= item.product.name %></td>
+                      <td><%= item.quantity %></td>
+                      <td>$<%= item.product.price %></td>
+                      <td><%= order.shippingAddress.address %><%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></td>
+                      <td><%= order.paymentMethod %></td>
+                      <td><%= order.status %></td>
+                      <td><%= order.date.toDateString() %></td>
+                    <% } else { %>
+                      <!-- Handle the case when order.shippingAddress is null or undefined -->
+                      <td colspan="8">No shipping address available</td>
+                    <% } %>
+                  </tr>
+                <% }); %>
+              <% }); %>
+              
+            </tbody>
+          </table>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  var addressId;
+  function editAddress(id) {
+    addressId = id;
+    var emailInput = document.getElementById("editEmail");
+    var firstNameInput = document.getElementById("editFirstName");
+    var lastNameInput = document.getElementById("editLastName");
+    var addressInput = document.getElementById("editAddress");
+    var phoneNumberInput = document.getElementById("editPhoneNumber");
+    var countryInput = document.getElementById("editCountry");
+    var stateInput = document.getElementById("editState");
+    var zipCodeInput = document.getElementById("editZipCode");
+    // var useForBillingCheckbox = document.getElementById("editSameAddress"); // Add this line to declare useForBillingCheckbox variable
+
+    const formData = {
+      email: emailInput.value,
+      firstName: firstNameInput.value,
+      lastName: lastNameInput.value,
+      address: addressInput.value,
+      phoneNumber: phoneNumberInput.value,
+      country: countryInput.value,
+      state: stateInput.value,
+      zipCode: zipCodeInput.value,
+      // useForBilling: useForBillingCheckbox.checked,
+    };
+
+    fetch(`/submit-address/${addressId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.reload();
+        modal.style.display = "none";
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var submitBtn = document.getElementById("submitAddressButton");
+    submitBtn.addEventListener("click", function () {
+      var addressId = submitBtn.getAttribute("data-address-id");
+      editAddress(addressId);
+    });
+  });
+</script>
