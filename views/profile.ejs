@@ -394,44 +394,46 @@
           aria-labelledby="notification-tab"
         >
           <h3 class="mb-4">View Orders</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Order Number</th>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Shipping Address</th>
-                <th>Payment Method</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% allorders.forEach((order) => { %>
-                <% order.items.forEach((item) => { %>
-                  <tr>
-                    <td><img style="width: 3rem;" src="/<%= item.product.image %>" alt=""></td>
-                    <td>#<%= order.orderNumber %></td>
-                    <% if (order.shippingAddress) { %>
-                      <td><%= item.product.name %></td>
-                      <td><%= item.quantity %></td>
-                      <td>$<%= item.product.price %></td>
-                      <td><%= order.shippingAddress.address %><%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></td>
-                      <td><%= order.paymentMethod %></td>
-                      <td><%= order.status %></td>
-                      <td><%= order.date.toDateString() %></td>
-                    <% } else { %>
-                      <!-- Handle the case when order.shippingAddress is null or undefined -->
-                      <td colspan="8">No shipping address available</td>
-                    <% } %>
-                  </tr>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Order Number</th>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Total Price</th>
+                  <th>Shipping Address</th>
+                  <th>Payment Method</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% allorders.forEach((order) => { %>
+                  <% order.items.forEach((item) => { %>
+                    <tr>
+                      <td><img style="width: 3rem;" src="/<%= item.product.image %>" alt=""></td>
+                      <td>#<%= order.orderNumber %></td>
+                      <% if (order.shippingAddress) { %>
+                        <td><%= item.product.name %></td>
+                        <td><%= item.quantity %></td>
+                        <td>$<%= item.product.price %></td>
+                        <td><%= order.shippingAddress.address %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></td>
+                        <td><%= order.paymentMethod %></td>
+                        <td><%= order.status %></td>
+                        <td><%= order.date.toDateString() %></td>
+                      <% } else { %>
+                        <!-- Handle the case when order.shippingAddress is null or undefined -->
+                        <td colspan="8">No shipping address available</td>
+                      <% } %>
+                    </tr>
+                  <% }); %>
                 <% }); %>
-              <% }); %>
-              
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+          
          
         </div>
       </div>
