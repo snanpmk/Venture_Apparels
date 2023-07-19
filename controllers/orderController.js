@@ -52,7 +52,7 @@ const processOrder = async function (req, res) {
 const loadSuccessPage = async function (req, res) {
   try {
     const orderId = req.params.ObjectId;
-    res.render("success-page", { orderId });
+    res.render("success-page", { orderId ,layout: "layouts/userLayout"});
   } catch (error) {
     console.log(error, "error in laoding success page");
   }

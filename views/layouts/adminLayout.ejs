@@ -1,54 +1,292 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Venture Apparels</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="\assets\images\logos\Venture Apparels Logo.png  "
+    />
+    <link rel="stylesheet" href="\assets\css\styles.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Venture Apparels</title>
-  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-  <link rel="stylesheet" href="/stylesheets/admin/styles.min.css" />
-  
-</head>
-<style>
-  .mt-2 {
-    margin-top: 2.5rem !important;
-}
-</style>
-<body style="background-color: rgb(255, 255, 255);">
-  <nav style="background-color: #182533; padding: 10px;">
-    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
-      <!-- Left part of the navbar with the profile icon -->
-      <div style="display: flex; align-items: center;">
-        <img src="/path/to/profile-icon.png" alt="Profile Icon" style="height: 30px; width: 30px; margin-right: 10px;">
-        <!-- Add any additional elements for the left part here -->
-      </div>
+  <body>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!-- Sidebar Start -->
+      <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+          <div
+            class="brand-logo d-flex align-items-center justify-content-between"
+          >
+            <a href="./index.html" class="text-nowrap logo-img">
+              <img
+                src="\assets\images\logos\Venture Apparels Logo.png"
+                width="180"
+                alt=""
+              />
+            </a>
+            <div
+              class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+              id="sidebarCollapse"
+            >
+              <i class="ti ti-x fs-8"></i>
+            </div>
+          </div>
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Home</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/dashboard"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-layout-dashboard"></i>
+                  </span>
+                  <span class="hide-menu">Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Order management</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/orders"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-file-description"></i>
+                  </span>
+                  <span class="hide-menu">All Orders</span>
+                </a>
+              </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Product management </span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/product/list"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-package"></i>
+                  </span>
+                  <span class="hide-menu">All Products</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/product/add"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-plus"></i>
+                  </span>
+                  <span class="hide-menu">Add Product</span>
+                </a>
+              </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Category management </span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/product/list-category"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-folder"></i>
+                  </span>
+                  <span class="hide-menu">All Category</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/product/add-category"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-plus"></i>
+                  </span>
+                  <span class="hide-menu">Add Category</span>
+                </a>
+              </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Customer management </span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/users"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-user"></i>
+                  </span>
+                  <span class="hide-menu">All Customers</span>
+                </a>
+              </li>
 
-      <!-- Center part of the navbar with the search option -->
-      <div style="flex: 1; text-align: end;">
-        <input type="text" placeholder="Search..." style="padding: 8px;width: 28rem;border-radius: 2rem;">
-        <!-- Add any additional elements for the center part here -->
-      </div>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">AUTH</span>
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link"
+                  href="/admin/"
+                  aria-expanded="false"
+                >
+                  <span>
+                    <i class="ti ti-login"></i>
+                  </span>
+                  <span class="hide-menu">Login</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!--  Sidebar End -->
 
-      <!-- Right part of the navbar (empty if no additional elements) -->
-      <div>
-        <!-- Add any additional elements for the right part here -->
+      <!--  Main wrapper -->
+      <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+              <li class="nav-item d-block d-xl-none">
+                <a
+                  class="nav-link sidebartoggler nav-icon-hover"
+                  id="headerCollapse"
+                  href="javascript:void(0)"
+                >
+                  <i class="ti ti-menu-2"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                  <i class="ti ti-bell-ringing"></i>
+                  <div class="notification bg-primary rounded-circle"></div>
+                </a>
+              </li>
+            </ul>
+            <!-- give better search bar -->
+            <div
+              class="navbar-collapse justify-content-end px-0"
+              id="navbarNav"
+            >
+              <input
+                type="search"
+                placeholder="search..."
+                style="
+                  line-height: 2rem;
+                  padding-left: 1rem;
+                  border-radius: 1rem;
+                "
+              />
+              <ul
+                class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+              >
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link nav-icon-hover"
+                    href="javascript:void(0)"
+                    id="drop2"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="/assets/images/profile/user-1.jpg"
+                      alt=""
+                      width="35"
+                      height="35"
+                      class="rounded-circle"
+                    />
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                    aria-labelledby="drop2"
+                  >
+                    <div class="message-body">
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-user fs-6"></i>
+                        <p class="mb-0 fs-3">My Profile</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                      </a>
+                      <a
+                        href="/admin/Logout"
+                        class="btn btn-outline-primary mx-3 mt-2 d-block"
+                        >Logout</a
+                      >
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <!--  Header End -->
+
+        <div
+        class="container"
+        style="padding-top: 6rem; padding-left: 2rem; padding-right: 2rem"
+        >
+        <!-- body  -->
+          <%- body %>
+        <!-- /body -->
+        </div>
       </div>
     </div>
-  </nav>
-  <div style="margin-top: 10px;">
-  <%- body %> 
-</div>
-</body>
-
-
-
-<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="admin/assets/js/sidebarmenu.js"></script>
-  <script src="admin/assets/js/app.min.js"></script>
-  <script src="admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="admin/assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="admin/assets/js/dashboard.js"></script>
-</body>
-
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/sidebarmenu.js"></script>
+    <script src="/assets/js/app.min.js"></script>
+    <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+  </body>
 </html>

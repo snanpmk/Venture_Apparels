@@ -1,174 +1,102 @@
-<!-- addCategory.ejs -->
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2"><%- include('../partials/adminSidebar') %></div>
-
-    <div class="col-md-10">
-      <h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
-        ADD CATEGORY
-      </h4>
-      <div class="container mt-4">
-        <form action="/product/add-category" method="post">
-          <div class="form-group">
-            <label for="name">Category Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              name="name"
-              placeholder="Enter category name"
-              required
-            />
-          </div>
-          <br />
-          <div class="form-group">
-            <label for="categoryDescription">Category Description</label>
-            <textarea
-              class="form-control"
-              id="description"
-              name="description"
-              placeholder="Enter category description"
-
-            ></textarea>
-          </div>
-          <br />
-          <div class="form-group">
-            <label for="gender">Gender</label><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="genderMen"
-                name="gender"
-                value="men"
-                required
-              />
-              <label class="form-check-label" for="genderMen">Men's</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="genderWomen"
-                name="gender"
-                value="women"
-              />
-              <label class="form-check-label" for="genderWomen">Women's</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="genderUnisex"
-                name="gender"
-                value="unisex"
-              />
-              <label class="form-check-label" for="genderUnisex">Unisex</label>
-            </div>
-          </div>
-          <br />
-          <div class="form-group">
-            <label for="ageGroup">Age Group</label><br />
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="ageAdults"
-                name="ageGroup"
-                value="adults"
-              />
-              <label class="form-check-label" for="ageAdults">Adults</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="ageKids"
-                name="ageGroup"
-                value="kids"
-              />
-              <label class="form-check-label" for="ageKids">Kids</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="ageInfants"
-                name="ageGroup"
-                value="infants"
-              />
-              <label class="form-check-label" for="ageInfants">Infants</label>
-            </div>
-          </div>
-          <br />
-          <button type="submit" class="btn btn-primary">Add Category</button>
-          <div id="errorContainer">
-            <p id="errorMessage" style="display: none; color: red"></p>
-          </div>
-        </form>
+<h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+  ADD CATEGORY
+</h4>
+<div class="container mt-4">
+  <form action="/product/add-category" method="post">
+    <div class="form-group">
+      <label for="name">Category Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter category name"
+        required
+      />
+    </div>
+    <br />
+    <div class="form-group">
+      <label for="categoryDescription">Category Description</label>
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        placeholder="Enter category description"
+      ></textarea>
+    </div>
+    <br />
+    <div class="form-group">
+      <label for="gender">Gender</label><br />
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="genderMen"
+          name="gender"
+          value="men"
+          required
+        />
+        <label class="form-check-label" for="genderMen">Men's</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="genderWomen"
+          name="gender"
+          value="women"
+        />
+        <label class="form-check-label" for="genderWomen">Women's</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="genderUnisex"
+          name="gender"
+          value="unisex"
+        />
+        <label class="form-check-label" for="genderUnisex">Unisex</label>
       </div>
     </div>
-  </div>
+    <br />
+    <div class="form-group">
+      <label for="ageGroup">Age Group</label><br />
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="ageAdults"
+          name="ageGroup"
+          value="adults"
+        />
+        <label class="form-check-label" for="ageAdults">Adults</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="ageKids"
+          name="ageGroup"
+          value="kids"
+        />
+        <label class="form-check-label" for="ageKids">Kids</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="ageInfants"
+          name="ageGroup"
+          value="infants"
+        />
+        <label class="form-check-label" for="ageInfants">Infants</label>
+      </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Add Category</button>
+    <div id="errorContainer">
+      <p id="errorMessage" style="display: none; color: red"></p>
+    </div>
+  </form>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<!-- <script>
-  const errorContainer = document.getElementById("errorContainer");
-  const errorMessage = document.getElementById("errorMessage");
-
-  function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
-  }
-
-  const form = document.querySelector("form");
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const description = document.getElementById("description").value;
-    const selectedGender = document.querySelector(
-      'input[name="gender"]:checked'
-    ).value;
-    console.log("Selected gender: " + selectedGender);
-    var selectedAgeGroups = [];
-    var ageGroupCheckboxes = document.getElementsByName("ageGroup");
-
-    for (var i = 0; i < ageGroupCheckboxes.length; i++) {
-      if (ageGroupCheckboxes[i].checked) {
-        selectedAgeGroups.push(ageGroupCheckboxes[i].value);
-      }
-    }
-
-    console.log("Selected age groups: " + selectedAgeGroups);
-
-    try {
-      const response = await fetch("/product/add-category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          selectedAgeGroups,
-          selectedGender
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Added category successfully");
-        window.location.href = "/product/list-category";
-      } else {
-        console.log("Category add failed");
-        showError(data.error);
-      }
-    } catch (error) {
-      console.log("An error occurred during adding category", error);
-      showError("An error occurred during adding category. Please try again.");
-    }
-  });
-</script> -->

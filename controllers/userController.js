@@ -1,6 +1,7 @@
 require("dotenv").config();
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const Category = require("../models/categoryModel")
 const bcrypt = require("bcrypt");
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
@@ -23,7 +24,7 @@ const loadHome = async function (req, res) {
 // load user signup
 const loadSignUp = async function (req, res) {
   try {
-    res.render("auth/userSignIn");
+    res.render("auth/userSignIn",{layout: "layouts/noLayout"});
   } catch (err) {
     console.log("Error loading register", err);
   }
@@ -115,7 +116,7 @@ const sendOtpSignup = async function (req, res) {
 // load user login page
 const loadLogin = async function (req, res) {
   try {
-    res.render("auth/userLogin");
+    res.render("auth/userLogin",{layout: "layouts/userLayout"});
   } catch (err) {
     console.log("Error in loading login", err);
   }
@@ -154,7 +155,7 @@ const login = async function (req, res) {
 // load users login with phonenumber
 const loadLoginPhone = async function (req, res) {
   try {
-    res.render("auth/userOtpLogin");
+    res.render("auth/userOtpLogin",{layout: "layouts/userLayout"});
   } catch (err) {
     console.log("error in login with phone ", err);
   }
@@ -443,21 +444,21 @@ const userProfile = async function (req, res) {
     const defaultAddress = await Address.findOne({ defaultAddress: true });
     const allAddress = await Address.find();
     const orders = await Order.find({ user: userId })
-      .populate('shippingAddress', 'fname lname email address state country')
-      .populate('items.product', 'image name price')
+      .populate("shippingAddress", "fname lname email address state country")
+      .populate("items.product", "image name price")
       .sort({ date: -1 });
 
-    console.log(orders + '❤️❤️❤️❤️❤️');
+    console.log(orders + "❤️❤️❤️❤️❤️");
     console.log(defaultAddress);
 
-    res.render('profile', {
-      layout: 'layouts/userLayout',
+    res.render("profile", {
+      layout: "layouts/userLayout",
       address: defaultAddress,
       allAddress: allAddress,
       allorders: orders,
     });
   } catch (err) {
-    console.log('error in visiting user profile', err);
+    console.log("error in visiting user profile", err);
   }
 };
 
@@ -476,10 +477,16 @@ const logout = async function (req, res) {
   }
 };
 
-
-const test = function(req,res) {
-  res.render("test")
-}
+const test = async function (req, res) {
+  const categories = await Category.find();
+    console.log(categories);
+    res.render("sample1", {
+      title: "Add Product",
+      layout: "layouts/adminLayout",
+      categories: categories,
+      errorMessage: null,
+    });
+};
 
 module.exports = {
   loadHome,
@@ -501,5 +508,5 @@ module.exports = {
   deleteAddress,
   userProfile,
   logout,
-  test
+  test,
 };

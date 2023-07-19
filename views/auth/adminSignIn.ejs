@@ -1,33 +1,126 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
+  </head>
+  <body>
+    <section>
+      <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-md-9 col-lg-6 col-xl-5">
+            <img
+              src="/images/background/login (2).jpg"
+              class="img-fluid"
+              alt="Sample image"
+              width="500"
+              style="border-radius: 25px"
+            />
+          </div>
+          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <div class="container-fluid">
+              <!-- form for account creation -->
+              <form method="post" class="" action="/admin/">
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <input
+                    class="form-control"
+                    type="email"
+                    id="email"
+                    name="email"
+                      
+                    required
+                    placeholder="Enter your email"
+                  />
 
-  <title>Venture Apparels-Admin</title>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/userLogin.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Venture Apparels Admin</h1>
-    <h4> Secure Access to Powerful Administrative Tools</h4>
+                  <label class="form-label" for="password">Password</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Enter your password"
+                  />
+                </div>
+                <div class="center-align">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
 
+                <div class="mt-4 center-align">
+                  <p>Or</p>
+                  <button class="btn btn-primary">
+                    <a href="/login-phone">Login with mobile</a>
+                  </button>
+                </div>
+              </form>
 
-    <form method="post" action="/admin/">
-      <div class="form-group">
-        <label class="form-label" for="email">email</label>
-        <input class="form-input" type="text" id="email" name="email" required>
+              <p id="errorMessage" style="color: red"></p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-input" type="password" id="password" name="password" required>
-      </div>
-      <button class="form-submit" type="submit">Login</button>
-      <br></br>
-    </form>
+    </section>
+    <script>
+// Error message display from the backend
+const errorMessage = document.getElementById("errorMessage");
 
-    <% if (typeof message!=='undefined' && message) { %>
-      <p style="color: red"><%= message %></p>
-      <% } %>
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = "block";
 
-  </div>
-</body>
+  setTimeout(() => {
+    errorMessage.style.display = "none";
+  }, 3000);
+}
+
+// refrence to the email and password
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+
+// Form submission
+const form = document.querySelector("form");
+form.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const response = await fetch("/admin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (data.success) {
+      console.log("login successful");
+      window.location.href = "/admin/dashboard";
+    } else {
+      console.log("Signup failed");
+      showError(data.error);
+    }
+  } catch (error) {
+    console.log("An error occurred during login", error);
+    showError("An error occurred during login. Please try again.");
+  }
+
+
+});
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
 </html>

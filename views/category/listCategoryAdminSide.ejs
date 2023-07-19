@@ -1,54 +1,46 @@
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2">
-        <%- include('../partials/adminSidebar') %> 
-        
-      </div>
-      <div class="col-md-10 mt-2">
-        <h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">ALL CATEGORIES</h4>
-        <table class="table">
-          <!-- Rest of your code -->
-  
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% categories.forEach(category => { %>
-            <tr>
-              <td><%= category.name %></td>
-              <td><%= category.description %></td>
-              <td>
-                <% if (!category.deleted) { %> Active <% } else { %> Deactivated <%
-                } %>
-              </td>
-              <td>
-                <% if (!category.deleted) { %>
-                <a href="/product/edit-category/<%= category.id %>" class="btn btn-primary"
-                  >Edit</a
-                >
-                <a
-                  href="/product/deactivate-category/<%= category.id %>"
-                  class="btn btn-danger"
-                  >Delete</a
-                >
-                <% } else { %>
-                <a
-                  href="/product/activate-category/<%= category.id %>"
-                  class="btn btn-success"
-                  >Activate</a
-                >
-                <% } %>
-              </td>
-            </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  
+<h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+  ALL CATEGORIES
+</h4>
+<table class="table">
+  <!-- Rest of your code -->
+
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% categories.forEach(category => { %>
+    <tr>
+      <td><%= category.name %></td>
+      <td><%= category.description %></td>
+      <td>
+        <% if (!category.deleted) { %> Active <% } else { %> Deactivated <% } %>
+      </td>
+      <td>
+        <% if (!category.deleted) { %>
+        <a
+          href="/product/edit-category/<%= category.id %>"
+          class="btn btn-primary"
+          >Edit</a
+        >
+        <a
+          href="/product/deactivate-category/<%= category.id %>"
+          class="btn btn-danger"
+          >Delete</a
+        >
+        <% } else { %>
+        <a
+          href="/product/activate-category/<%= category.id %>"
+          class="btn btn-success"
+          >Activate</a
+        >
+        <% } %>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>

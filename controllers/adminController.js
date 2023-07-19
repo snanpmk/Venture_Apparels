@@ -5,7 +5,7 @@ const Order = require("../models/orderModel")
 
 const loadAdminLogin = function (req, res) {
   try {
-    res.render("auth/adminSignIn");
+    res.render("auth/adminSignIn",{layout:"layouts/noLayout"});
   } catch (err) {
     console.log("error in loading admin login", err);
   }
@@ -52,7 +52,8 @@ const adminLogin = async function (req, res) {
         console.log(req.session.userId);
       }
       res
-        .redirect("/admin/dashboard")
+      .status(200)
+      .json({ success: true, message: "logged in successfully" });
         
     }
   } catch (err) {
@@ -150,7 +151,6 @@ const activateUser = async function (req, res) {
 
 const listAllOrders = async (req, res) => {
   try {
-    const userId = req.session.userId
     const orders = await Order.find()
     .populate('shippingAddress', 'fname lname email address state country')
     .populate('items.product', 'image name price')

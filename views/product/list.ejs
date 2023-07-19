@@ -1,67 +1,55 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <%- include('../partials/adminSidebar') %> 
-      
-    </div>
-    <div class="col-md-10 mt-2">
-      <h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">ALL PRODUCTS</h4>
-      <table class="table">
-        <!-- Rest of your code -->
-
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% products.forEach(product => { %>
-          <tr>
-            <td><%= product.name %></td>
-            <td><%= product.price %></td>
-            <td><%= product.stock %></td>
-            <td><%= product.description %></td>
-            <td><%= product.category %></td>
-            <td>
-              <img
-                src="/<%= product.image %>"
-                alt="Product Image"
-                height="100"
-              />
-            </td>
-            <td>
-              <% if (!product.deleted) { %> Active <% } else { %> Deactivated <%
-              } %>
-            </td>
-            <td>
-              <% if (!product.deleted) { %>
-              <a href="/product/edit/<%= product.id %>" class="btn btn-primary"
-                >Edit</a
-              >
-              <a
-                href="/product/deactivate/<%= product.id %>"
-                class="btn btn-danger"
-                >Delete</a
-              >
-              <% } else { %>
-              <a
-                href="/product/activate/<%= product.id %>"
-                class="btn btn-success"
-                >Activate</a
-              >
-              <% } %>
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<h6>ALL PRODUCTS</h6>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Image</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% products.forEach(product => { %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.price %></td>
+      <td><%= product.stock %></td>
+      <td><%= product.description %></td>
+      <td><%= product.category %></td>
+      <td>
+        <img
+          src="/<%= product.image %>"
+          alt="Product Image"
+          height="100"
+        />
+      </td>
+      <td>
+        <% if (!product.deleted) { %> Active <% } else { %> Deactivated <%
+        } %>
+      </td>
+      <td>
+        <% if (!product.deleted) { %>
+        <a href="/product/edit/<%= product.id %>" class="btn btn-primary"
+          >Edit</a
+        >
+        <a
+          href="/product/deactivate/<%= product.id %>"
+          class="btn btn-danger"
+          >Delete</a
+        >
+        <% } else { %>
+        <a
+          href="/product/activate/<%= product.id %>"
+          class="btn btn-success"
+          >Activate</a
+        >
+        <% } %>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>

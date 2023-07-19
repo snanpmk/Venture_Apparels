@@ -19,6 +19,7 @@
   border-bottom-right-radius: 10px;
   width: 48px;
 }
+
 .animation-float {
   -webkit-animation: float 3s ease-in-out infinite;
   animation: float 3s ease-in-out infinite;

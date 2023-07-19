@@ -1,8 +1,4 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2"><%- include('../partials/adminSidebar') %></div>
-    <div class="col-md-10">
-      <br>
+
       <h4>EDIT PRODUCT</h4>
 
       <form action="/product/update/<%= product.id %>" method="post">
@@ -74,22 +70,10 @@
         </div>
 
         <br>
-        <!-- <div class="form-group">
-          <label for="image">Image URL</label>
-          <input
-            type="text"
-            class="form-control"
-            id="image"
-            name="image"
-            value="<%= product.image %>"
-            required
-          />
-        </div> -->
+       
         <button type="submit" class="btn btn-primary">Update Product</button>
       </form>
-    </div>
-  </div>
-</div>
+  
 <script>
   function validatePrice() {
     var priceInput = document.getElementById("price");
