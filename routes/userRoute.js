@@ -47,6 +47,8 @@ router.get("/order-details", orderController.orderDetail);
 
 router.get("/user-profile",sessionMiddleware.isLoggedIn,userController.userProfile)
 
+router.get("/logout",userController.logout)
+
 
 
 module.exports = router;

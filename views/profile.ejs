@@ -14,7 +14,12 @@
       padding: 2.5rem !important;
     }
   }
-
+  .table > :not(caption) > * > * {
+    padding: 1.5rem 1rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
   .card {
     position: relative;
     display: flex;
@@ -150,7 +155,7 @@
             <i class="fa fa-bell text-center mr-1"></i>
             View Orders
           </a>
-          <a class="nav-link" id="notification-tab">
+          <a href="/logout" class="nav-link" id="notification-tab">
             <i class="fa fa-bell text-center mr-1"></i>
             Log Out
           </a>
@@ -401,8 +406,8 @@
                   <th></th>
                   <th>Order Number</th>
                   <th>Product Name</th>
-                  <th>Quantity</th>
-                  <th>Total Price</th>
+                  <th>qty</th>
+                  <th>Price</th>
                   <th>Shipping Address</th>
                   <th>Payment Method</th>
                   <th>Status</th>
