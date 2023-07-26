@@ -51,6 +51,14 @@ const orderSchema = new mongoose.Schema({
 
     ]
   },
+  paymentStatus:{
+    type: String,
+    enum:[
+      'PAID',
+      'PENDING',
+
+    ]
+  },
   orderNumber: { type: Number },
   date: {
     type: Date,

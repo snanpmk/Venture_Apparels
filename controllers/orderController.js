@@ -20,6 +20,15 @@ const processOrder = async function (req, res) {
     //  fetch payment mode and address
     const { paymentMethod, address } = req.body;
     console.log(paymentMethod);
+
+    if(paymentMethod=='COD'){
+      var paymentStatus = 'PENDING'
+    }
+
+    if(!paymentMethod) {
+      console.log("choose a payment option");
+      return res.json("choose a payment option")
+    }
     console.log(address);
 
     // set order status
@@ -32,6 +41,7 @@ const processOrder = async function (req, res) {
       shippingAddress: address,
       paymentMethod: paymentMethod,
       status: orderStatus,
+      paymentStatus:paymentStatus,
     });
 
     console.log(order);
@@ -94,6 +104,7 @@ const orderDetail = async function (req, res) {
       orderStatus:orderData.status,
       orderNumber: orderData.orderNumber,
       paymentMethod: orderData.paymentMethod,
+      paymentStatus:orderDate.paymentStatus,
       subtotal,
       grandTotal
     });

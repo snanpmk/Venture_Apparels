@@ -815,70 +815,88 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-  // Get a reference to the "Complete Order" button
-  const completeOrderButton = document.getElementById("completeOrderButton");
+    // Get a reference to the "Complete Order" button
+    const completeOrderButton = document.getElementById("completeOrderButton");
 
-  // Add an event listener to the button
-  completeOrderButton.addEventListener("click", () => {
-    // Retrieve the selected payment method
-    const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
-    const creditCardRadio = document.getElementById("creditCard");
-    const bankTransferRadio = document.getElementById("bankTransfer");
+    // Add an event listener to the button
+    completeOrderButton.addEventListener("click", () => {
+      // Retrieve the selected payment method
+      const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
+      const creditCardRadio = document.getElementById("creditCard");
+      const bankTransferRadio = document.getElementById("bankTransfer");
 
-    let paymentMethod;
-    if (cashOnDeliveryRadio.checked) {
-      paymentMethod = cashOnDeliveryRadio.value;
-    } else if (creditCardRadio.checked) {
-      paymentMethod = creditCardRadio.value;
-    } else if (bankTransferRadio.checked) {
-      paymentMethod = bankTransferRadio.value;
-    }
+      let paymentMethod;
+      if (cashOnDeliveryRadio.checked) {
+        paymentMethod = cashOnDeliveryRadio.value;
+      } else if (creditCardRadio.checked) {
+        paymentMethod = creditCardRadio.value;
+      } else if (bankTransferRadio.checked) {
+        paymentMethod = bankTransferRadio.value;
+      }
 
-    // Retrieve the selected address
-    const selectedAddressRadio = document.querySelector(
-      'input[name="card-selection"]:checked'
-    );
+      // Retrieve the selected address
+      const selectedAddressRadio = document.querySelector(
+        'input[name="card-selection"]:checked'
+      );
 
-    if (selectedAddressRadio) {
-      const selectedAddress = JSON.parse(selectedAddressRadio.dataset.address);
+      if (selectedAddressRadio && paymentMethod) {
+        const selectedAddress = JSON.parse(selectedAddressRadio.dataset.address);
 
-      const data = {
-        paymentMethod: paymentMethod,
-        address: selectedAddress,
-      };
+        const data = {
+          paymentMethod: paymentMethod,
+          address: selectedAddress,
+        };
 
-      console.log(data);
+        console.log(data);
 
-      // Fetch request to the server
-      fetch("/process-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then(async(response) => {
-          const res=await response.json();
-          console.log(res);
-          if (res.success) {
-            const orderId=res.orderId;
-            console.log("succcessss");
-            window.location.href = `/order-success/${orderId}`;
-          } else {
-            // Handle the error response from the server
-            console.error("Error:", response.statusText);
-            // Show an error message or perform any necessary actions
-          }
+        // Fetch request to the server
+        fetch("/process-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         })
-        .catch((error) => {
-          console.error("Error:", error);
-          // Show an error message or perform any necessary actions
-        });
-    } else {
-      console.log("No address selected");
-      // Handle the case where no address is selected
-    }
-  });
-});
+          .then(async (response) => {
+            const res = await response.json();
+            console.log(res);
+            if (res.success) {
+              const orderId = res.orderId;
+              console.log("Order placed successfully");
+              window.location.href = `/order-success/${orderId}`;
+            } else {
+              // Handle the error response from the server
+              console.error("Error:", response.statusText);
+              // Show an error message or perform any necessary actions
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            // Show an error message or perform any necessary actions
+          });
+      } else {
+        // Handle the case where no address or payment option is selected
+        let errorMessage = "Please ";
+        if (!selectedAddressRadio) {
+          errorMessage += "choose an address ";
+        }
+        if (!paymentMethod) {
+          if (!selectedAddressRadio) {
+            errorMessage += "and ";
+          }
+          errorMessage += "select a payment option";
+        }
 
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: errorMessage + '!',
+        });
+      }
+    });
+  });
+</script>
+<!-- script to choose any payment option and address -->
+<script>
+  
 </script>

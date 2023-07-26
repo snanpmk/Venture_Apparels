@@ -43,8 +43,8 @@
             <div class="mb-3 d-flex justify-content-between">
               <div>
                 <span class="me-3" style="font-weight: bolder;"><%= orderDate %></span>
+                <span class="me-3" style="font-weight: bold;"><%= paymentMethod %></span>
                 <span class="me-3">#<%= orderNumber %></span>
-                <span class="me-3"><%= paymentMethod %></span>
                 <span class="badge rounded-pill bg-info"><%= orderStatus %></span>
             </div>
               <div class="d-flex">
@@ -124,7 +124,9 @@
                   <td class="text-danger text-end">-$dummy data</td>
                 </tr>
                 <tr class="fw-bold">
-                  <td colspan="2">TOTAL</td>
+                  <td colspan="2">TOTAL <br>
+                    $45.89 sales tax  
+                  </td>
                   <td class="text-end">$<%= grandTotal %></td>
                 </tr>
               </tfoot>
@@ -144,7 +146,7 @@
                   <p>
                     <%= paymentMethod %> <br />
                     Total: $<%= grandTotal %>
-                    <span class="badge bg-success rounded-pill">PAID</span>
+                    <span class="badge bg-danger rounded-pill">PENDING</span>
                   </p>
                 </div>
                 <div class="col-lg-6">
@@ -176,7 +178,7 @@
                 <strong><%= shippingAddress.fname %> <%= shippingAddress.lname %></strong><br />
                 <%= shippingAddress.address %><br />
                 <%= shippingAddress.country %>, <%= shippingAddress.state %> <%= shippingAddress.zipcode %><br />
-                <abbr title="Phone">+91</abbr> <%= shippingAddress.phoneNumber %>
+                <h6 title="Phone">+91</h6> <%= shippingAddress.phoneNumber %>
               </address>
           </div>
         </div>
