@@ -1,17 +1,21 @@
 require("dotenv").config();
+
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel")
+const Address = require("../models/addressSchema");
+const Cart = require("../models/cartModel");
+const Order = require("../models/orderModel");
 const bcrypt = require("bcrypt");
+
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const servicesSid = process.env.SERVICES_SID;
 const twilio = require("twilio");
 const client = twilio(accountSid, authToken);
-const Address = require("../models/addressSchema");
-const Cart = require("../models/cartModel");
-const Order = require("../models/orderModel");
-// load user landing page
+
+
+// GET USER LANDING PAGE
 const loadHome = async function (req, res) {
   try {
     const products = await Product.find().sort({ upload: -1 }).limit(7);
@@ -21,16 +25,16 @@ const loadHome = async function (req, res) {
   }
 };
 
-// load user signup
+// GET USER SIGN UP
 const loadSignUp = async function (req, res) {
   try {
-    res.render("auth/userSignIn",{layout: "layouts/noLayout"});
+    res.render("auth/userSignIn", { layout: "layouts/noLayout" });
   } catch (err) {
     console.log("Error loading register", err);
   }
 };
 
-// hashing password
+// HASHING USER PASSWORD
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -40,7 +44,7 @@ const securePassword = async (password) => {
   }
 };
 
-// user Sign up
+// POST USER SIGNUP
 const RegisterUser = async function (req, res) {
   try {
     const existingUserEmail = await User.findOne({ email: req.body.email });
@@ -86,7 +90,7 @@ const RegisterUser = async function (req, res) {
   }
 };
 
-// send otp while signup
+// SEND OTP IN SIGNUP
 const sendOtpSignup = async function (req, res) {
   try {
     console.log("send otp function is called..........");
@@ -113,16 +117,16 @@ const sendOtpSignup = async function (req, res) {
   }
 };
 
-// load user login page
+// GET USER LOGIN
 const loadLogin = async function (req, res) {
   try {
-    res.render("auth/userLogin",{layout: "layouts/userLayout"});
+    res.render("auth/userLogin", { layout: "layouts/userLayout" });
   } catch (err) {
     console.log("Error in loading login", err);
   }
 };
 
-// verifying login using email and password
+// VERIFY LOGIN EMAIL
 const login = async function (req, res) {
   try {
     const email = req.body.email;
@@ -152,16 +156,16 @@ const login = async function (req, res) {
   }
 };
 
-// load users login with phonenumber
+// GET LOGIN WITH PHONENUMBER
 const loadLoginPhone = async function (req, res) {
   try {
-    res.render("auth/userOtpLogin",{layout: "layouts/userLayout"});
+    res.render("auth/userOtpLogin", { layout: "layouts/userLayout" });
   } catch (err) {
     console.log("error in login with phone ", err);
   }
 };
 
-// sending otp while login
+// SEND OTP IN LOGIN
 const sendOtpLogin = async function (req, res) {
   console.log("send otp function is called..........");
   const phoneNumber = req.body.countryCode + req.body.phoneNumber;
@@ -174,7 +178,10 @@ const sendOtpLogin = async function (req, res) {
     });
   }
 
+  const userId = user._id
+  req.session.userId = userId
   req.session.phoneNumber = phoneNumber;
+  
   console.log(req.session.phoneNumber + "from the sendOtpLogin");
   client.verify.v2
     .services(servicesSid)
@@ -187,19 +194,19 @@ const sendOtpLogin = async function (req, res) {
       console.log(error);
       return false;
     });
-  res.render("auth/userOtpVerification");
+  res.render("auth/userOtpVerification", { layout: "layouts/userLayout" });
 };
 
-// load the otp entering page
+// GET OTP PAGE
 const enterOtp = async function (req, res) {
   try {
-    res.render("auth/userOtpVerification");
+    res.render("auth/userOtpVerification", { layout: "layouts/userLayout" });
   } catch (err) {
     console.log("error in loading otp input form", err);
   }
 };
 
-// verifying the otp
+// VERIFY OTP
 const verifyOtp = async function (req, res) {
   try {
     const phoneNumber = req.session.phoneNumber;
@@ -216,13 +223,14 @@ const verifyOtp = async function (req, res) {
           res.redirect("/");
         } else {
           // Handle the case when OTP is not approved, e.g., render an error page
-          res.render("auth/userOtpVerification", { message: "Invalid OTP" });
+          res.render("auth/userOtpVerification", { message: "Invalid OTP", layout: "layouts/userLayout" });
         }
       })
       .catch((error) => {
         console.log(error);
         // Handle the error if needed
-        res.render("auth/userOtpVeri fication", {
+        res.render("auth/userOtpVerification", {
+          layout: "layouts/userLayout",
           message: "OTP verification failed",
         });
       });
@@ -230,11 +238,12 @@ const verifyOtp = async function (req, res) {
     console.log("Error in verifying OTP", err);
     // Handle the error if needed
     res.render("auth/userOtpVerification", {
-      message: "OTP verification failed",
+      message: "OTP verification failed", layout: "layouts/userLayout"
     });
   }
 };
 
+// GET SEARCH
 const loadSearchProducts = async function (req, res) {
   try {
     const products = await Product.find();
@@ -247,6 +256,7 @@ const loadSearchProducts = async function (req, res) {
   }
 };
 
+// GET SEARCH PRODUCTS
 const searchProducts = async function (req, res) {
   try {
     const { searchTerm } = req.body;
@@ -267,6 +277,7 @@ const searchProducts = async function (req, res) {
   }
 };
 
+// GET CHECKOUT
 const loadCheckout = async function (req, res) {
   try {
     const userId = req.session.userId;
@@ -306,7 +317,8 @@ const loadCheckout = async function (req, res) {
   }
 };
 
-// Define the controller function
+
+// ADD ADDRESS
 const addAddress = async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -361,6 +373,7 @@ const addAddress = async (req, res) => {
   }
 };
 
+// GET THE ADDRESS TO EDIT
 const getEditAdressData = async function (req, res) {
   try {
     const addressId = req.params.ObjectId;
@@ -372,6 +385,8 @@ const getEditAdressData = async function (req, res) {
     console.log("error in getEditAdressData", error);
   }
 };
+
+// UPDATE ADDRESS
 const submitAddress = async function (req, res) {
   try {
     const userId = req.session.userId;
@@ -479,13 +494,13 @@ const logout = async function (req, res) {
 
 const test = async function (req, res) {
   const categories = await Category.find();
-    console.log(categories);
-    res.render("sample1", {
-      title: "Add Product",
-      layout: "layouts/adminLayout",
-      categories: categories,
-      errorMessage: null,
-    });
+  console.log(categories);
+  res.render("sample1", {
+    title: "Add Product",
+    layout: "layouts/adminLayout",
+    categories: categories,
+    errorMessage: null,
+  });
 };
 
 module.exports = {

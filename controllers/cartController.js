@@ -1,9 +1,10 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
+const User = require("../models/userModel")
 
 const viewCart = async function (req, res) {
   try {
-    const userId = req.session.userId;
+    const userId = req.session.userId
     console.log(userId + "user id from the view cart");
 
     const cart = await Cart.findOne({ userId: userId }).populate(
