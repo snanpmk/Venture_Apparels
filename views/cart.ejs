@@ -65,7 +65,8 @@
 
                   <input
                     min="1"
-                    name="quantity"
+                    max="<%= item.productId.stock  %>"
+                    name="quantity" 
                     value="<%= item.quantity %>"
                     type="number"
                     class="form-control form-control-sm input-quantity"
@@ -80,10 +81,11 @@
                   >
                     <i class="fas fa-plus"></i>
                   </button>
+                  
                 </div>
               </td>
               <!-- /Qty -->
-
+              
               <!-- Total -->
               <td>
                 <div class="px-3">
@@ -91,7 +93,7 @@
                 </div>
               </td>
               <!-- /Total -->
-
+              
               <!-- Actions -->
               <td style="padding-left: 25px">
                 <button class="btn btn-link px-2" onclick="deleteItem('<%= item.productId._id %>')">
@@ -99,6 +101,7 @@
                 </button>
               </td>
               <!-- /Actions -->
+              <p id="quantityLimitMessage" style="color: red;"><%= limitMssg %></p>
             </tr>
             <% }); %>
           </tbody>
@@ -189,6 +192,7 @@
   <!-- Cart Summary -->
   <!-- /Cart Summary -->
   <% } %>
+  
   <!-- /Page Content -->
 </section>
 <!-- / Main Section-->
@@ -221,7 +225,8 @@
     })
       .then(response => response.json())
       .then(data => {
-        // Update the prices dynamically
+        const limitMssg = document.getElementById("quantityLimitMessage")
+        limitMssg.textContent = `${data.limitMssg}`
         console.log(data)
         const totalPriceElement = document.getElementById(`total-price${productId}`);
         console.log(totalPriceElement)
@@ -248,8 +253,6 @@
     });
   });
 
-
- 
 
 </script>
 

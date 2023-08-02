@@ -126,6 +126,7 @@ const loadLogin = async function (req, res) {
   }
 };
 
+
 // VERIFY LOGIN EMAIL
 const login = async function (req, res) {
   try {
@@ -136,6 +137,11 @@ const login = async function (req, res) {
     if (!user) {
       return res.status(500).json({ error: "User not found" });
     }
+
+    if (user.deleted == true) {
+      return res.status(500).json({ error: "This account is blocked by the admin" })
+    }
+
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -178,22 +184,29 @@ const sendOtpLogin = async function (req, res) {
     });
   }
 
+  if (user.deleted == true) {
+    return res.render("auth/userOtpLogin", {
+      layout: "layouts/userLayout",
+      message: "This account is blocked by the admin!!",
+    })
+  }
+
   const userId = user._id
   req.session.userId = userId
   req.session.phoneNumber = phoneNumber;
-  
+
   console.log(req.session.phoneNumber + "from the sendOtpLogin");
-  client.verify.v2
-    .services(servicesSid)
-    .verifications.create({ to: phoneNumber, channel: "sms" })
-    .then((verification) => {
-      console.log(verification.sid);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
+  // client.verify.v2
+  //   .services(servicesSid)
+  //   .verifications.create({ to: phoneNumber, channel: "sms" })
+  //   .then((verification) => {
+  //     console.log(verification.sid);
+  //     return true;
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     return false;
+  //   });
   res.render("auth/userOtpVerification", { layout: "layouts/userLayout" });
 };
 

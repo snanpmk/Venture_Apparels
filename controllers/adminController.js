@@ -1,8 +1,8 @@
-const { render } = require("ejs");
 const User = require("../models/userModel");
-const bcrypt = require("bcrypt");
 const Order = require("../models/orderModel")
+const bcrypt = require("bcrypt");
 
+// GET ADMIN LOGIN
 const loadAdminLogin = function (req, res) {
   try {
     res.render("auth/adminSignIn",{layout:"layouts/noLayout"});
@@ -10,6 +10,8 @@ const loadAdminLogin = function (req, res) {
     console.log("error in loading admin login", err);
   }
 };
+
+// GET ADMIN DASHBOARD
 const loadDashboard = async function (req, res) {
   try {
     res.render("admin/dashboard");
@@ -17,6 +19,7 @@ const loadDashboard = async function (req, res) {
     console.log("error in loading admin login", err);
   }
 };
+
 
 const securePassword = async (password) => {
   try {
@@ -27,6 +30,7 @@ const securePassword = async (password) => {
   }
 };
 
+// VERIFY ADMIN LOGIN
 const adminLogin = async function (req, res) {
   try {
     const email = req.body.email;
@@ -61,6 +65,7 @@ const adminLogin = async function (req, res) {
   }
 };
 
+// GET ALL USERS
 const listAllUsers = async function (req, res) {
   try {
     const users = await User.find();
@@ -116,7 +121,7 @@ const deactivateUser = async function (req, res) {
   try {
     const userId = req.params.ObjectId;
     console.log(userId);
-    const product = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       { _id: userId },
       {
         deleted: true,
@@ -124,6 +129,7 @@ const deactivateUser = async function (req, res) {
       },
       { new: true }
     );
+    console.log(user);
     res.redirect("/admin/users");
   } catch (err) {
     console.log("Error in soft deleting user", err);
@@ -142,6 +148,7 @@ const activateUser = async function (req, res) {
       },
       { new: true }
     );
+    console.log(user);
     res.redirect("/admin/users");
   } catch (err) {
     console.log("error in activating user",err);

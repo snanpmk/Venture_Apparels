@@ -20,8 +20,10 @@ const viewCart = async function (req, res) {
         item.totalPrice = totalPrice;
         subtotal += totalPrice;
       }
-      grandTotal = subtotal + 45.89;
 
+      var limitMssg = ""
+      
+      grandTotal = subtotal + 45.89;
       await cart.save();
 
       res.render("cart", {
@@ -31,6 +33,7 @@ const viewCart = async function (req, res) {
         item: cart.items,
         subtotal: subtotal,
         grandTotal: grandTotal,
+        limitMssg: limitMssg
       });
     } else {
       const uesrCart = await Cart.create({ userId });
@@ -90,8 +93,18 @@ const updateQuantity = async function (req, res) {
     const productId = req.body.productId;
     const quantity = req.body.quantity;
 
+    const product = await Product.findOne({ _id: productId })
+    console.log(product);
+    if (quantity == product.stock) {
+      limitMssg = "Sorry , Maximum quantity of this product is reached"
+    }
+    else {
+      limitMssg = ""
+    }
+
+    console.log(limitMssg);
     const userId = req.session.userId;
-    console.log("user id in update cart : " + userId);
+    console.log("user id in update cart :😒😒😒😒😒 " + userId);
 
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
@@ -100,35 +113,36 @@ const updateQuantity = async function (req, res) {
     if (cart) {
       let grandTotal = 0;
       let subtotal = 0;
-      let totalPrice=0;
-      const itemToUpdate=cart.items.find(item=>item.productId._id.toString()===productId);
-      if(itemToUpdate){
+      let totalPrice = 0;
+      const itemToUpdate = cart.items.find(item => item.productId._id.toString() === productId);
+      if (itemToUpdate) {
         itemToUpdate.quantity = quantity;
         const productPrice = itemToUpdate.productId.price;
         totalPrice = productPrice * quantity;
-        itemToUpdate.totalPrice=totalPrice;
+        itemToUpdate.totalPrice = totalPrice;
       }
-      cart.items.forEach(item=>{
-        subtotal+=item.totalPrice;
+      cart.items.forEach(item => {
+        subtotal += item.totalPrice;
       });
       grandTotal = subtotal + 45.89;
 
-    await cart.save();
-    return res.json({
-      totalPrice:totalPrice,
-      subtotal:subtotal,
-      grandTotal:grandTotal,
-      productId:productId,
-    })
+      await cart.save();
+      return res.json({
+        totalPrice: totalPrice,
+        subtotal: subtotal,
+        grandTotal: grandTotal,
+        productId: productId,
+        limitMssg: limitMssg
+      })
 
-  }
+    }
 
   } catch (error) {
     console.log("error in updating the product quantity", error);
   }
 };
 
-const deleteItem = async function (req,res) {
+const deleteItem = async function (req, res) {
   try {
     const productId = req.body.productId;
     const userId = req.session.userId;
@@ -155,7 +169,7 @@ const deleteItem = async function (req,res) {
       grandTotal: grandTotal
     });
   } catch (error) {
-    console.log("error in deleting item",error);
+    console.log("error in deleting item", error);
   }
 }
 

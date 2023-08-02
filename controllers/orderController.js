@@ -1,6 +1,17 @@
 const Order = require("../models/orderModel");
 const Cart = require("../models/cartModel");
 const Address = require("../models/addressSchema");
+const Product = require("../models/productModel")
+
+const updateStock = async function (productId, quantity) {
+  try {
+    const product = await Product.findById(productId);
+    product.stock = product.stock - quantity;
+    await product.save();
+  } catch (error) {
+    console.log("Error updating stock quantity", error);
+  }
+};
 const processOrder = async function (req, res) {
   try {
     // fetch user
@@ -10,22 +21,25 @@ const processOrder = async function (req, res) {
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
     );
+
     console.log(cart);
     let orderItems = cart.items.map((item) => ({
       product: item.productId,
       quantity: item.quantity,
       totalPrice: item.totalPrice,
     }));
+    // upadate stock
+
 
     //  fetch payment mode and address
     const { paymentMethod, address } = req.body;
     console.log(paymentMethod);
 
-    if(paymentMethod=='COD'){
+    if (paymentMethod == 'COD') {
       var paymentStatus = 'PENDING'
     }
 
-    if(!paymentMethod) {
+    if (!paymentMethod) {
       console.log("choose a payment option");
       return res.json("choose a payment option")
     }
@@ -41,15 +55,23 @@ const processOrder = async function (req, res) {
       shippingAddress: address,
       paymentMethod: paymentMethod,
       status: orderStatus,
-      paymentStatus:paymentStatus,
+      paymentStatus: paymentStatus,
     });
 
     console.log(order);
     // Save the order
     await order.save();
-    console.log(
-      "order save successfffffffffffffffffffullllllllllllyyyyyyyyyyy"
-    );
+
+
+    // Remove cart items from the user's cart
+    await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
+
+    // Update the stock quantity for each item in the order
+    for (const item of orderItems) {
+      await updateStock(item.product, item.quantity);
+    }
+
+
     // Render the order success view
     const orderId = order._id;
     console.log(orderId);
@@ -62,7 +84,7 @@ const processOrder = async function (req, res) {
 const loadSuccessPage = async function (req, res) {
   try {
     const orderId = req.params.ObjectId;
-    res.render("success-page", { orderId ,layout: "layouts/userLayout"});
+    res.render("success-page", { orderId, layout: "layouts/userLayout" });
   } catch (error) {
     console.log(error, "error in laoding success page");
   }
@@ -88,23 +110,23 @@ const orderDetail = async function (req, res) {
     const shippingCost = 45.89;
     const grandTotal = subtotal + shippingCost;
 
-      // Format order date as 'DD Month YYYY' (e.g., '12 July 2023')
-      const orderDate = orderData.date.toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-  
+    // Format order date as 'DD Month YYYY' (e.g., '12 July 2023')
+    const orderDate = orderData.date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
 
     res.render("orderDetail", {
       layout: "layouts/userLayout",
       orderData,
       shippingAddress,
       orderDate,
-      orderStatus:orderData.status,
+      orderStatus: orderData.status,
       orderNumber: orderData.orderNumber,
       paymentMethod: orderData.paymentMethod,
-      paymentStatus:orderDate.paymentStatus,
+      paymentStatus: orderDate.paymentStatus,
       subtotal,
       grandTotal
     });
