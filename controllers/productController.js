@@ -45,16 +45,22 @@ const userViewCategory = async function (req, res) {
     const totalProducts = await Product.countDocuments();
     const totalPages = Math.ceil(totalProducts / productsPerPage);
 
+    // Get blocked category IDs
+    const blockedCategoryIds = await Category.find({ deleted: true }).distinct('_id');
 
-    const products = await Product.find().limit(productsPerPage).skip(skip);
-    const categories = await Category.find();
+    // Fetch products excluding those with blocked categories
+    const products = await Product.find({ deleted: false, category: { $nin: blockedCategoryIds } })
+      .limit(productsPerPage)
+      .skip(skip);
+
+    const categories = await Category.find({ deleted: false });
     res.render("category/allCategory", {
       layout: "layouts/userLayout",
       title: "Category",
       products: products,
       categories: categories,
-      currentPage:currentPage,
-      totalPages:totalPages,
+      currentPage: currentPage,
+      totalPages: totalPages,
     });
   } catch (err) {
     console.log("error in loading user category view", err);
@@ -209,15 +215,15 @@ const sort = async function (req, res) {
       success: true,
       layout: "layouts/userLayout",
       title: "Category",
-      products: sortedProducts, 
+      products: sortedProducts,
       categories: categories,
     });
   } catch (err) {
     console.log("error in sorting the products", err);
-  } 
+  }
 };
 
-const filterPrice = async function (req,res) {
+const filterPrice = async function (req, res) {
   try {
     const { min, max } = req.body;
 
@@ -233,7 +239,7 @@ const filterPrice = async function (req,res) {
       success: true,
       layout: "layouts/userLayout",
       title: "Category",
-      products: filteredProducts, 
+      products: filteredProducts,
       categories: categories,
     });
   } catch (error) {
