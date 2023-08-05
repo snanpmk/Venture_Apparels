@@ -19,7 +19,8 @@
     background-color: var(--bs-table-bg);
     border-bottom-width: 1px;
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
-}
+  }
+
   .card {
     position: relative;
     display: flex;
@@ -364,34 +365,33 @@
             <div class="col-md-6">
               <div class="mb-3">
                 <% for (let i = 0; i < allAddress.length; i++) { %>
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">
-                        <% if (i === 0) { %>
-                          Default Address
-                        <% } else { %>
-                          Address <%= i %>
-                        <% } %>
-                      </h5>
-                      <p class="card-text">
-                        <%= allAddress[i].fname %> <%= allAddress[i].lname %>,
-                      </p>
-                      <p class="card-text">
-                        <%= allAddress[i].address %>, <%= allAddress[i].state %>,
-                        <%= allAddress[i].country %>
-                      </p>
-                      <p class="card-text">
-                        <%= allAddress[i].phoneNumber %>, <%= allAddress[i].zipcode %>
-                      </p>
-                    </div>
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <% if (i === 0) { %> Default Address <% } else { %>
+                      Address <%= i %> <% } %>
+                    </h5>
+                    <p class="card-text">
+                      <%= allAddress[i].fname %> <%= allAddress[i].lname %>,
+                    </p>
+                    <p class="card-text">
+                      <%= allAddress[i].address %>, <%= allAddress[i].state %>,
+                      <%= allAddress[i].country %>
+                    </p>
+                    <p class="card-text">
+                      <%= allAddress[i].phoneNumber %>, <%=
+                      allAddress[i].zipcode %>
+                    </p>
                   </div>
+                </div>
                 <% } %>
                 <div class="card">
                   <div class="card-body">
-                    <h4 style="padding: 3rem;font-weight: bold;"><a href="">Add Address</a></h4>
+                    <h4 style="padding: 3rem; font-weight: bold">
+                      <a href="">Add Address</a>
+                    </h4>
                   </div>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -404,53 +404,13 @@
           aria-labelledby="notification-tab"
         >
           <h3 class="mb-4">View Orders</h3>
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Order Number</th>
-                  <th>Product Name</th>
-                  <th>qty</th>
-                  <th>Price</th>
-                  <th>Shipping Address</th>
-                  <th>Payment Method</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% allorders.forEach((order) => { %>
-                  <% order.items.forEach((item) => { %>
-                    <tr>
-                      <td><img style="width: 3rem;" src="/<%= item.product.image %>" alt=""></td>
-                      <td>#<%= order.orderNumber %></td>
-                      <% if (order.shippingAddress) { %>
-                        <td><%= item.product.name %></td>
-                        <td><%= item.quantity %></td>
-                        <td>$<%= item.product.price %></td>
-                        <td><%= order.shippingAddress.address %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></td>
-                        <td><%= order.paymentMethod %></td>
-                        <td><%= order.status %></td>
-                        <td><%= order.date.toDateString() %></td>
-                      <% } else { %>
-                        <!-- Handle the case when order.shippingAddress is null or undefined -->
-                        <td colspan="8">No shipping address available</td>
-                      <% } %>
-                    </tr>
-                  <% }); %>
-                <% }); %>
-              </tbody>
-            </table>
-          </div>
-          
-         
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- UPADATE USER ADDRESS -->
 <script>
   var addressId;
   function editAddress(id) {
@@ -505,3 +465,4 @@
     });
   });
 </script>
+

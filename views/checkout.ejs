@@ -15,6 +15,19 @@
   .card-text-small {
     font-size: 14px;
   }
+  /* Style the close button */
+  .btn-close-editModal {
+    color: black;
+    background-color: transparent;
+    border-radius: 1rem;
+    width: 4rem;
+    font-weight: 600;
+  }
+
+  .btn-close-editModal:hover {
+    color: rgb(255, 255, 255);
+    background-color: black; /* Change the color on hover if desired */
+  }
 
   .card {
     margin-bottom: 10vh;
@@ -180,7 +193,7 @@
             <div class="modal-body pt-0">
               <h5 class="title-checkout">Shipping Address</h5>
               <form method="post" action="/add-address" id="addressForm">
-                <div col-12 style="display: flex;">
+                <div col-12 style="display: flex">
                   <div class="form-group col-6">
                     <label for="email" class="form-label">Email</label>
                     <input
@@ -190,19 +203,39 @@
                       placeholder="you@example.com"
                       required=""
                     />
+                    <p id="emailValidMessage" style="color: red"></p>
                   </div>
                   <div class="form-group col-6">
                     <label for="phoneNumber" class="form-label"
                       >Mobile Number</label
                     >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="phoneNumber"
-                      required=""
-                    />
+                    <div class="d-flex">
+                      <select
+                        class="form-control"
+                        id="countryCode"
+                        required=""
+                        style="width: 20%"
+                      >
+                        <option value="+91">+00</option>
+                        <option value="+91">+91</option>
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+86">+86</option>
+                        <option value="+81">+81</option>
+                      </select>
+                      <input
+                        style="width: 80%"
+                        type="text"
+                        class="form-control"
+                        id="phoneNumber"
+                        placeholder="00000 00000"
+                        required=""
+                      />
+                    </div>
+                    <p id="phoneNumberValidMessage" style="color: red"></p>
                   </div>
                 </div>
+
                 <div class="form-group d-flex">
                   <!-- First name -->
                   <div class="col-sm-6">
@@ -214,10 +247,11 @@
                         type="text"
                         class="form-control"
                         id="firstName"
-                        placeholder=""
+                        placeholder="Your Name"
                         value=""
                         required=""
                       />
+                      <p id="nameValidMessage" style="color: red"></p>
                     </div>
                   </div>
                   <!-- Last Name-->
@@ -228,7 +262,7 @@
                         type="text"
                         class="form-control"
                         id="lastName"
-                        placeholder=""
+                        placeholder="Second name or Initial"
                         value=""
                         required=""
                       />
@@ -244,6 +278,7 @@
                     placeholder="123 Some Street Somewhere"
                     required=""
                   />
+                  <p id="addressValidMessage" style="color: red"></p>
                 </div>
 
                 <div class="form-group col-12">
@@ -261,7 +296,8 @@
                       class="form-control"
                       type="text"
                       id="state"
-                      required="">
+                      required=""
+                    />
                   </div>
 
                   <div class="form-group col-6">
@@ -299,134 +335,150 @@
 
     <!-- Edit Address Modal -->
     <div id="editModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <!-- Modal header -->
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Address</h5>
-          <button
-            type="button"
-            class="btn-close-editModal"
-            data-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <!--Edit Modal body -->
-        <div class="modal-body">
-          <form method="post" action="/submit-address" id="editAddressForm">
-            <!-- Add hidden input field for address ID -->
-            <input type="hidden" id="addressId" name="addressId" value="" />
-            <div class="form-group col-12">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                id="editEmail"
-                value=""
-                required=""
-              />
-            </div>
-            <div class="form-group col-12">
-              <label for="phoneNumber" class="form-label">Mobile Number</label>
-              <input
-                type="text"
-                class="form-control"
-                id="editPhoneNumber"
-                required=""
-              />
-            </div>
-            <div class="form-group d-flex">
-              <!-- First name -->
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="editFirstName" class="form-label"
-                    >First name</label
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <!-- Modal header -->
+          <div class="modal-header">
+            <h5 class="modal-title">EDIT ADDRESS</h5>
+            <button
+              type="button"
+              class="btn-close-editModal"
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </div>
+          <!--Edit Modal body -->
+          <div class="modal-body">
+            <form method="post" action="/submit-address" id="editAddressForm">
+              <!-- Add hidden input field for address ID -->
+              <input type="hidden" id="addressId" name="addressId" value="" />
+              <div class="form-group col-12 d-flex">
+                <div class="form-group col-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editEmail"
+                    value=""
+                    required=""
+                  />
+                  <p id="edtEmlMsg" style="color: red"></p>
+
+                </div>
+                <div class="form-group col-6">
+                  <label for="phoneNumber" class="form-label"
+                  >Mobile Number</label
+                  >
+                  <input
+                  type="text"
+                  class="form-control"
+                  id="editPhoneNumber"
+                  required=""
+                  />
+                  <p id="edtPnMsg" style="color: red"></p>
+
+                </div>
+              </div>
+              <div class="form-group d-flex">
+                <!-- First name -->
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="editFirstName" class="form-label"
+                      >First name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editFirstName"
+                      placeholder=""
+                      value=""
+                      required=""
+                    />
+                    <p id="edtNmMsg" style="color: red"></p>
+
+                  </div>
+                </div>
+                <!-- Last Name-->
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="lastName" class="form-label">Last name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editLastName"
+                      placeholder=""
+                      value=""
+                      required=""
+                    />
+
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-12">
+                <label for="address" class="form-label">Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editAddress"
+                  placeholder="123 Some Street Somewhere"
+                  required=""
+                />
+                <p id="edtAdsMsg" style="color: red"></p>
+
+              </div>
+
+              <div class="form-group col-12">
+                <label for="address" class="form-label">Country</label>
+                <select class="form-control" id="editCountry" required="">
+                  <option value="">Please Select...</option>
+                  <option>India</option>
+                  <option>United States</option>
+                </select>
+              </div>
+              <div class="d-flex">
+                <div class="form-group col-6">
+                  <label for="address" class="form-label">State</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="editState"
+                    required=""
+                  />
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="address" class="form-label"
+                    >Zip / Post Code</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="editFirstName"
-                    placeholder=""
-                    value=""
+                    id="editZipCode"
                     required=""
                   />
                 </div>
               </div>
-              <!-- Last Name-->
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="lastName" class="form-label">Last name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="editLastName"
-                    placeholder=""
-                    value=""
-                    required=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-12">
-              <label for="address" class="form-label">Address</label>
-              <input
-                type="text"
-                class="form-control"
-                id="editAddress"
-                placeholder="123 Some Street Somewhere"
-                required=""
-              />
-            </div>
-
-            <div class="form-group col-12">
-              <label for="address" class="form-label">Country</label>
-              <select class="form-control" id="editCountry" required="">
-                <option value="">Please Select...</option>
-                <option>India</option>
-                <option>United States</option>
-              </select>
-            </div>
-            <div class="d-flex">
-              <div class="form-group col-6">
-                <label for="state" class="form-label">State</label>
-                <select class="form-control" id="editState" required="">
-                  <option value="">Please Select...</option>
-                  <option>Goa</option>
-                  <option>Gujarat</option>
-                  <option>Karnataka</option>
-                  <option>Kerala</option>
-                  <option>Tamil Nadu</option>
-                </select>
-              </div>
-
-              <div class="form-group col-6">
-                <label for="address" class="form-label">Zip / Post Code</label>
+              <div class="form-group col-12">
                 <input
-                  type="text"
-                  class="form-control"
-                  id="editZipCode"
-                  required=""
+                  type="checkbox"
+                  class="form-check-input"
+                  value=""
+                  id="editSameAddress"
+                  checked
                 />
+                <label class="form-check-label" for="same-address"
+                  >Use for billing address</label
+                >
               </div>
-            </div>
-            <div class="form-group col-12">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                value=""
-                id="editSameAddress"
-                checked
-              />
-              <label class="form-check-label" for="same-address"
-                >Use for billing address</label
-              >
-            </div>
-            <a type="submit" id="submitAddressButton" class="btn btn-success">
-              Save Changes
-            </a>
-          </form>
+              <a type="submit" id="submitAddressButton" class="btn btn-success">
+                Save Changes
+              </a>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
         </div>
-        <div class="modal-footer"></div>
       </div>
     </div>
 
@@ -586,6 +638,186 @@
   }
 </script>
 
+<!--ADD ADDRESS VALIDATION -->
+<script>
+  // Email validation
+
+  const emailInputValid = document.getElementById("Email");
+  const emailValidMessage = document.getElementById("emailValidMessage");
+
+  emailInputValid.addEventListener("input", function () {
+    const email = emailInputValid.value;
+    const isValidEmail = validateEmail(email);
+
+    if (isValidEmail) {
+      emailInputValid.classList.remove("is-invalid");
+      emailValidMessage.style.display = "none";
+    } else {
+      emailInputValid.classList.add("is-invalid");
+      emailValidMessage.style.display = "block";
+      emailValidMessage.textContent = "Invalid email format";
+    }
+
+    if (email.trim() === "") {
+      emailInputValid.classList.add("is-invalid");
+      emailValidMessage.style.display = "block";
+      emailValidMessage.textContent = "Email is required";
+    }
+  });
+
+  emailInputValid.addEventListener("blur", function () {
+    const email = emailInputValid.value.trim();
+
+    if (email === "") {
+      emailInputValid.classList.add("is-invalid");
+      emailValidMessage.style.display = "block";
+      emailValidMessage.textContent = "Your email is required";
+    }
+  });
+
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  // PHONE NUMBER VALIDATION
+  const countryCodeSelect = document.querySelector("#countryCode");
+  const phoneNumberInput = document.querySelector("#phoneNumber");
+  console.log(phoneNumberInput.value);
+  const phoneNumberValidMessage = document.querySelector(
+    "#phoneNumberValidMessage"
+  );
+
+  countryCodeSelect.addEventListener("change", function () {
+    const countryCode = countryCodeSelect.value;
+    console.log(countryCode);
+    const country =
+      countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+    const requiredLength = getRequiredPhoneNumberLength(country);
+    console.log(requiredLength + "hey hello");
+    phoneNumberInput.placeholder = `Enter your phone number (${countryCode})`;
+    validatePhoneNumber(requiredLength, phoneNumberInput.value);
+  });
+
+  phoneNumberInput.addEventListener("input", function () {
+    const phoneNumber = phoneNumberInput.value;
+    const country =
+      countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+    const requiredLength = getRequiredPhoneNumberLength(country);
+
+    console.log(phoneNumber);
+    validatePhoneNumber(requiredLength, phoneNumber);
+  });
+
+  phoneNumberInput.addEventListener("blur", function () {
+    const phoneNumber = phoneNumberInput.value.trim();
+
+    if (phoneNumber === "") {
+      phoneNumberInput.classList.add("is-invalid");
+      phoneNumberValidMessage.style.display = "block";
+      phoneNumberValidMessage.textContent = "Your Phone number is required";
+    }
+  });
+
+  function getRequiredPhoneNumberLength(country) {
+    const requiredLengths = {
+      "+91": 10, // India: 10-digit mobile number
+      "+1": 10, // USA: 10-digit phone number
+      "+44": 10, // UK: 10-digit phone number
+      "+86": 11, // China: 11-digit phone number
+      "+81": 10, // Japan: 10-digit phone number
+    };
+
+    return requiredLengths[country] || 0;
+  }
+
+  function validatePhoneNumber(requiredLength, phoneNumber) {
+    const phoneNumberRegex = /^\d+$/;
+    const isValidFormat = phoneNumberRegex.test(phoneNumber);
+    const isValidLength = phoneNumber.length === requiredLength;
+
+    if (isValidFormat && isValidLength) {
+      phoneNumberInput.classList.remove("is-invalid");
+      phoneNumberValidMessage.style.display = "none";
+    } else {
+      phoneNumberInput.classList.add("is-invalid");
+      phoneNumberValidMessage.style.display = "block";
+      phoneNumberValidMessage.textContent = "Invalid Mobile number format";
+    }
+    if (phoneNumber.trim() === "") {
+      phoneNumberInput.classList.add("is-invalid");
+      phoneNumberValidMessage.style.display = "block";
+      phoneNumberValidMessage.textContent = "Mobile number required";
+    }
+  }
+
+  const nameInput = document.getElementById("firstName");
+  const nameValidMessage = document.getElementById("nameValidMessage");
+
+  nameInput.addEventListener("input", function () {
+    const name = nameInput.value.trim();
+    const isValidName = validateName(name);
+
+    if (isValidName) {
+      nameInput.classList.remove("is-invalid");
+      nameValidMessage.style.display = "none";
+    } else {
+      nameInput.classList.add("is-invalid");
+      nameValidMessage.style.display = "block";
+      nameValidMessage.textContent = "Please enter a valid name";
+    }
+  });
+
+  nameInput.addEventListener("blur", function () {
+    const name = nameInput.value.trim();
+
+    if (name === "") {
+      nameInput.classList.add("is-invalid");
+      nameValidMessage.style.display = "block";
+      nameValidMessage.textContent = "Your name is required";
+    }
+  });
+
+  function validateName(name) {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const minLength = 3;
+
+    return nameRegex.test(name) && name.length >= minLength;
+  }
+
+  // ADDRESS VAALIDATION
+  const addreesInput = document.getElementById("address");
+  const addressValidMssg = document.getElementById("addressValidMessage");
+
+  addreesInput.addEventListener("input", function () {
+    const address = addreesInput.value.trim();
+    const isValidAddress = validateAddress(address);
+
+    if (isValidAddress) {
+      addreesInput.classList.remove("is-invalid");
+      addressValidMssg.style.display = "none";
+    } else {
+      addreesInput.classList.add("is-invalid");
+      addressValidMssg.style.display = "block";
+      addressValidMssg.textContent = "Please enter a valid address";
+    }
+  });
+
+  addreesInput.addEventListener("blur", function () {
+    const address = addreesInput.value.trim();
+
+    if (address === "") {
+      addreesInput.classList.add("is-invalid");
+      addressValidMssg.style.display = "block";
+      addressValidMssg.textContent = "Your address is required";
+    }
+  });
+
+  function validateAddress(address, minLength = 5) {
+    const addressRegex = /^[a-zA-Z\s]+$/;
+
+    return addressRegex.test(address) && address.length >= minLength;
+  }
+</script>
 <script>
   // script for the Add Address
 
@@ -610,6 +842,11 @@
     .getElementById("addressForm")
     .addEventListener("submit", function (event) {
       event.preventDefault();
+
+      const errorMessages = document.querySelectorAll(".is-invalid");
+      if (errorMessages.length > 0) {
+        return; // Prevent form submission if errors are present
+      }
 
       const email = document.getElementById("Email").value;
       const firstName = document.getElementById("firstName").value;
@@ -713,7 +950,7 @@
   var firstNameInput = document.getElementById("editFirstName");
   var lastNameInput = document.getElementById("editLastName");
   var addressInput = document.getElementById("editAddress");
-  var phoneNumberInput = document.getElementById("editPhoneNumber");
+  // var phoneNumberInput = document.getElementById("editPhoneNumber");
   var countryInput = document.getElementById("editCountry");
   var stateInput = document.getElementById("editState");
   var zipCodeInput = document.getElementById("editZipCode");
@@ -897,5 +1134,3 @@
     });
   });
 </script>
-<!-- script to choose any payment option and address -->
-<script></script>

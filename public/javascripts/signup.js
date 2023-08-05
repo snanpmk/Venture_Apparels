@@ -128,6 +128,7 @@ emailInput.addEventListener("input", function () {
   }
 });
 
+
 emailInput.addEventListener("blur", function () {
   const email = emailInput.value.trim();
 
