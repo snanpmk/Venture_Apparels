@@ -547,10 +547,10 @@
                   type="radio"
                   name="payment-option"
                   value="credit-card"
-                  id="creditCard"
+                  id="razorPay"
                 />
                 <label class="form-check-label" for="payment-option1">
-                  Credit Card
+                  Razor Pay
                 </label>
               </div>
               <div class="form-check">
@@ -1058,14 +1058,14 @@
     completeOrderButton.addEventListener("click", () => {
       // Retrieve the selected payment method
       const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
-      const creditCardRadio = document.getElementById("creditCard");
+      const razorPayRadio = document.getElementById("razorPay");
       const bankTransferRadio = document.getElementById("bankTransfer");
 
       let paymentMethod;
       if (cashOnDeliveryRadio.checked) {
         paymentMethod = cashOnDeliveryRadio.value;
-      } else if (creditCardRadio.checked) {
-        paymentMethod = creditCardRadio.value;
+      } else if (razorPayRadio.checked) {
+        paymentMethod = razorPayRadio.value;
       } else if (bankTransferRadio.checked) {
         paymentMethod = bankTransferRadio.value;
       }

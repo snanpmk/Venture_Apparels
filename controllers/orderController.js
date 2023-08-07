@@ -1,7 +1,12 @@
+require('dotenv').config();
 const Order = require("../models/orderModel");
 const Cart = require("../models/cartModel");
 const Address = require("../models/addressSchema");
 const Product = require("../models/productModel")
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+
+
 
 const updateStock = async function (productId, quantity) {
   try {
@@ -12,6 +17,8 @@ const updateStock = async function (productId, quantity) {
     console.log("Error updating stock quantity", error);
   }
 };
+
+
 const processOrder = async function (req, res) {
   try {
     // fetch user
@@ -29,6 +36,17 @@ const processOrder = async function (req, res) {
       totalPrice: item.totalPrice,
     }));
     // upadate stock
+
+    // CALCULATE THE ORDER TOTAL AMOUNT
+    const calculateOrderAmount = (orderItems) => {
+      const totalAmountInPaise = orderItems.reduce((total, item) => {
+        const itemTotal = item.product.price * item.quantity;
+        return total + itemTotal;
+      }, 0);
+      return totalAmountInPaise;
+    };
+
+    console.log(calculateOrderAmount(orderItems));
 
 
     //  fetch payment mode and address
@@ -48,6 +66,7 @@ const processOrder = async function (req, res) {
     // set order status
     const orderStatus = "processing";
 
+    const totalAmount = calculateOrderAmount(orderItems)
     // Create new order document
     const order = new Order({
       user: userId,
@@ -56,6 +75,7 @@ const processOrder = async function (req, res) {
       paymentMethod: paymentMethod,
       status: orderStatus,
       paymentStatus: paymentStatus,
+      totalAmount:totalAmount
     });
 
     console.log(order);
@@ -110,7 +130,7 @@ const orderDetail = async function (req, res) {
     const shippingCost = 45.89;
     const grandTotal = subtotal + shippingCost;
 
-    // Format order date as 'DD Month YYYY' (e.g., '12 July 2023')
+    // Format order date as 'DD Month YYYY'
     const orderDate = orderData.date.toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",

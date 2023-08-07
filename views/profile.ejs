@@ -21,6 +21,22 @@
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
   }
 
+
+ .table-head{
+  vertical-align: middle;
+  text-align: center;
+
+}
+.table-row{
+  vertical-align: middle;
+  align-items: center;
+}
+
+.product-name {
+  font-weight: 900;
+  font-size: small;
+  text-transform: uppercase;
+ }
   .card {
     position: relative;
     display: flex;
@@ -73,6 +89,39 @@
     width: 100px;
     border-radius: 100%;
     border: 5px solid #fff;
+  }
+  .tabel-coloumn {
+    vertical-align: middle;
+  }
+</style>
+<style>
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .show {
+    display: block;
   }
 </style>
 
@@ -403,7 +452,56 @@
           role="tabpanel"
           aria-labelledby="notification-tab"
         >
-          <h3 class="mb-4">View Orders</h3>
+          <h3 class="mb-4">ORDERS</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="table-head">No</th>
+                  <th class="table-head">Order ID</th>
+                  <th class="table-head">Date</th>
+                  <th class="table-head">Items</th>
+                  <th class="table-head">Total Price</th>
+                  <th class="table-head">Status</th>
+                  <th class="table-head">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% allorders.forEach(function(order, index) { %>
+                <tr>
+                  <td class="table-row"><%= index + 1 %></td>
+                  <td class="table-row">#<%= order.orderNumber %></td>
+                  <td class="table-row"><%= order.date.toDateString() %></td>
+                  <td class="table-row">
+                    <% order.items.forEach(function(item) { %>
+                      <div class="item-info d-flex justify-content-between align-items-center">
+                        <div class="item-details">
+                          <div class="product-name"><%= item.product.name %></div>
+                          <div><%= item.quantity %> x <span>$<%= item.product.price %></span></div>
+                        </div>
+                        <div style="padding: 0.3rem;">
+                          <img
+                          src="<%= item.product.image %>"
+                          alt="<%= item.product.name %>"
+                          width="70px"
+                          class="img-thumbnail"
+                        />
+                        </div>
+                      </div>
+                      
+                    <% }); %>
+                  </td>
+                  <td class="table-row">$<%= order.totalAmount %></td>
+                  <td class="table-row"><%= order.status %></td>
+                  <td class="table-row">
+                    <a href="/order/<%= order._id %>" class="btn btn-primary">Details</a>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            
+          </div>
         </div>
       </div>
     </div>
@@ -466,3 +564,48 @@
   });
 </script>
 
+<script>
+  function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdownContent");
+    dropdownContent.classList.toggle("show");
+  }
+
+  // Handle click on the "Cancel" button inside the dropdown
+  document.getElementById("cancelBtn").addEventListener("click", function () {
+    // Perform action for "Cancel" button (e.g., cancel the order)
+    // ...
+
+    // Close the dropdown
+    var dropdownContent = document.getElementById("dropdownContent");
+    dropdownContent.classList.remove("show");
+  });
+
+  // Handle click outside the dropdown to close it
+  document.addEventListener("click", function (event) {
+    if (
+      !dropdownContent.contains(event.target) &&
+      event.target !== orderOption
+    ) {
+      dropdownContent.classList.remove("show");
+    }
+  });
+  // Handle click on the "Return" button inside the dropdown
+  document.getElementById("returnBtn").addEventListener("click", function () {
+    // Perform action for "Return" button (e.g., initiate return process)
+    // ...
+
+    // Close the dropdown
+    var dropdownContent = document.getElementById("dropdownContent");
+    dropdownContent.classList.remove("show");
+  });
+
+  // Handle click on the "View" button inside the dropdown
+  document.getElementById("viewBtn").addEventListener("click", function () {
+    // Perform action for "View" button (e.g., navigate to the view page)
+    // ...
+
+    // Close the dropdown
+    var dropdownContent = document.getElementById("dropdownContent");
+    dropdownContent.classList.remove("show");
+  });
+</script>

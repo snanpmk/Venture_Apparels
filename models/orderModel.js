@@ -47,7 +47,7 @@ const orderSchema = new mongoose.Schema({
     enum:[
       'COD',
       'bankTransfer',
-      'credit-cart'
+      'razorPay'
 
     ]
   },
@@ -59,6 +59,7 @@ const orderSchema = new mongoose.Schema({
 
     ]
   },
+  totalAmount:{ type:Number},
   orderNumber: { type: Number },
   date: {
     type: Date,
