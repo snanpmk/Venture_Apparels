@@ -51,6 +51,8 @@ router.get("/logout",userController.logout)
 
 router.get("/test",userController.test)
 
+router.get("/cancel-order",orderController.cancelOrder)
+
 
 
 module.exports = router;

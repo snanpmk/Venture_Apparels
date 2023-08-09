@@ -196,17 +196,17 @@ const sendOtpLogin = async function (req, res) {
   req.session.phoneNumber = phoneNumber;
 
   console.log(req.session.phoneNumber + "from the sendOtpLogin");
-  // client.verify.v2
-  //   .services(servicesSid)
-  //   .verifications.create({ to: phoneNumber, channel: "sms" })
-  //   .then((verification) => {
-  //     console.log(verification.sid);
-  //     return true;
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //     return false;
-  //   });
+  client.verify.v2
+    .services(servicesSid)
+    .verifications.create({ to: phoneNumber, channel: "sms" })
+    .then((verification) => {
+      console.log(verification.sid);
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
   res.render("auth/userOtpVerification", { layout: "layouts/userLayout" });
 };
 
@@ -314,16 +314,20 @@ const loadCheckout = async function (req, res) {
     await cart.save();
 
     const addresses = await Address.find({ isDeleted: false });
-    const products = cart.items.map((item) => item.productId);
+    const products = cart.items.map((item) => ({
+      product: item.productId,
+      quantity: item.quantity, 
+    }));
 
     console.log(products);
 
     res.render("checkout", {
       layout: "layouts/userLayout",
       addresses: addresses,
-      products: products,
+      products: cart.items,
       grandTotal: grandTotal,
       subtotal: subtotal,
+      
     });
   } catch (err) {
     console.log("error in loading checkout", err);

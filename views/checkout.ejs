@@ -365,20 +365,18 @@
                     required=""
                   />
                   <p id="edtEmlMsg" style="color: red"></p>
-
                 </div>
                 <div class="form-group col-6">
                   <label for="phoneNumber" class="form-label"
-                  >Mobile Number</label
+                    >Mobile Number</label
                   >
                   <input
-                  type="text"
-                  class="form-control"
-                  id="editPhoneNumber"
-                  required=""
+                    type="text"
+                    class="form-control"
+                    id="editPhoneNumber"
+                    required=""
                   />
                   <p id="edtPnMsg" style="color: red"></p>
-
                 </div>
               </div>
               <div class="form-group d-flex">
@@ -397,7 +395,6 @@
                       required=""
                     />
                     <p id="edtNmMsg" style="color: red"></p>
-
                   </div>
                 </div>
                 <!-- Last Name-->
@@ -412,7 +409,6 @@
                       value=""
                       required=""
                     />
-
                   </div>
                 </div>
               </div>
@@ -426,7 +422,6 @@
                   required=""
                 />
                 <p id="edtAdsMsg" style="color: red"></p>
-
               </div>
 
               <div class="form-group col-12">
@@ -495,22 +490,22 @@
               class="d-flex flex-grow-1 justify-content-start align-items-start"
             >
               <div class="position-relative f-w-20 border p-2 me-4">
-                <span class="checkout-item-qty">1</span>
+                <span class="checkout-item-qty"><%= item.quantity %></span>
                 <img
-                  src="/<%= item.image %>"
+                  src="/<%= item.productId.image %>"
                   alt=""
                   class="rounded img-fluid"
                 />
               </div>
 
               <div>
-                <p class="mb-1 fs-6 fw-bolder"><%= item.name %></p>
+                <p class="mb-1 fs-6 fw-bolder"><%= item.productId.name %></p>
                 <small class="d-block text-muted">Mens / Blue / Medium</small>
                 <span class="fs-xs text-uppercase fw-bolder text-muted"></span>
               </div>
             </div>
             <div class="flex-shrink-0 fw-bolder">
-              <span>$<%= item.price %></span>
+              <span>$<%= item.productId.price %></span>
             </div>
           </div>
 
@@ -533,7 +528,13 @@
               <p class="m-0 fw-bold fs-5">Grand Total</p>
               <span class="text-muted small">Inc $45.89 sales tax</span>
             </div>
-            <p class="m-0 fs-5 fw-bold">$<%= grandTotal %></p>
+            <p
+              id="grandTotal"
+              class="m-0 fs-5 fw-bold"
+              data-grand-total="<%= grandTotal %>"
+            >
+              $<%= grandTotal %>
+            </p>
           </div>
         </div>
         <!-- Payment Options -->
@@ -546,7 +547,7 @@
                   class="form-check-input"
                   type="radio"
                   name="payment-option"
-                  value="credit-card"
+                  value="razorPay"
                   id="razorPay"
                 />
                 <label class="form-check-label" for="payment-option1">
@@ -618,6 +619,9 @@
 
   <!-- /Page Content -->
 </section>
+
+<!--SCRIPT FILES-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
   // Script to show and hide edit and remove buttons
@@ -1049,6 +1053,8 @@
   });
 </script>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     // Get a reference to the "Complete Order" button
@@ -1080,6 +1086,9 @@
           selectedAddressRadio.dataset.address
         );
 
+        const grandTotal = document.getElementById("grandTotal");
+        let TotalAmount = grandTotal.getAttribute("data-grand-total");
+        console.log("total amount : " + TotalAmount * 100);
         const data = {
           paymentMethod: paymentMethod,
           address: selectedAddress,
@@ -1097,11 +1106,46 @@
         })
           .then(async (response) => {
             const res = await response.json();
-            console.log(res);
+            console.log(res + "😍😒😍");
             if (res.success) {
+              if (res.paymentMethod == "razorPay") {
+                console.log("hey helloi");
+                // Assuming you have already fetched the orderId from the server response
+                const orderId = res.orderId; // Replace with the actual order ID
+
+                // Prepare the options for Razorpay checkout
+                const options = {
+                  "key": "rzp_test_mzpk2PzS48hNz3", // Replace with your actual Razorpay key
+                  "amount": TotalAmount, // Replace with the actual amount in paise (e.g., 100 for ₹1)
+                  "currency": "INR",
+                  "image": "/favicon/Venture Apparels Logo.png", // Replace with the desired currency code
+                  "name": "Venture Apparels",
+
+                  "description": "Order Payment",
+                  "order_id": orderId, // Pass the order ID you received from the server
+                  "handler": function (response) {
+                    // This function will be called when the payment is successful
+                    console.log("Payment success:", response);
+
+                    // Perform any necessary actions after successful payment
+                    // For example, redirect to a success page or show a success message
+                  },
+                  "prefill": {
+                    "name": "John Doe",
+                    "email": "john@example.com",
+                    "contact": "1234567890",
+                  },
+                  
+                };
+
+                // Open the Razorpay payment modal
+                const razorpayModal = new Razorpay(options);
+                razorpayModal.open();
+              }
               const orderId = res.orderId;
+              console.log(orderId + "❤️❤️💕💕🤣🤣😍😍");
               console.log("Order placed successfully");
-              window.location.href = `/order-success/${orderId}`;
+              // window.location.href = `/order-success/${orderId}`;
             } else {
               // Handle the error response from the server
               console.error("Error:", response.statusText);

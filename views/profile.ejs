@@ -21,22 +21,34 @@
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
   }
 
+  .dropdown-menu {
+    box-shadow: 0 1.5rem 4rem rgba(22, 28, 45, 0.12);
+    padding: 1rem 1.5rem;
+    min-width: 4rem;
+    z-index: 10000000;
+  }
+  .dropdown-item {
+    color: white;
+  }
+  .table-responsive {
+    overflow-x: auto;
+    min-width: auto;
+  }
 
- .table-head{
-  vertical-align: middle;
-  text-align: center;
+  .table-head {
+    vertical-align: middle;
+    text-align: center;
+  }
+  .table-row {
+    vertical-align: middle;
+    align-items: center;
+  }
 
-}
-.table-row{
-  vertical-align: middle;
-  align-items: center;
-}
-
-.product-name {
-  font-weight: 900;
-  font-size: small;
-  text-transform: uppercase;
- }
+  .product-name {
+    font-weight: 900;
+    font-size: small;
+    text-transform: uppercase;
+  }
   .card {
     position: relative;
     display: flex;
@@ -474,33 +486,67 @@
                   <td class="table-row"><%= order.date.toDateString() %></td>
                   <td class="table-row">
                     <% order.items.forEach(function(item) { %>
-                      <div class="item-info d-flex justify-content-between align-items-center">
-                        <div class="item-details">
-                          <div class="product-name"><%= item.product.name %></div>
-                          <div><%= item.quantity %> x <span>$<%= item.product.price %></span></div>
+                    <div
+                      class="item-info d-flex justify-content-between align-items-center"
+                    >
+                      <div class="item-details" style="max-width: 11rem">
+                        <div class="product-name"><%= item.product.name %></div>
+                        <div>
+                          <%= item.quantity %> x
+                          <span>$<%= item.product.price %></span>
                         </div>
-                        <div style="padding: 0.3rem;">
-                          <img
+                      </div>
+                      <div style="padding: 0.3rem">
+                        <img
                           src="<%= item.product.image %>"
                           alt="<%= item.product.name %>"
                           width="70px"
                           class="img-thumbnail"
                         />
-                        </div>
                       </div>
-                      
+                    </div>
                     <% }); %>
                   </td>
                   <td class="table-row">$<%= order.totalAmount %></td>
                   <td class="table-row"><%= order.status %></td>
                   <td class="table-row">
-                    <a href="/order/<%= order._id %>" class="btn btn-primary">Details</a>
+                    <div class="btn-group">
+                      <a
+                        href="#"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dropdown<%= order._id %>"
+                      >
+                        Details
+                      </a>
+                      <div
+                        class="collapse dropdown-menu"
+                        style="background-color: #0a1025"
+                        id="dropdown<%= order._id %>"
+                      >
+                        <% if (order.status === 'processing') { %>
+                        <a
+                          href="/order-details?id=<%= order._id %>"
+                          class="dropdown-item"
+                        >
+                          View
+                        </a>
+                        <a
+                          href="/cancel-order?id=<%= order._id %>"
+                          class="dropdown-item"
+                        >
+                          Cancel order
+                        </a>
+                        <% } else if (order.status === 'delivered') { %>
+                        <a class="dropdown-item" href="#">View</a>
+                        <a class="dropdown-item" href="#">Return</a>
+                        <% } %>
+                      </div>
+                    </div>
                   </td>
                 </tr>
                 <% }); %>
               </tbody>
             </table>
-            
           </div>
         </div>
       </div>
@@ -564,48 +610,4 @@
   });
 </script>
 
-<script>
-  function toggleDropdown() {
-    var dropdownContent = document.getElementById("dropdownContent");
-    dropdownContent.classList.toggle("show");
-  }
-
-  // Handle click on the "Cancel" button inside the dropdown
-  document.getElementById("cancelBtn").addEventListener("click", function () {
-    // Perform action for "Cancel" button (e.g., cancel the order)
-    // ...
-
-    // Close the dropdown
-    var dropdownContent = document.getElementById("dropdownContent");
-    dropdownContent.classList.remove("show");
-  });
-
-  // Handle click outside the dropdown to close it
-  document.addEventListener("click", function (event) {
-    if (
-      !dropdownContent.contains(event.target) &&
-      event.target !== orderOption
-    ) {
-      dropdownContent.classList.remove("show");
-    }
-  });
-  // Handle click on the "Return" button inside the dropdown
-  document.getElementById("returnBtn").addEventListener("click", function () {
-    // Perform action for "Return" button (e.g., initiate return process)
-    // ...
-
-    // Close the dropdown
-    var dropdownContent = document.getElementById("dropdownContent");
-    dropdownContent.classList.remove("show");
-  });
-
-  // Handle click on the "View" button inside the dropdown
-  document.getElementById("viewBtn").addEventListener("click", function () {
-    // Perform action for "View" button (e.g., navigate to the view page)
-    // ...
-
-    // Close the dropdown
-    var dropdownContent = document.getElementById("dropdownContent");
-    dropdownContent.classList.remove("show");
-  });
-</script>
+<script></script>

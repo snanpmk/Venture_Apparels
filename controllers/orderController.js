@@ -5,6 +5,7 @@ const Address = require("../models/addressSchema");
 const Product = require("../models/productModel")
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
 const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+const Razorpay = require('razorpay')
 
 
 
@@ -41,61 +42,81 @@ const processOrder = async function (req, res) {
     const calculateOrderAmount = (orderItems) => {
       const totalAmountInPaise = orderItems.reduce((total, item) => {
         const itemTotal = item.product.price * item.quantity;
-        return total + itemTotal;
+        return (total + itemTotal);
       }, 0);
-      return totalAmountInPaise;
+      return totalAmountInPaise*100;
     };
-
-    console.log(calculateOrderAmount(orderItems));
 
 
     //  fetch payment mode and address
     const { paymentMethod, address } = req.body;
     console.log(paymentMethod);
+    const totalAmount = calculateOrderAmount(orderItems)
+    console.log(totalAmount);
 
-    if (paymentMethod == 'COD') {
-      var paymentStatus = 'PENDING'
+
+    if (paymentMethod == 'razorPay') {
+      var razorPay = new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret })
+
+      const options = {
+        amount: totalAmount,
+        currency: "INR",
+        receipt: "order_rcptid_11"
+      };
+      razorPay.orders.create(options, function (err, order) {
+        if (err) {
+          res.status(500).json({ error: "Error creating razor pay order" });
+          return;
+        }
+        console.log("Razorpay Order ID:", order.id);
+        console.log(paymentMethod);
+        return res.json({ success: true, orderId: order.id ,paymentMethod});
+      });
     }
 
+    console.log(address);
     if (!paymentMethod) {
       console.log("choose a payment option");
       return res.json("choose a payment option")
     }
-    console.log(address);
-
-    // set order status
-    const orderStatus = "processing";
-
-    const totalAmount = calculateOrderAmount(orderItems)
-    // Create new order document
-    const order = new Order({
-      user: userId,
-      items: orderItems,
-      shippingAddress: address,
-      paymentMethod: paymentMethod,
-      status: orderStatus,
-      paymentStatus: paymentStatus,
-      totalAmount:totalAmount
-    });
-
-    console.log(order);
-    // Save the order
-    await order.save();
+    if (paymentMethod == 'COD') {
+      var paymentStatus = 'PENDING'
 
 
-    // Remove cart items from the user's cart
-    await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
+      // set order status
+      const orderStatus = "processing";
 
-    // Update the stock quantity for each item in the order
-    for (const item of orderItems) {
-      await updateStock(item.product, item.quantity);
+
+      // Create new order document
+      const order = new Order({
+        user: userId,
+        items: orderItems,
+        shippingAddress: address,
+        paymentMethod: paymentMethod,
+        status: orderStatus,
+        paymentStatus: paymentStatus,
+        totalAmount: totalAmount
+      });
+
+      console.log(order);
+      // Save the order
+      await order.save();
+
+
+      // Remove cart items from the user's cart
+      await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
+
+      // Update the stock quantity for each item in the order
+      for (const item of orderItems) {
+        await updateStock(item.product, item.quantity);
+      }
+
+
+      // Render the order success view
+      const orderId = order._id;
+      console.log(orderId);
+      return res.json({ success: true, orderId });
     }
-
-
-    // Render the order success view
-    const orderId = order._id;
-    console.log(orderId);
-    return res.json({ success: true, orderId });
   } catch (error) {
     console.log("error in processing order", error);
   }
@@ -155,9 +176,35 @@ const orderDetail = async function (req, res) {
   }
 };
 
+const cancelOrder = async function (req, res) {
+  try {
+    const orderId = req.query.id; // Assuming 'id' is the query parameter key for the order ID
+
+    // Find the order by its ID and update the status to 'canceled'
+    const order = await Order.findOneAndUpdate(
+      { _id: orderId }, // Query: find by order ID
+      { $set: { status: 'canceled' } }, // Update: set the status to 'canceled'
+      { new: true } // Return the updated document
+    );
+
+    if (!order) {
+      // Handle the case where the order was not found
+      console.log("Order not found.");
+      return res.redirect("/user-profile"); // Redirect the user to the profile page
+    }
+
+    console.log("Order canceled:", order);
+    res.redirect("/user-profile"); // Redirect the user to the profile page
+  } catch (error) {
+    console.log("Error in canceling order:", error);
+    res.status(500).send("Error in canceling order."); // Send an error response
+  }
+};
+
 
 module.exports = {
   processOrder,
   loadSuccessPage,
   orderDetail,
+  cancelOrder
 };
