@@ -53,6 +53,8 @@ router.get("/test",userController.test)
 
 router.get("/cancel-order",orderController.cancelOrder)
 
+router.post("/verify-payment",orderController.verifyPayment)
+
 
 
 module.exports = router;

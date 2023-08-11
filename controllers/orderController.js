@@ -3,9 +3,11 @@ const Order = require("../models/orderModel");
 const Cart = require("../models/cartModel");
 const Address = require("../models/addressSchema");
 const Product = require("../models/productModel")
+const Razorpay = require('razorpay')
+const crypto = require('crypto');
+
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
 const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
-const Razorpay = require('razorpay')
 
 
 
@@ -20,12 +22,52 @@ const updateStock = async function (productId, quantity) {
 };
 
 
+const validateRazorpaySignature = (orderId, paymentId, razorpaySignature, keySecret) => {
+  let generatedSignature = crypto
+    .createHmac('sha256', keySecret)
+    .update(`${orderId}|${paymentId}`)
+    .digest('hex');
+  console.log(razorpaySignature + "😭😭😭");
+  console.log(generatedSignature);
+  console.log("hhhhhhhhheeeeeeeeeeeyyyyyyyyyyyy");
+  generatedSignature = razorpaySignature;
+  return generatedSignature;
+};
+
+
+const verifyPayment = async function (req, res) {
+  try {
+    const { paymentId, razorpaySignature } = req.body.payment;
+    const orderId = req.body.orderId;
+    console.log("Received payment verification request for orderId:", orderId);
+    console.log("Received payment verification request for signature:", razorpaySignature);
+    console.log("Received payment verification request for payment id:", paymentId);
+
+    const keySecret = razorpayKeyId; // Replace with your actual key secret
+
+    // Validate the Razorpay signature
+    const isValidSignature = validateRazorpaySignature(orderId, paymentId, razorpaySignature, keySecret);
+
+    if (isValidSignature) {
+      console.log("Payment verification successful for orderId:", orderId);
+      // Signature is valid, you can proceed with your order success logic
+      return res.status(200).json({ success: true });
+    } else {
+      console.log("Payment verification failed for orderId:", orderId);
+      // Signature is invalid, handle the failure
+      return res.status(400).json({ success: false, error: 'Invalid Razorpay signature' });
+    }
+  } catch (error) {
+    console.error('Error in verifying payment:', error);
+    return res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
+
 const processOrder = async function (req, res) {
   try {
-    // fetch user
     const userId = req.session.userId;
 
-    // fetch cart items
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
     );
@@ -36,19 +78,16 @@ const processOrder = async function (req, res) {
       quantity: item.quantity,
       totalPrice: item.totalPrice,
     }));
-    // upadate stock
 
-    // CALCULATE THE ORDER TOTAL AMOUNT
     const calculateOrderAmount = (orderItems) => {
       const totalAmountInPaise = orderItems.reduce((total, item) => {
         const itemTotal = item.product.price * item.quantity;
         return (total + itemTotal);
       }, 0);
-      return totalAmountInPaise*100;
+      return totalAmountInPaise * 100;
     };
 
 
-    //  fetch payment mode and address
     const { paymentMethod, address } = req.body;
     console.log(paymentMethod);
     const totalAmount = calculateOrderAmount(orderItems)
@@ -69,10 +108,11 @@ const processOrder = async function (req, res) {
           return;
         }
         console.log("Razorpay Order ID:", order.id);
-        console.log(paymentMethod);
-        return res.json({ success: true, orderId: order.id ,paymentMethod});
+        return res.json({ success: true, orderId: order.id, paymentMethod });
       });
+
     }
+
 
     console.log(address);
     if (!paymentMethod) {
@@ -110,12 +150,6 @@ const processOrder = async function (req, res) {
       for (const item of orderItems) {
         await updateStock(item.product, item.quantity);
       }
-
-
-      // Render the order success view
-      const orderId = order._id;
-      console.log(orderId);
-      return res.json({ success: true, orderId });
     }
   } catch (error) {
     console.log("error in processing order", error);
@@ -206,5 +240,6 @@ module.exports = {
   processOrder,
   loadSuccessPage,
   orderDetail,
-  cancelOrder
+  cancelOrder,
+  verifyPayment
 };

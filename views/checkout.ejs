@@ -1057,107 +1057,138 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Get a reference to the "Complete Order" button
     const completeOrderButton = document.getElementById("completeOrderButton");
+    const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
+    const razorPayRadio = document.getElementById("razorPay");
+    const bankTransferRadio = document.getElementById("bankTransfer");
+    let selectedAddressRadio;
 
-    // Add an event listener to the button
-    completeOrderButton.addEventListener("click", () => {
-      // Retrieve the selected payment method
-      const cashOnDeliveryRadio = document.getElementById("cashOnDelivery");
-      const razorPayRadio = document.getElementById("razorPay");
-      const bankTransferRadio = document.getElementById("bankTransfer");
+    completeOrderButton.addEventListener("click", async () => {
+      const paymentMethod = cashOnDeliveryRadio.checked
+        ? cashOnDeliveryRadio.value
+        : razorPayRadio.checked
+        ? razorPayRadio.value
+        : bankTransferRadio.checked
+        ? bankTransferRadio.value
+        : null;
 
-      let paymentMethod;
-      if (cashOnDeliveryRadio.checked) {
-        paymentMethod = cashOnDeliveryRadio.value;
-      } else if (razorPayRadio.checked) {
-        paymentMethod = razorPayRadio.value;
-      } else if (bankTransferRadio.checked) {
-        paymentMethod = bankTransferRadio.value;
-      }
-
-      // Retrieve the selected address
-      const selectedAddressRadio = document.querySelector(
+      selectedAddressRadio = document.querySelector(
         'input[name="card-selection"]:checked'
       );
 
       if (selectedAddressRadio && paymentMethod) {
+        // Retrieve the selected address
         const selectedAddress = JSON.parse(
           selectedAddressRadio.dataset.address
         );
 
         const grandTotal = document.getElementById("grandTotal");
-        let TotalAmount = grandTotal.getAttribute("data-grand-total");
-        console.log("total amount : " + TotalAmount * 100);
+        const TotalAmount = parseFloat(
+          grandTotal.getAttribute("data-grand-total")
+        );
+
         const data = {
           paymentMethod: paymentMethod,
           address: selectedAddress,
         };
 
-        console.log(data);
+        try {
+          const response = await fetch("/process-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
 
-        // Fetch request to the server
-        fetch("/process-order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then(async (response) => {
-            const res = await response.json();
-            console.log(res + "😍😒😍");
-            if (res.success) {
-              if (res.paymentMethod == "razorPay") {
-                console.log("hey helloi");
-                // Assuming you have already fetched the orderId from the server response
-                const orderId = res.orderId; // Replace with the actual order ID
+          const res = await response.json();
+          console.log(res + "😍😒😍");
 
-                // Prepare the options for Razorpay checkout
-                const options = {
-                  "key": "rzp_test_mzpk2PzS48hNz3", // Replace with your actual Razorpay key
-                  "amount": TotalAmount, // Replace with the actual amount in paise (e.g., 100 for ₹1)
-                  "currency": "INR",
-                  "image": "/favicon/Venture Apparels Logo.png", // Replace with the desired currency code
-                  "name": "Venture Apparels",
+          if (res.success) {
+            if (res.paymentMethod === "razorPay") {
+              const orderId = res.orderId;
+              console.log(orderId + "🚀 yo!!!! this is the razorpay orderid");
+              const options = {
+                key: "rzp_test_mzpk2PzS48hNz3",
+                amount: TotalAmount * 100,
+                currency: "INR",
+                name: "Venture Apparels",
+                description: "Order Payment",
+                order_id: orderId,
+                handler: function (response) {
+                  console.log("😁😁😁😁Payment success:", response);
+                  verifyPayment(
+                    response.razorpay_payment_id,
+                    response.razorpay_signature,
+                    orderId
+                  );
+                },
+                prefill: {
+                  name: "John Doe",
+                  email: "john@example.com",
+                  contact: "1234567890",
+                },
+                notes: {
+                  address: "Razorpay Corporate Office",
+                },
+                theme: {
+                  color: "#070b22",
+                },
+              };
 
-                  "description": "Order Payment",
-                  "order_id": orderId, // Pass the order ID you received from the server
-                  "handler": function (response) {
-                    // This function will be called when the payment is successful
-                    console.log("Payment success:", response);
+              const razorpayModal = new Razorpay(options);
 
-                    // Perform any necessary actions after successful payment
-                    // For example, redirect to a success page or show a success message
-                  },
-                  "prefill": {
-                    "name": "John Doe",
-                    "email": "john@example.com",
-                    "contact": "1234567890",
-                  },
-                  
+              razorpayModal.on("payment.failed", function (response) {
+                window.location.href = `/order-failed/${orderId}`;
+              });
+
+              razorpayModal.open();
+
+              const verifyPayment = (paymentId, razorpaySignature, orderId) => {
+
+                const payment = {
+                  paymentId: paymentId,
+                  razorpaySignature: razorpaySignature,
                 };
 
-                // Open the Razorpay payment modal
-                const razorpayModal = new Razorpay(options);
-                razorpayModal.open();
-              }
-              const orderId = res.orderId;
-              console.log(orderId + "❤️❤️💕💕🤣🤣😍😍");
-              console.log("Order placed successfully");
-              // window.location.href = `/order-success/${orderId}`;
+                fetch("/verify-payment", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ payment, orderId }),
+                })
+                  .then(async (response) => {
+                    const verificationResponse = await response.json();
+
+                    if (verificationResponse.success) {
+                      // Handle the successful payment verification, e.g., redirect to success page
+                      window.location.href = `/order-success/${res.orderId}`;
+                    } else {
+                      // Handle the payment verification failure, e.g., show an error message
+                      console.log("Order failed");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                    // Handle the fetch error, e.g., show an error message
+                  });
+              };
             } else {
-              // Handle the error response from the server
-              console.error("Error:", response.statusText);
-              // Show an error message or perform any necessary actions
+              console.log("Order placed successfully");
+              window.location.href = `/order-success/${res.orderId}`;
             }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
+          } else {
+            // Handle the error response from the server
+            console.error("Error:", response.statusText);
             // Show an error message or perform any necessary actions
-          });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          // Show an error message or perform any necessary actions
+        }
       } else {
-        // Handle the case where no address or payment option is selected
+        // Handle missing address or payment method
         let errorMessage = "Please ";
         if (!selectedAddressRadio) {
           errorMessage += "choose an address ";
