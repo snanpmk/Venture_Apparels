@@ -21,6 +21,8 @@ router.get("/deactivate-user/:ObjectId", adminController.deactivateUser);
 
 router.get("/orders", adminController.listAllOrders); 
 
+router.get("/add-banner",adminController.loadAddBanner)
+
 
 
 

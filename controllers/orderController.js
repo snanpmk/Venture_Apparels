@@ -37,6 +37,7 @@ const validateRazorpaySignature = (orderId, paymentId, razorpaySignature, keySec
 
 const verifyPayment = async function (req, res) {
   try {
+    const createdOrderId = req.params.ObjectId
     const { paymentId, razorpaySignature } = req.body.payment;
     const orderId = req.body.orderId;
     console.log("Received payment verification request for orderId:", orderId);
@@ -51,7 +52,7 @@ const verifyPayment = async function (req, res) {
     if (isValidSignature) {
       console.log("Payment verification successful for orderId:", orderId);
       // Signature is valid, you can proceed with your order success logic
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ success: true,createdOrderId });
     } else {
       console.log("Payment verification failed for orderId:", orderId);
       // Signature is invalid, handle the failure
@@ -63,22 +64,22 @@ const verifyPayment = async function (req, res) {
   }
 };
 
-
 const processOrder = async function (req, res) {
   try {
     const userId = req.session.userId;
+    console.log(userId+"🚀🚀🚀");
 
     const cart = await Cart.findOne({ userId: userId }).populate(
       "items.productId"
     );
 
-    console.log(cart);
     let orderItems = cart.items.map((item) => ({
       product: item.productId,
       quantity: item.quantity,
       totalPrice: item.totalPrice,
     }));
 
+    console.log(orderItems+"hey helllllllllllllllllllooooooooooo");
     const calculateOrderAmount = (orderItems) => {
       const totalAmountInPaise = orderItems.reduce((total, item) => {
         const itemTotal = item.product.price * item.quantity;
@@ -87,74 +88,89 @@ const processOrder = async function (req, res) {
       return totalAmountInPaise * 100;
     };
 
-
     const { paymentMethod, address } = req.body;
-    console.log(paymentMethod);
-    const totalAmount = calculateOrderAmount(orderItems)
-    console.log(totalAmount);
+    const totalAmount = calculateOrderAmount(orderItems);
+    console.log(paymentMethod)
+    console.log(address);
+    console.log(totalAmount+"💕 💕 💕");
+    if (!paymentMethod) {
+      console.log("Choose a payment option");
+      return res.json("Choose a payment option");
+    }
 
-
-    if (paymentMethod == 'razorPay') {
-      var razorPay = new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret })
+    if (paymentMethod === 'razorPay') {
+      var razorPay = new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret });
 
       const options = {
         amount: totalAmount,
         currency: "INR",
-        receipt: "order_rcptid_11"
+        receipt: "order_rcptid_11",
       };
-      razorPay.orders.create(options, function (err, order) {
+
+      razorPay.orders.create(options, async function (err, order) {
         if (err) {
-          res.status(500).json({ error: "Error creating razor pay order" });
+          res.status(500).json({ error: "Error creating RazorPay order" });
           return;
         }
         console.log("Razorpay Order ID:", order.id);
-        return res.json({ success: true, orderId: order.id, paymentMethod });
-      });
 
+        // Call createOrder function for RazorPay payment
+       const createdOrder = await createOrder(userId, orderItems, address, paymentMethod, totalAmount);
+       const createdOrderId = createdOrder._id
+
+        return res.json({ success: true, orderId: order.id,createdOrderId, paymentMethod });
+      });
     }
 
 
-    console.log(address);
-    if (!paymentMethod) {
-      console.log("choose a payment option");
-      return res.json("choose a payment option")
-    }
-    if (paymentMethod == 'COD') {
-      var paymentStatus = 'PENDING'
-
-
-      // set order status
-      const orderStatus = "processing";
-
-
-      // Create new order document
-      const order = new Order({
-        user: userId,
-        items: orderItems,
-        shippingAddress: address,
-        paymentMethod: paymentMethod,
-        status: orderStatus,
-        paymentStatus: paymentStatus,
-        totalAmount: totalAmount
-      });
-
-      console.log(order);
-      // Save the order
-      await order.save();
-
-
-      // Remove cart items from the user's cart
-      await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
-
-      // Update the stock quantity for each item in the order
-      for (const item of orderItems) {
-        await updateStock(item.product, item.quantity);
-      }
+    if (paymentMethod === 'COD') {
+      // Call createOrder function for COD payment
+      const order = await createOrder(userId, orderItems, address, paymentMethod, totalAmount);
+      const createdOrderId = order._id
+      console.log(order+"❤️🤣💕😭");
+      return res.status(200).json({success:true,paymentMethod,createdOrderId,order})
     }
   } catch (error) {
-    console.log("error in processing order", error);
+    console.log("Error in processing order", error);
+    return res.status(500).json({ error: "Error processing order" });
   }
 };
+
+
+const createOrder = async (userId, orderItems, address, paymentMethod, totalAmount) => {
+  try {
+    // set order status
+    const orderStatus = "processing";
+
+    // Create new order document
+    const order = new Order({
+      user: userId,
+      items: orderItems,
+      shippingAddress: address,
+      paymentMethod: paymentMethod,
+      status: orderStatus,
+      paymentStatus: paymentMethod === 'COD' ? 'PENDING' : 'PAID', // Update paymentStatus based on paymentMethod
+      totalAmount: totalAmount
+    });
+
+    // Save the order
+    await order.save();
+
+    await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
+
+
+    // Update the stock quantity for each item in the order
+    for (const item of orderItems) {
+      await updateStock(item.product, item.quantity);
+    }
+
+    return order;
+  } catch (error) {
+    console.log("Error creating and saving order:", error);
+    throw error;
+  }
+};
+
 
 const loadSuccessPage = async function (req, res) {
   try {

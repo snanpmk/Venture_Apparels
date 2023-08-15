@@ -1151,7 +1151,7 @@
                   razorpaySignature: razorpaySignature,
                 };
 
-                fetch("/verify-payment", {
+                fetch("/verify-payment/${res.createdOrderId", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -1163,7 +1163,7 @@
 
                     if (verificationResponse.success) {
                       // Handle the successful payment verification, e.g., redirect to success page
-                      window.location.href = `/order-success/${res.orderId}`;
+                      window.location.href = `/order-success/${res.createdOrderId}`;
                     } else {
                       // Handle the payment verification failure, e.g., show an error message
                       console.log("Order failed");
@@ -1176,7 +1176,8 @@
               };
             } else {
               console.log("Order placed successfully");
-              window.location.href = `/order-success/${res.orderId}`;
+              console.log(res.createdOrderId+"😒😥😢😒🤣");
+              window.location.href = `/order-success/${res.createdOrderId}`;
             }
           } else {
             // Handle the error response from the server

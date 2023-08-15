@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Order = require("../models/orderModel")
+const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
 
 // GET ADMIN LOGIN
@@ -172,6 +173,18 @@ const listAllOrders = async (req, res) => {
 
 };
 
+const loadAddBanner = async function(req ,res) {
+  try {
+    res.render("admin/addBanner",{
+      title: "Add Banner",
+      layout: "layouts/adminLayout",
+      errorMessage: null,
+    })
+  } catch(error) {
+    console.log("error in adding banner"+error);
+  }
+}
+
 module.exports = {
   adminLogin,
   loadAdminLogin,
@@ -181,5 +194,6 @@ module.exports = {
   loadUpdateUser,
   activateUser,
   deactivateUser,
-  listAllOrders
+  listAllOrders,
+  loadAddBanner,
 };

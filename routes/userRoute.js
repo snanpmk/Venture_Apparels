@@ -53,7 +53,7 @@ router.get("/test",userController.test)
 
 router.get("/cancel-order",orderController.cancelOrder)
 
-router.post("/verify-payment",orderController.verifyPayment)
+router.post("/verify-payment/:ObjectId",orderController.verifyPayment)
 
 
 

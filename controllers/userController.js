@@ -18,7 +18,7 @@ const client = twilio(accountSid, authToken);
 // GET USER LANDING PAGE
 const loadHome = async function (req, res) {
   try {
-    const products = await Product.find().sort({ upload: -1 }).limit(7);
+    const products = await Product.find({deleted:false}).sort({ upload: -1 }).limit(7);
     res.render("home", { layout: "layouts/userLayout", products: products });
   } catch (err) {
     console.log("Error registering user", err);
