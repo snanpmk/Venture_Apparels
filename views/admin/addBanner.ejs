@@ -138,6 +138,13 @@
     font-weight: 400;
   }
 
+  .banner-url {
+    display: inline-block;
+    width: 100%;
+    white-space: normal;
+    overflow: overlay;
+    text-overflow: inherit;
+  }
   /* Hide the default file input */
   input[type="file"] {
     position: absolute;
@@ -152,14 +159,32 @@
     margin-top: 10px;
     color: red;
   }
+  .deletediv {
+    align-items: end;
+    display: grid;
+  }
 
   /* Style when hovering over the custom button */
   .custom-file-button:hover {
     background-color: #286090;
   }
 </style>
-
 <div class="container">
+  <% if (banners.length >= 3) { %> <% banners.forEach(banner => { %>
+    <div class="banner-card">
+      <img src="/<%= banner.image %>" class="banner-image" />
+      <h3 class="banner-title"><%= banner.title %></h3>
+      <div class="d-flex" style="flex-direction: column">
+        <div>
+          <p class="banner-url"><%= banner.url %></p>
+          <p class="banner-description"><%= banner.description %></p>
+        </div>
+        <div class="deletediv">
+          <button class="btn btn-danger replace-button" data-banner-id="<%= banner.id %>">Delete</button>
+        </div>
+      </div>
+    </div>
+  <% }); %> <% } else { %>
   <div class="add-banner-card" id="addBannerBtn">
     <span class="plus-icon">+</span>
     <span><h3 class="addbannertxt">Add Banner</h3></span>
@@ -169,11 +194,20 @@
   <div class="banner-card">
     <img src="/<%= banner.image %>" class="banner-image" />
     <h3 class="banner-title"><%= banner.title %></h3>
-    <p class="banner-url"><%= banner.url %></p>
-    <p class="banner-description"><%= banner.description %></p>
+    <div class="d-flex" style="flex-direction: column">
+      <div>
+        <p class="banner-url"><%= banner.url %></p>
+        <p class="banner-description"><%= banner.description %></p>
+      </div>
+      <div class="deletediv">
+        <button class="btn btn-danger replace-button" data-banner-id="<%= banner.id %>">Delete</button>
+      </div>
+    </div>
   </div>
-  <% }); %>
+  <% }); %> <% } %>
 </div>
+
+<!-- ... Rest of your code ... -->
 
 <!-- modal for add banner -->
 <div id="addBannerModal" class="modal">
@@ -243,5 +277,48 @@
   // Inside the form submission event listener
   document.getElementById("bannerForm").addEventListener("submit", function () {
     document.getElementById("addBannerModal").style.display = "none";
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".replace-button");
+    
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const bannerId = button.getAttribute("data-banner-id");
+        
+        // Display SweetAlert confirmation dialog
+        Swal.fire({
+          title: "Delete Banner?",
+          text: "Are you sure you want to delete this banner?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // User confirmed, send a fetch request to delete the banner
+            fetch(`/admin/delete-banner/${bannerId}`, {
+              method: "delete",
+              headers: {
+                "Content-Type": "application/json"
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success == true) {
+                Swal.fire("Deleted!", "The banner has been deleted.", "success").then(() => {
+                  window.location.reload();
+                });
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+            });
+          }
+        });
+      });
+    });
   });
 </script>

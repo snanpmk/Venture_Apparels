@@ -189,6 +189,8 @@ const loadAddBanner = async function (req, res) {
 
 const addBanner = async function (req, res) {
   try {
+
+    
     const { title, url, description } = req.body;
     const image = req.file.filename; 
     const banner = new Banner({
@@ -206,7 +208,16 @@ const addBanner = async function (req, res) {
     res.status(500).json({ error: 'Error adding banner' });
   }
 };
-
+const deleteBanner = async function(req,res) {
+  try {
+    const bannerId = req.params.ObjectId
+    console.log(bannerId);
+    const banners  = await Banner.findByIdAndDelete(bannerId)
+    res.status(400).json({success:true})
+  } catch (error) {
+    console.log("error in deleting banner" ,error);
+  }
+}
 
 module.exports = {
   adminLogin,
@@ -220,5 +231,6 @@ module.exports = {
   listAllOrders,
   loadAddBanner,
   addBanner,
+  deleteBanner
   
 };

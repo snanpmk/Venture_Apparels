@@ -27,6 +27,8 @@ router.get("/add-banner",adminController.loadAddBanner)
 
 router.post("/add-banner",upload.single("image"),adminController.addBanner)
 
+router.delete("/delete-banner/:ObjectId",adminController.deleteBanner)
+
 
 
 
