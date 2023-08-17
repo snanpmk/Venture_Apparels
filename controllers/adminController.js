@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 // GET ADMIN LOGIN
 const loadAdminLogin = function (req, res) {
   try {
-    res.render("auth/adminSignIn",{layout:"layouts/noLayout"});
+    res.render("auth/adminSignIn", { layout: "layouts/noLayout" });
   } catch (err) {
     console.log("error in loading admin login", err);
   }
@@ -57,9 +57,9 @@ const adminLogin = async function (req, res) {
         console.log(req.session.userId);
       }
       res
-      .status(200)
-      .json({ success: true, message: "logged in successfully" });
-        
+        .status(200)
+        .json({ success: true, message: "logged in successfully" });
+
     }
   } catch (err) {
     console.log("admin login error", err);
@@ -152,7 +152,7 @@ const activateUser = async function (req, res) {
     console.log(user);
     res.redirect("/admin/users");
   } catch (err) {
-    console.log("error in activating user",err);
+    console.log("error in activating user", err);
   }
 };
 
@@ -160,30 +160,53 @@ const activateUser = async function (req, res) {
 const listAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
-    .populate('shippingAddress', 'fname lname email address state country')
-    .populate('items.product', 'image name price')
-    .sort({ date: -1 });
-    res.render("admin/orderListAdmin",{
+      .populate('shippingAddress', 'fname lname email address state country')
+      .populate('items.product', 'image name price')
+      .sort({ date: -1 });
+    res.render("admin/orderListAdmin", {
       allorders: orders,
 
     })
-  } catch(error) {
-    console.log("error in listing orders ",error);
+  } catch (error) {
+    console.log("error in listing orders ", error);
   }
 
 };
 
-const loadAddBanner = async function(req ,res) {
+const loadAddBanner = async function (req, res) {
   try {
-    res.render("admin/addBanner",{
+    const banners = await Banner.find()
+    res.render("admin/addBanner", {
       title: "Add Banner",
       layout: "layouts/adminLayout",
       errorMessage: null,
+      banners: banners
     })
-  } catch(error) {
-    console.log("error in adding banner"+error);
+  } catch (error) {
+    console.log("error in adding banner" + error);
   }
 }
+
+const addBanner = async function (req, res) {
+  try {
+    const { title, url, description } = req.body;
+    const image = req.file.filename; 
+    const banner = new Banner({
+      title,
+      url,
+      description,
+      image,
+    });
+
+    const savedBanner = await banner.save();
+    res.redirect('/admin/add-banner')
+    console.log(savedBanner);
+  } catch (error) {
+    console.log('error in adding banner to db', error);
+    res.status(500).json({ error: 'Error adding banner' });
+  }
+};
+
 
 module.exports = {
   adminLogin,
@@ -196,4 +219,6 @@ module.exports = {
   deactivateUser,
   listAllOrders,
   loadAddBanner,
+  addBanner,
+  
 };

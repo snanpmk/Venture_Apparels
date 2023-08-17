@@ -1,0 +1,247 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: auto; /* Clear the float */
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .banner-card,
+  .add-banner-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 0 20px 20px 0;
+    width: calc(33.33% - 20px); /* Adjust for margins */
+  }
+  .add-banner-card {
+    background-color: #0c1927;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .plus-icon {
+    font-size: 50px;
+    margin-right: 10px;
+  }
+  .banner-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  .banner-title {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .banner-description {
+    color: #666;
+    margin-top: 5px;
+  }
+
+  /* Responsive styles */
+  @media screen and (max-width: 768px) {
+    .banner-card,
+    .add-banner-card {
+      width: calc(50% - 20px);
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .banner-card,
+    .add-banner-card {
+      width: 100%;
+    }
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(19, 19, 19, 0.696);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: rgb(255, 255, 255);
+
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px; /* Set a maximum width */
+    width: 80%; /* Adjust the width as needed */
+  }
+
+  /* Additional styles for the form */
+  form {
+    margin-top: 10px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .addbannertxt {
+    color: #fff;
+  }
+
+  .choose-file {
+    background-color: #0c1927;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  .file-input-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .custom-file-button {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #041624;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 2rem;
+    font-weight: 400;
+  }
+
+  /* Hide the default file input */
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .error-message {
+    margin-top: 10px;
+    color: red;
+  }
+
+  /* Style when hovering over the custom button */
+  .custom-file-button:hover {
+    background-color: #286090;
+  }
+</style>
+
+<div class="container">
+  <div class="add-banner-card" id="addBannerBtn">
+    <span class="plus-icon">+</span>
+    <span><h3 class="addbannertxt">Add Banner</h3></span>
+  </div>
+
+  <% banners.forEach(banner => { %>
+  <div class="banner-card">
+    <img src="/<%= banner.image %>" class="banner-image" />
+    <h3 class="banner-title"><%= banner.title %></h3>
+    <p class="banner-url"><%= banner.url %></p>
+    <p class="banner-description"><%= banner.description %></p>
+  </div>
+  <% }); %>
+</div>
+
+<!-- modal for add banner -->
+<div id="addBannerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2>Add Banner</h2>
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action="/admin/add-banner"
+      id="bannerForm"
+    >
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required />
+        <p class="error-message" id="titleError"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL:</label>
+        <input type="url" id="url" name="url" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+      <br />
+      <div class="file-input-container">
+        <label for="image" class="custom-file-button">
+          Choose Banner Image
+        </label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+      </div>
+      <p class="error-message" id="imageError">error</p>
+
+      <input type="submit" value="Add" />
+    </form>
+  </div>
+</div>
+
+<script>
+  document
+    // open modal
+    .getElementById("addBannerBtn")
+    .addEventListener("click", function () {
+      document.getElementById("addBannerModal").style.display = "flex";
+    });
+
+  // close modal
+  document.getElementById("closeModal").addEventListener("click", function () {
+    document.getElementById("addBannerModal").style.display = "none";
+  });
+
+  // close modal when clicked outside
+  document.addEventListener("click", function (event) {
+    const modal = document.getElementById("addBannerModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+  // Inside the form submission event listener
+  document.getElementById("bannerForm").addEventListener("submit", function () {
+    document.getElementById("addBannerModal").style.display = "none";
+  });
+</script>

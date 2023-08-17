@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const adminController = require('../controllers/adminController')
 const sessionMiddleware = require("../middlewares/sessionMiddleware")
+const upload = require("../helpers/banners.upload")
+
 
 router.get('/',adminController.loadAdminLogin)
 
@@ -22,6 +24,9 @@ router.get("/deactivate-user/:ObjectId", adminController.deactivateUser);
 router.get("/orders", adminController.listAllOrders); 
 
 router.get("/add-banner",adminController.loadAddBanner)
+
+router.post("/add-banner",upload.single("image"),adminController.addBanner)
+
 
 
 

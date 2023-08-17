@@ -6,6 +6,7 @@ const Category = require("../models/categoryModel")
 const Address = require("../models/addressSchema");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
+const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
 
 const accountSid = process.env.ACCOUNT_SID;
@@ -18,8 +19,9 @@ const client = twilio(accountSid, authToken);
 // GET USER LANDING PAGE
 const loadHome = async function (req, res) {
   try {
-    const products = await Product.find({deleted:false}).sort({ upload: -1 }).limit(7);
-    res.render("home", { layout: "layouts/userLayout", products: products });
+    const banner = await Banner.find()
+    const products = await Product.find({ deleted: false }).sort({ upload: -1 }).limit(7);
+    res.render("home", { layout: "layouts/userLayout", products: products, banners: banner });
   } catch (err) {
     console.log("Error registering user", err);
   }
@@ -316,7 +318,7 @@ const loadCheckout = async function (req, res) {
     const addresses = await Address.find({ isDeleted: false });
     const products = cart.items.map((item) => ({
       product: item.productId,
-      quantity: item.quantity, 
+      quantity: item.quantity,
     }));
 
     console.log(products);
@@ -327,7 +329,7 @@ const loadCheckout = async function (req, res) {
       products: cart.items,
       grandTotal: grandTotal,
       subtotal: subtotal,
-      
+
     });
   } catch (err) {
     console.log("error in loading checkout", err);
