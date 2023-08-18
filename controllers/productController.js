@@ -8,17 +8,19 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const listAllProducts = async function (req, res) {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('category');
+    
     res.render("product/list", {
-      title: "all Product",
+      title: "All Products",
       layout: "layouts/adminLayout",
       products: products,
       errorMessage: null,
     });
   } catch (err) {
-    console.log("error in listing products", err);
+    console.log("Error in listing products", err);
   }
 };
+
 
 const loadAddProduct = async function (req, res) {
   try {
