@@ -1,73 +1,83 @@
+<style>
+  .key {
+    text-transform: uppercase;
+    font-weight: 500;
+  } 
+  .card-text{
+    font-weight: 400;
+    color: black;
+  }
+</style>
 <h3 class="mb-4">View Orders</h3>
-        <div class="table-responsive">
-        <table class="table text-nowrap mb-0 align-middle">
-          <thead class="text-dark fs-4">
-            <tr>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">ORDER NUMBER</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">USER</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">PRODUCT</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">QTY</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">SHIPPING ADDRESS</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">STATUS</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">PAYMENT</h6>
-              </th>
-              <th class="border-bottom-0">
-                <h6 class="fw-semibold mb-0">DATE</h6>
-              </th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            <% allorders.forEach((order) => { %>
-              <% order.items.forEach((item) => { %>
+<div class="table-responsive">
+  <table class="table text-nowrap mb-0">
+    <!-- Table headers here -->
+    <tbody>
+      <% allorders.forEach((order) => { %> <% order.items.forEach((item) => { %>
 
-          <!-- list orders here -->
-          <tr>
-            <td class="border-bottom-0">
-              <p class="mb-0 fw-normal">#<%= order.orderNumber %></p>
-            </td>
-              <td class="border-bottom-0" style="width: 20px !important;">
-                <h6 class="fw-semibold mb-1"><%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %></h6>
-                  <span class="fw-normal"><%= order.shippingAddress.email %></span>                          
-                </td>
-              <td class="border-bottom-0">
-                <div style="display: flex;flex-direction: column;" class="d-flex align-items-center gap-2">
-                  <img style="width: 4rem;" src="/<%= item.product.image %>" alt="">
-                  <h6 style="text-transform: uppercase;"><%= item.product.name %></h6>
+      <!-- Card for each order -->
+      <tr>
+        <td colspan="8" class="border-0">
+          <div class="card mb-4">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title" style="text-align: start;">Order #<%= order.orderNumber %></h5>
+                  <div
+                    class="d-md-flex justify-content-between align-items-center"
+                  >
+                    <p class="card-text mb-md-0"><%= item.product.name %></p>
+                    <p class="card-text mb-md-0">Qty: <%= item.quantity %></p>
+                    <p class="card-text mb-0">
+                      <%= order.date.toDateString() %>
+                    </p>
+                  </div>
+                  <div
+                    class="d-md-flex justify-content-between align-items-center mt-2"
+                  >
+                    <p class="card-text mb-0"> Shipping Addres :
+                      <%= order.shippingAddress.address %>, <%=
+                      order.shippingAddress.state %>, <%=
+                      order.shippingAddress.country %>
+                    </p>
+                    <p class="card-text mb-0">
+                      User: <%= order.shippingAddress.fname %> <%=
+                      order.shippingAddress.lname %>
+                    </p>
+                    
+                  </div>
+                  <div
+                    class="d-md-flex justify-content-between align-items-center mt-2"
+                  >
+                    <p class="card-text mb-0">
+                      Payment Method: <%= order.paymentMethod %>
+                    </p>
+                    <p class="card-text mb-0">
+                      <span
+                        class="badge rounded-pill <%= order.status === 'cancelled' ? 'bg-danger' : 'bg-info' %>"
+                      >
+                        <%= order.status %>
+                      </span>
+                    </p>
+                    
+                  </div>
                 </div>
-              </td>
-              <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-0 fs-4"><%= item.quantity %></h6>
-              </td>
-              <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-0 fs-4"><%= order.shippingAddress.address %><br> <%= order.shippingAddress.state %>, <%= order.shippingAddress.country %></h6>
-              </td>
-              <td class="border-bottom-0">
-                <span style="text-transform: uppercase;" class="badge rounded-pill bg-info"><%= order.status %></span>
-
-              </td>
-              <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-0 fs-4"><%= order.paymentMethod %></h6>
-              </td>
-              <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-0 fs-4"><%= order.date.toDateString() %></h6>
-              </td>
-            </tr> 
-            <% }); %>
-            <% }); %>
-            <!-- list orders here -->
-          </tbody>
-        </table>
+              </div>
+              <div
+                class="col-md-4 d-flex align-items-center justify-content-center"
+              >
+                <img
+                  src="/<%= item.product.image %>"
+                  alt="<%= item.product.name %>"
+                  class="img-thumbnail"
+                  style="max-width: 100px"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% }); %> <% }); %>
+    </tbody>
+  </table>
+</div>

@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const Order = require("../models/orderModel")
 const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
-
+const pdfKit = require("../config/pdfKit")
 // GET ADMIN LOGIN
 const loadAdminLogin = function (req, res) {
   try {
@@ -190,9 +190,9 @@ const loadAddBanner = async function (req, res) {
 const addBanner = async function (req, res) {
   try {
 
-    
+
     const { title, url, description } = req.body;
-    const image = req.file.filename; 
+    const image = req.file.filename;
     const banner = new Banner({
       title,
       url,
@@ -208,14 +208,46 @@ const addBanner = async function (req, res) {
     res.status(500).json({ error: 'Error adding banner' });
   }
 };
-const deleteBanner = async function(req,res) {
+const deleteBanner = async function (req, res) {
   try {
     const bannerId = req.params.ObjectId
     console.log(bannerId);
-    const banners  = await Banner.findByIdAndDelete(bannerId)
-    res.status(400).json({success:true})
+    const banners = await Banner.findByIdAndDelete(bannerId)
+    res.status(400).json({ success: true })
   } catch (error) {
-    console.log("error in deleting banner" ,error);
+    console.log("error in deleting banner", error);
+  }
+}
+const downloadSalesReport = async function (req, res) {
+  try {
+    const currentDate = new Date();
+    const thisMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const thisMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+    const reportData = await Order.find({
+      date: {
+        $gte: thisMonthStartDate,
+        $lte: thisMonthEndDate,
+      }
+    }).populate('items.product');
+    
+    const modifiedReportData = reportData.map(order => {
+      const modifiedItems = order.items.map(item => {
+        return {
+          orderNumber : order.orderNumber,
+          date: order.date,
+          product: item.product.name,
+          quantity: item.quantity,
+          price: item.totalPrice,
+          total: item.quantity * item.totalPrice
+        };
+      });
+
+      return modifiedItems;
+    }).flat();
+    pdfKit.generateSalesReport(modifiedReportData, res);
+  } catch (error) {
+    console.log("error in downloading the sales report", error);
   }
 }
 
@@ -231,6 +263,7 @@ module.exports = {
   listAllOrders,
   loadAddBanner,
   addBanner,
-  deleteBanner
-  
+  deleteBanner,
+  downloadSalesReport,
+
 };

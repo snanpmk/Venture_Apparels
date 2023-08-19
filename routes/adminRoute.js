@@ -5,11 +5,12 @@ const sessionMiddleware = require("../middlewares/sessionMiddleware")
 const upload = require("../helpers/banners.upload")
 
 
+
 router.get('/',adminController.loadAdminLogin)
 
 router.post('/',adminController.adminLogin) 
 
-router.get('/dashboard',sessionMiddleware.isAdminLoggedIn,adminController.loadDashboard)
+router.get('/dashboard',adminController.loadDashboard)
 
 router.get('/users',adminController.listAllUsers)
 
@@ -28,6 +29,8 @@ router.get("/add-banner",adminController.loadAddBanner)
 router.post("/add-banner",upload.single("image"),adminController.addBanner)
 
 router.delete("/delete-banner/:ObjectId",adminController.deleteBanner)
+
+router.get("/download-report",adminController.downloadSalesReport)
 
 
 

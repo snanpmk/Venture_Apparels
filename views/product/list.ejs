@@ -17,7 +17,7 @@
     color: green;
   }
   .key {
-    font-weight: bold;
+    font-weight: 500;
     color: black;
   }
 </style>
@@ -37,30 +37,22 @@
         </a>
       </div>
       <div class="card-body pt-3 p-4">
-        <h6 class="product-name fw-bolder fs-5"><%= product.name %></h6>
-        <div style="border-block: 1px;border-radius: 1rem;">
+        <h6 class="fw-semibold fs-4" style="text-align: center;color: black;">
+          <%= product.name %>
+        </h6>
+        <div style="border-block: 1px; border-radius: 1rem">
           <div class="d-flex align-items-center justify-content-between">
-            <p><strong class="key">Price:</strong> <%= product.price %></p>
-            <p><strong class="key">Stock:</strong> <%= product.stock %></p>
+            <p><strong class="key">Price :</strong> <%= product.price %></p>
+            <p><strong class="key">Stock :</strong> <%= product.stock %></p>
           </div>
-          <p>
-            <strong class="key">Description:</strong><br />
-            <%= product.description %>
-          </p>
-          <p>
-            <strong class="key">Category:</strong><br />
-            <%= product.category.name %> <!-- Display the category name -->
-          </p>
-          
-          <div class="d-flex" style="justify-content: space-between">
-            <p>
-              <% if (!product.deleted) { %>
-              <span class="badge bg-success rounded-pill">Active</span>
-              <% } else { %>
-              <span class="badge bg-danger rounded-pill">Deactivated</span>
 
-              <% } %>
-            </p>
+          <p>
+            <strong class="key">Category :</strong>
+            <%= product.category.name %>
+            <!-- Display the category name -->
+          </p>
+
+          <div class="d-flex" style="justify-content: space-between">
             <% if (!product.deleted) { %>
             <a href="/product/edit/<%= product.id %>" class="edit-btn">Edit</a>
             <a href="/product/deactivate/<%= product.id %>" class="delete-btn"
@@ -71,6 +63,14 @@
               >Activate</a
             >
             <% } %>
+            <p>
+              <% if (!product.deleted) { %>
+              <span class="badge bg-success rounded-pill">Active</span>
+              <% } else { %>
+              <span class="badge bg-danger rounded-pill">Deactivated</span>
+
+              <% } %>
+            </p>
           </div>
         </div>
       </div>
