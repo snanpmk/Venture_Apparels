@@ -383,6 +383,7 @@ const getPolarGraphData = async function(req, res) {
     const totalOrders = orderCountsByCategory.reduce((acc,order)=>{
      return order = acc + order
     },0)
+    
     console.log(totalOrders);
     return res.status(200).json({ orderCountsByCategory, categoryNames ,totalOrders});
   } catch (error) {
