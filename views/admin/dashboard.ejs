@@ -43,7 +43,7 @@
             <div class="card-body p-4">
               <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
               <div class="row align-items-center">
-                <div class="col-8">
+                <div class="col-6">
                   <h4 class="fw-semibold mb-3">$36,358</h4>
                   <div class="d-flex align-items-center mb-3">
                     <span
@@ -64,9 +64,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-4">
-                  <div class="d-flex justify-content-center">
-                    <canvas id="doughnutChart"></canvas>
+                <div class="col-6">
+                  <div style="width: 8rem;" class="d-flex justify-content-start">
+                    <canvas id="doughnutChart" width="400" height="400"></canvas>
                   </div>
                 </div>
               </div>
@@ -82,14 +82,14 @@
                   <h5 class="card-title mb-9 fw-semibold">Category Insights</h5>
                   <div class="d-flex align-items-center pb-1">
                     <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                      <i class="ti ti-package"></i>                    </span>
-                    <p class="text-dark me-1 fs-3 mb-0">Total :  </p>
+                      <i class="ti ti-package"></i></span>
+                    <p class="text-dark me-1 fs-3 mb-0">Total : <span id="total-orders"></span></p>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="d-flex justify-content-end">
                     <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                      <i class="ti ti-currency-dollar fs-6"></i>
+                      <i class="ti ti-file-description"></i>
                     </div>
                   </div>
                 </div>
@@ -361,9 +361,12 @@
 
 
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+
   var ctx = document.getElementById('lineChart').getContext('2d');
   
   let selectedOption = 0;
+  
   fetchSalesData(selectedOption);
   
   let monthSelector = document.getElementById('monthSelector');
@@ -376,6 +379,15 @@
     myChart.update();
   });
 
+  function assignData(newData) {
+    myChart.data.datasets[0].data = newData;
+    myChart.update();
+  }
+  function assignMonths(newData) {
+    myChart.data.labels = newData;
+    myChart.update();
+  }
+
   // Function to fetch sales data
   function fetchSalesData(option) {
     fetch("/admin/sales-data", {
@@ -387,23 +399,31 @@
     })
     .then(response => response.json())
     .then(data => {
-      
+      if (data.orderCountsLastSixMonths) {
+        assignData(data.orderCountsLastSixMonths);
+      }
+      else if (data.orderCountsByMonth) {
+        console.log(data.orderCountsByMonth);
+        assignData(data.orderCountsByMonth)
+      }
+    
+      assignMonths(data.monthx);
+    
     })
     .catch(error => {
       console.error('Error fetching sales data:', error);
     });
   }
 
-  var allMonths = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
 
-  var newData = [300, 450, 600, 800, 1000, 900,700, 550, 650, 900, 1100, 950];    // Data for July to December
+
 
   var data = {
-    labels: allMonths,
+    labels: [],
     datasets: [
       {
         label: 'Six Months Sales',
-        data: newData,
+        data: [],
         borderColor: 'rgb(30, 144, 255)',
         borderWidth: 4,
         fill: false,
@@ -430,7 +450,7 @@
   };
 
   var myChart = new Chart(ctx, config);
-
+ })
 </script>
 >
 
@@ -439,12 +459,18 @@
 <script>
   var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
 
+  fetch("/admin/doughnut-data",{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
   var doughnutData = {
     labels: ['2023', '2022'],
     datasets: [{
       data: [36358, 33241], // Replace with your data
       backgroundColor: ['#5d87ff', '#4a6ccc'], // Colors for segments
-      borderWidth: 0 // No border
+      borderWidth: 2 // No border
     }]
   };
 
@@ -471,33 +497,70 @@
 
 
 <script>
-  // ApexCharts - Product Sales Polar Area Chart
-  var ctxApex = document.getElementById('product-sales-chart');
-  var productSalesOptions = {
-    chart: {
-      type: 'polarArea',
-      height: 350
-    },
-    labels: ['Jackets', 'Jeans', 'T-Shirts', 'Shoes', 'Accessories'],
-    series: [45, 20, 15, 10, 10],
-    colors: ['#66a3ff', '#ffcc80', '#a5d6a7', '#ffab91', '#b39ddb'],
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200
-        },
-        legend: {
-          position: 'bottom'
+  document.addEventListener("DOMContentLoaded", function () {
+    var ctxApex = document.getElementById('product-sales-chart');
+
+    var productSalesOptions = {
+      chart: {
+        type: 'polarArea',
+        height: 350
+      },
+      labels: [],
+      series: [],
+      colors: ['#66a3ff', '#ffcc80', '#a5d6a7', '#ffab91', '#b39ddb'],
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200
+          },
+          legend: {
+            position: 'bottom'
+          }
         }
+      }],
+      dataLabels: {
+        enabled: false
       }
-    }],
-    dataLabels: {
-      enabled: false
+    };
+
+    var productSalesChart = new ApexCharts(ctxApex, productSalesOptions);
+    productSalesChart.render();
+
+    fetch("/admin/polarGraph-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      assignData(data.orderCountsByCategory);
+      assignCategoryName(data.categoryNames);
+      console.log(data.totalOrders);
+
+
+    const totalOrdersElement = document.getElementById('total-orders');
+    if (totalOrdersElement) {
+     totalOrdersElement.textContent = data.totalOrders;
     }
-  };
-  var productSalesChart = new ApexCharts(ctxApex, productSalesOptions);
-  productSalesChart.render();
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+    });
+
+    function assignData(newData) {
+        productSalesChart.updateOptions({
+          series: newData
+        });
+      }
+    function assignCategoryName(newData) {
+        productSalesChart.updateOptions({
+          labels: newData
+        });
+      }
+  });
 </script>
 
 </html>

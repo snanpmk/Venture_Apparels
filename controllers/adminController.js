@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Order = require("../models/orderModel")
+const Category = require("../models/categoryModel")
 const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
 const pdfKit = require("../config/pdfKit")
@@ -15,6 +16,7 @@ const loadAdminLogin = function (req, res) {
 // GET ADMIN DASHBOARD
 const loadDashboard = async function (req, res) {
   try {
+
     res.render("admin/dashboard");
   } catch (err) {
     console.log("error in loading admin login", err);
@@ -258,9 +260,18 @@ const getSalesData = async function (req, res) {
     if (periodOption == 0) {
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
+      console.log(currentMonth);
+      const allMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      let monthx = []
+      for (let i = 0; i < 6; i++) {
+        monthx.push(allMonths[currentMonth - i])
+      }
+      monthx = monthx.reverse()
+      console.log(monthx);
       const startingMonth = (currentMonth - 5 + 12) % 12;
 
       const orderCountsLastSixMonths = [];
+
 
       for (let i = 0; i < 6; i++) {
         const month = (startingMonth + i) % 12; // Calculate the current month index
@@ -268,15 +279,27 @@ const getSalesData = async function (req, res) {
         const endingDate = new Date(currentDate.getFullYear(), month + 1, 0);
 
         const orderCount = await Order.countDocuments({
-          orderDate: { $gte: startingDate, $lte: endingDate }
+          date: { $gte: startingDate, $lte: endingDate }
         });
 
         orderCountsLastSixMonths.push(orderCount);
       }
 
       console.log("Order counts for the last six months:", orderCountsLastSixMonths);
+      return res.status(200).json({ orderCountsLastSixMonths, monthx })
     } else if (periodOption == 1) {
       const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      console.log(currentMonth);
+      const allMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+      let monthx = [];
+      for (let i = 0; i < 12; i++) {
+        const index = (currentMonth - i + 12) % 12; // Calculate the correct index
+        monthx.push(allMonths[index]);
+      }
+      monthx = monthx.reverse()
+      console.log(monthx);
       const startingDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
 
       const orderCountsByMonth = []; // Array to store order counts for each month
@@ -293,7 +316,9 @@ const getSalesData = async function (req, res) {
       }
 
       console.log(orderCountsByMonth);
+      return res.status(200).json({ orderCountsByMonth, monthx });
     }
+
 
     else {
       console.log("periodOption error");
@@ -305,6 +330,108 @@ const getSalesData = async function (req, res) {
     res.status(500).json({ error: "An error occurred while fetching sales data" });
   }
 };
+
+const getPolarGraphData = async function(req, res) {
+  try {
+    console.log(566);
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'items.product', // Assuming 'items.product' references products
+          foreignField: '_id',
+          as: 'orderItems'
+        }
+      },
+      {
+        $unwind: '$orderItems'
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'orderItems.category', // Assuming 'orderItems.category' references categories
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $unwind: '$category'
+      },
+      {
+        $group: {
+          _id: '$category.name', // Group by category name
+          orderCount: { $sum: 1 } // Count the orders in each category
+        }
+      }
+    ];
+
+    // Execute the aggregation
+    const result = await Order.aggregate(pipeline);
+    console.log(result);
+    
+    // Create arrays to store the results
+    const orderCountsByCategory = [];
+    const categoryNames = [];
+    
+    // Iterate through the aggregation result and push counts and names to the arrays
+    result.forEach(category => {
+      orderCountsByCategory.push(category.orderCount);
+      categoryNames.push(category._id); // Use _id to get the category name
+    });
+    console.log(orderCountsByCategory);
+    console.log(categoryNames);
+    const totalOrders = orderCountsByCategory.reduce((acc,order)=>{
+     return order = acc + order
+    },0)
+    console.log(totalOrders);
+    return res.status(200).json({ orderCountsByCategory, categoryNames ,totalOrders});
+  } catch (error) {
+    console.log("error in getting polar graph data", error);
+    return res.status(500).json({ error: "Error getting polar graph data" });
+  }
+};
+const getDoughNutData = async function(req, res) {
+  try {
+    const currentYear = new Date().getFullYear();
+    const lastYear = currentYear - 1;
+
+    // Assuming you are using a MongoDB-like database and the collection is named "orders"
+    const currentYearOrders = await Order.find({
+      date: { $gte: new Date(currentYear, 0, 1), $lt: new Date(currentYear + 1, 0, 1) },
+      // You need to adjust this based on your schema
+    });
+
+    const lastYearOrders = await Order.find({
+      date: { $gte: new Date(lastYear, 0, 1), $lt: new Date(currentYear, 0, 1) },
+      // You need to adjust this based on your schema
+    });
+
+    const currentYearTotalAmount = calculateTotalAmount(currentYearOrders);
+    const lastYearTotalAmount = calculateTotalAmount(lastYearOrders);
+
+    console.log(currentYearTotalAmount + "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
+    console.log(lastYearTotalAmount + "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
+
+    // You can then send this data as a response
+    res.status(200).json({
+      currentYear: currentYearTotalAmount,
+      lastYear: lastYearTotalAmount,
+    });
+  } catch (error) {
+    console.log("error in getting doughnut graph data", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Function to calculate the sum of total amounts in an array of orders
+function calculateTotalAmount(orders) {
+  return orders.reduce((total, order) => total + order.totalAmount, 0);
+}
+
+
+// Replace OrderModel and the field names in the find queries with your actual schema
+
+
 
 module.exports = {
   adminLogin,
@@ -321,5 +448,7 @@ module.exports = {
   deleteBanner,
   downloadSalesReport,
   getSalesData,
+  getPolarGraphData,
+  getDoughNutData,
 
 };

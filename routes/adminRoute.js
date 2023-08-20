@@ -34,8 +34,9 @@ router.get("/download-report",adminController.downloadSalesReport)
 
 router.post("/sales-data",adminController.getSalesData)
 
+router.post("/polarGraph-data",adminController.getPolarGraphData)
 
-
+router.post("/doughnut-data",adminController.getDoughNutData)
 
 
 module.exports = router;
