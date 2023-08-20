@@ -230,11 +230,11 @@ const downloadSalesReport = async function (req, res) {
         $lte: thisMonthEndDate,
       }
     }).populate('items.product');
-    
+
     const modifiedReportData = reportData.map(order => {
       const modifiedItems = order.items.map(item => {
         return {
-          orderNumber : order.orderNumber,
+          orderNumber: order.orderNumber,
           date: order.date,
           product: item.product.name,
           quantity: item.quantity,
@@ -251,6 +251,61 @@ const downloadSalesReport = async function (req, res) {
   }
 }
 
+const getSalesData = async function (req, res) {
+  try {
+    const periodOption = req.body.option;
+
+    if (periodOption == 0) {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const startingMonth = (currentMonth - 5 + 12) % 12;
+
+      const orderCountsLastSixMonths = [];
+
+      for (let i = 0; i < 6; i++) {
+        const month = (startingMonth + i) % 12; // Calculate the current month index
+        const startingDate = new Date(currentDate.getFullYear(), month, 1);
+        const endingDate = new Date(currentDate.getFullYear(), month + 1, 0);
+
+        const orderCount = await Order.countDocuments({
+          orderDate: { $gte: startingDate, $lte: endingDate }
+        });
+
+        orderCountsLastSixMonths.push(orderCount);
+      }
+
+      console.log("Order counts for the last six months:", orderCountsLastSixMonths);
+    } else if (periodOption == 1) {
+      const currentDate = new Date();
+      const startingDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+
+      const orderCountsByMonth = []; // Array to store order counts for each month
+
+      for (let i = 1; i <= 12; i++) {
+        const startDate = new Date(startingDate.getFullYear(), startingDate.getMonth() + i, 1);
+        const endDate = new Date(startingDate.getFullYear(), startingDate.getMonth() + i + 1, 0);
+
+        const orderCountForMonth = await Order.countDocuments({
+          date: { $gte: startDate, $lte: endDate }
+        });
+
+        orderCountsByMonth.push(orderCountForMonth);
+      }
+
+      console.log(orderCountsByMonth);
+    }
+
+    else {
+      console.log("periodOption error");
+    }
+
+    res.status(200).json({ message: "Sales data fetched successfully" });
+  } catch (error) {
+    console.log("Error in getSalesData:", error);
+    res.status(500).json({ error: "An error occurred while fetching sales data" });
+  }
+};
+
 module.exports = {
   adminLogin,
   loadAdminLogin,
@@ -265,5 +320,6 @@ module.exports = {
   addBanner,
   deleteBanner,
   downloadSalesReport,
+  getSalesData,
 
 };

@@ -10,7 +10,7 @@ router.get('/',adminController.loadAdminLogin)
 
 router.post('/',adminController.adminLogin) 
 
-router.get('/dashboard',adminController.loadDashboard)
+router.get('/dashboard', adminController.loadDashboard)
 
 router.get('/users',adminController.listAllUsers)
 
@@ -31,6 +31,8 @@ router.post("/add-banner",upload.single("image"),adminController.addBanner)
 router.delete("/delete-banner/:ObjectId",adminController.deleteBanner)
 
 router.get("/download-report",adminController.downloadSalesReport)
+
+router.post("/sales-data",adminController.getSalesData)
 
 
 
