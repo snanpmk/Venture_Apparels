@@ -350,7 +350,7 @@ const getPolarGraphData = async function(req, res) {
       {
         $lookup: {
           from: 'categories',
-          localField: 'orderItems.category', // Assuming 'orderItems.category' references categories
+          localField: 'orderItems.category', 
           foreignField: '_id',
           as: 'category'
         }
@@ -360,8 +360,8 @@ const getPolarGraphData = async function(req, res) {
       },
       {
         $group: {
-          _id: '$category.name', // Group by category name
-          orderCount: { $sum: 1 } // Count the orders in each category
+          _id: '$category.name', 
+          orderCount: { $sum: 1 } 
         }
       }
     ];

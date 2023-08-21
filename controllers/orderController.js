@@ -27,9 +27,6 @@ const validateRazorpaySignature = (orderId, paymentId, razorpaySignature, keySec
     .createHmac('sha256', keySecret)
     .update(`${orderId}|${paymentId}`)
     .digest('hex');
-  console.log(razorpaySignature + "😭😭😭");
-  console.log(generatedSignature);
-  console.log("hhhhhhhhheeeeeeeeeeeyyyyyyyyyyyy");
   generatedSignature = razorpaySignature;
   return generatedSignature;
 };
@@ -44,7 +41,7 @@ const verifyPayment = async function (req, res) {
     console.log("Received payment verification request for signature:", razorpaySignature);
     console.log("Received payment verification request for payment id:", paymentId);
 
-    const keySecret = razorpayKeyId; // Replace with your actual key secret
+    const keySecret = razorpayKeyId; 
 
     // Validate the Razorpay signature
     const isValidSignature = validateRazorpaySignature(orderId, paymentId, razorpaySignature, keySecret);
