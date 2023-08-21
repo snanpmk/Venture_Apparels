@@ -16,8 +16,9 @@ const loadAdminLogin = function (req, res) {
 // GET ADMIN DASHBOARD
 const loadDashboard = async function (req, res) {
   try {
+    const users = await User.find().limit(7).sort({createdAt:-1});
 
-    res.render("admin/dashboard");
+    res.render("admin/dashboard",{ allUsers: users });
   } catch (err) {
     console.log("error in loading admin login", err);
   }
@@ -391,10 +392,12 @@ const getPolarGraphData = async function(req, res) {
     return res.status(500).json({ error: "Error getting polar graph data" });
   }
 };
+
 const getDoughNutData = async function(req, res) {
   try {
     const currentYear = new Date().getFullYear();
     const lastYear = currentYear - 1;
+    console.log(currentYear +"        " + lastYear);
 
     // Assuming you are using a MongoDB-like database and the collection is named "orders"
     const currentYearOrders = await Order.find({
@@ -402,21 +405,25 @@ const getDoughNutData = async function(req, res) {
       // You need to adjust this based on your schema
     });
 
+    console.log(currentYearOrders+"🔥🔥😢😢😭😭"  );
+
     const lastYearOrders = await Order.find({
       date: { $gte: new Date(lastYear, 0, 1), $lt: new Date(currentYear, 0, 1) },
       // You need to adjust this based on your schema
     });
 
+    console.log(lastYearOrders.totalAmount);
     const currentYearTotalAmount = calculateTotalAmount(currentYearOrders);
     const lastYearTotalAmount = calculateTotalAmount(lastYearOrders);
 
-    console.log(currentYearTotalAmount + "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
-    console.log(lastYearTotalAmount + "❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
-
+    const percentageChange = calculatePercentageChange(lastYearTotalAmount, currentYearTotalAmount);
+    console.log("🔥%"+percentageChange);
     // You can then send this data as a response
     res.status(200).json({
       currentYear: currentYearTotalAmount,
       lastYear: lastYearTotalAmount,
+      totalAmount:currentYearTotalAmount+lastYearTotalAmount,
+      percentageChange:percentageChange
     });
   } catch (error) {
     console.log("error in getting doughnut graph data", error);
@@ -427,6 +434,18 @@ const getDoughNutData = async function(req, res) {
 // Function to calculate the sum of total amounts in an array of orders
 function calculateTotalAmount(orders) {
   return orders.reduce((total, order) => total + order.totalAmount, 0);
+}
+
+function calculatePercentageChange(previousValue, currentValue) {
+  if (previousValue === 0) {
+    if (currentValue === 0) {
+      return 0; // No change if both values are zero
+    } else {
+      return Infinity; // Treat as infinite percentage increase from zero
+    }
+  }
+  
+  return ((currentValue - previousValue) / previousValue) * 100;
 }
 
 
