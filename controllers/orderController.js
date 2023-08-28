@@ -138,7 +138,13 @@ const createOrder = async (userId, orderItems, address, paymentMethod, totalAmou
   try {
     // set order status
     const orderStatus = "processing";
-
+    console.log(paymentMethod+"🔥🔥🔥");
+    let paymentStatus ;
+    if (paymentMethod=='COD'){
+      paymentStatus = 'PENDING'
+    } else {
+      paymentStatus = 'PAID'
+    }
     // Create new order document
     const order = new Order({
       user: userId,
@@ -146,19 +152,18 @@ const createOrder = async (userId, orderItems, address, paymentMethod, totalAmou
       shippingAddress: address,
       paymentMethod: paymentMethod,
       status: orderStatus,
-      paymentStatus: paymentMethod === 'COD' ? 'PENDING' : 'PAID', // Update paymentStatus based on paymentMethod
+      paymentStatus: paymentStatus,
       totalAmount: totalAmount
     });
 
     // Save the order
-    await order.save();
+    const createdOrder = await order.save();
 
-    await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
-
-
-    // Update the stock quantity for each item in the order
-    for (const item of orderItems) {
-      await updateStock(item.product, item.quantity);
+    if (createdOrder) {
+      await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
+      for (const item of orderItems) {
+        await updateStock(item.product, item.quantity);
+      }
     }
 
     return order;
@@ -195,7 +200,7 @@ const orderDetail = async function (req, res) {
     }
 
     // Calculate grand total
-    const shippingCost = 45.89;
+    const shippingCost =0;
     const grandTotal = subtotal + shippingCost;
 
     // Format order date as 'DD Month YYYY'

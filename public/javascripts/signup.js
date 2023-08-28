@@ -271,6 +271,7 @@ form.addEventListener("submit", async function (event) {
     const data = await response.json();
     console.log(data);
     if (data.success) {
+      console.log(data);
       console.log("Signup successful");
       window.location.href = "/enter-otp";
     } else {

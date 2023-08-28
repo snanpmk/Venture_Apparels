@@ -1,15 +1,20 @@
 const Product = require("../models/productModel");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-const categoryController = require("./categoryController");
 const Category = require("../models/categoryModel");
 const { default: mongoose } = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const uuid = require('uuid')
+const uploadIamge = require("../middlewares/uploadImage")
+const path = require('path')
+
 
 const listAllProducts = async function (req, res) {
   try {
     const products = await Product.find().populate('category');
     
+    
+
     res.render("product/list", {
       title: "All Products",
       layout: "layouts/adminLayout",
@@ -25,7 +30,6 @@ const listAllProducts = async function (req, res) {
 const loadAddProduct = async function (req, res) {
   try {
     const categories = await Category.find();
-    console.log(categories);
     res.render("product/add", {
       title: "Add Product",
       layout: "layouts/adminLayout",
@@ -86,29 +90,29 @@ const productDetail = async function (req, res) {
 
 const uploadProduct = async function (req, res) {
   try {
+    console.log("❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
     const { name, price, stock, description } = req.body;
-    const image = req.file.filename; // Retrieve the uploaded image filename
-    console.log(image);
-
-    // Create a new product instance
+    const croppedImage = req.croppedImagePath; // Use cropped image path
+    console.log(croppedImage);
     const product = new Product({
       name,
       price,
       stock,
       description,
-      image,
+      image:croppedImage,
       category: new ObjectId(req.body.category),
     });
 
     // Save the product to the database
     const savedProduct = await product.save();
-    res.redirect("/product/list")
-    res.status(201).json(savedProduct);
-    console.log(product);
+    res.redirect("/product/list");
+    console.log(savedProduct);
   } catch (err) {
     console.log("error in uploading product", err);
   }
 };
+
+
 
 const loadEditProduct = async function (req, res) {
   try {
@@ -207,7 +211,7 @@ const sort = async function (req, res) {
         sort = {};
         break;
     }
-    const sortedProducts = await Product.find().sort(sort);
+    const sortedProducts = await Product.find({ deleted: false }).sort(sort);
     console.log(sortedProducts);
     const categories = await Category.find;
     // return
@@ -230,7 +234,7 @@ const filterPrice = async function (req, res) {
     const { min, max } = req.body;
 
     const filteredProducts = await Product.find({
-      price: { $gte: parseFloat(min), $lte: parseFloat(max) },
+      price: { $gte: parseFloat(min), $lte: parseFloat(max), deleted: false },
     });
 
     const categories = await Category.find;
@@ -251,8 +255,8 @@ const filterPrice = async function (req, res) {
 
 module.exports = {
   listAllProducts,
-  uploadProduct,
   loadAddProduct,
+  uploadProduct,
   userViewCategory,
   productDetail,
   loadEditProduct,

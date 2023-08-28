@@ -104,8 +104,8 @@
                       </div>
                     </div>
                   </td>
-                  <td><%= item.quantity %></td>
-                  <td class="text-end">$<%= item.totalPrice %></td>
+                  <td>x<%= item.quantity %></td>
+                  <td class="text-end">$<%= item.product.price %></td>
                 </tr>
                 <% }) %>
 
@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                   <td colspan="2">Shipping</td>
-                  <td class="text-end">$8.95</td>
+                  <td class="text-end">free</td>
                 </tr>
                 <tr>
                   <td colspan="2">Discount (Code: NEWYEAR)</td>
@@ -125,7 +125,6 @@
                 </tr>
                 <tr class="fw-bold">
                   <td colspan="2">TOTAL <br>
-                    $45.89 sales tax  
                   </td>
                   <td class="text-end">$<%= grandTotal %></td>
                 </tr>
@@ -146,7 +145,7 @@
                   <p>
                     <%= paymentMethod %> <br />
                     Total: $<%= grandTotal %>
-                    <span class="badge bg-danger rounded-pill">PENDING</span>
+                    <span class="badge bg-danger rounded-pill"><%= paymentStatus %></span>
                   </p>
                 </div>
                 <div class="col-lg-6">

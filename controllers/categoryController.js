@@ -16,9 +16,9 @@ const addCategory = async (req, res) => {
   try {
     const existingCategory = await Category.findOne({ name: req.body.name });
     if (existingCategory) {
-    return  res
-      .status(500)
-      .json({error:"Category name already exists."});
+      return res
+        .status(500)
+        .json({ error: "Category name already exists." });
     }
     // Create a new category instance
     const category = new Category({
@@ -27,7 +27,7 @@ const addCategory = async (req, res) => {
       gender: req.body.gender,
       ageGroup: req.body.ageGroup,
     });
-    
+
     const savedCategory = await category.save();
     res.redirect("/product/list-category")
     console.log(savedCategory);
@@ -40,7 +40,7 @@ const addCategory = async (req, res) => {
 const loadEachCategory = async function (req, res) {
   try {
     const categoryName = req.params.categoryName;
-    const category = await Category.findOne({ name: categoryName });
+    const category = await Category.findOne({ name: categoryName, deleted: false });
 
     if (!category) {
       // Handle case when category is not found
@@ -50,7 +50,7 @@ const loadEachCategory = async function (req, res) {
 
     const categoryId = category._id;
     const categories = await Category.find();
-    const products = await Product.find({ category: categoryId });
+    const products = await Product.find({ category: categoryId, deleted: false });
     console.log(categories);
 
     res.render("category/eachCategory", {
@@ -63,7 +63,7 @@ const loadEachCategory = async function (req, res) {
   }
 };
 
-const listCategoryAdminSide = async function(req, res) {
+const listCategoryAdminSide = async function (req, res) {
   try {
     const categories = await Category.find()
     res.render('category/listCategoryAdminSide', {
@@ -73,21 +73,21 @@ const listCategoryAdminSide = async function(req, res) {
       errorMessage: null,
     })
   } catch (error) {
-    console.log("error in listing category admin side",error);
+    console.log("error in listing category admin side", error);
   }
 }
 const loadEditCategory = async function (req, res) {
   try {
-    const categoryId = req.params.ObjectId; 
-    const category = await Category.findOne({ _id: categoryId }); 
+    const categoryId = req.params.ObjectId;
+    const category = await Category.findOne({ _id: categoryId });
     // console.log(product);
-    res.render("category/editCategory", { category: category}); 
+    res.render("category/editCategory", { category: category });
   } catch (err) {
     console.log("Error in loading edit product", err);
   }
 }
 
-const upadateCategory = async function(req,res) {
+const upadateCategory = async function (req, res) {
   try {
     const categoryId = req.params.ObjectId;
     const name = req.body.name
@@ -95,8 +95,8 @@ const upadateCategory = async function(req,res) {
     const gender = req.body.gender
     const ageGroup = req.body.ageGroup
 
-    const category = await Category.findOne({_id:categoryId})
-    
+    const category = await Category.findOne({ _id: categoryId })
+
     category.name = name
     category.description = description
     category.gender = gender
@@ -105,9 +105,9 @@ const upadateCategory = async function(req,res) {
     await category.save()
     console.log(category);
     res.redirect('/product/list-category')
-    
+
   } catch (error) {
-    console.log("error in updating product",error);
+    console.log("error in updating product", error);
   }
 }
 
@@ -130,7 +130,7 @@ const deactivateCategory = async function (req, res) {
   }
 };
 
-const activateCategory = async function(req,res) {
+const activateCategory = async function (req, res) {
   try {
     const categoryId = req.params.ObjectId;
     const category = await Category.findByIdAndUpdate(
@@ -143,7 +143,7 @@ const activateCategory = async function(req,res) {
     );
     res.redirect("/product/list-category")
   } catch (err) {
-    console.log("error in activating Category",err);
+    console.log("error in activating Category", err);
   }
 }
 

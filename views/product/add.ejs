@@ -1,15 +1,14 @@
+<style>
+  .form-group {
+    margin-bottom: 20px;
+  }
+</style>
 <h4 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
   ADD PRODUCT
 </h4>
 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
 <p style="color: red"><%= errorMessage %></p>
 <% } %>
-
-<style>
-  .form-group {
-    margin-bottom: 20px;
-  }
-</style>
 
 <div class="container mt-4">
   <form
@@ -22,6 +21,7 @@
       <label for="name">Name:</label>
       <input type="text" class="form-control" id="name" name="name" required />
     </div>
+
     <div class="form-group">
       <label for="price">Price:</label>
       <input
@@ -36,6 +36,7 @@
         Price should not be less than 0.
       </p>
     </div>
+
     <div class="form-group">
       <label for="stock">Stock:</label>
       <input
@@ -50,6 +51,7 @@
         Stock should not be less than 0.
       </p>
     </div>
+
     <div class="form-group">
       <label for="description">Description:</label>
       <textarea
@@ -59,6 +61,7 @@
         required
       ></textarea>
     </div>
+
     <div class="form-group">
       <label for="category">Category:</label>
       <select
@@ -74,26 +77,44 @@
         <% }) %>
       </select>
     </div>
-    <div class="form-group">
-      <label for="image">Image:</label>
-      <input
-        type="file"
-        class="form-control-file"
-        id="image"
-        name="image"
-        accept="image/*"
-        required
-        aria-label="Image"
-      />
-    </div>
-    <div>
-      <button
-        type="submit"
-        class="btn btn-success"
-        style="color: white; border-radius: 15px"
-      >
-        Add Product
-      </button>
+
+    <div class="d-flex">
+      <div class="form-group">
+  <div
+    class="custom-file btn btn-primary mt-2"
+    style="max-width: 14rem; border-radius: 1rem"
+  >
+    <label for="image">Choose image</label>
+    <input
+      type="file"
+      class="custom-file-input"
+      id="image"
+      name="image"
+      accept="image/*"
+      required
+      aria-label="Image"
+      style="
+        position: absolute;
+        top: 0;
+        right: 0;
+        opacity: 0;
+        font-size: 100px;
+        cursor: pointer;
+      "
+    />
+  </div>
+</div>
+
+      <div>
+        <button
+          type="submit"
+          class="btn btn-success"
+          style="color: white; border-radius: 15px; margin-top: 10px"
+          id="submitButton"
+        >
+          Add Product
+        </button>
+      </div>
     </div>
   </form>
 </div>

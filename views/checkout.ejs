@@ -120,7 +120,7 @@
       </div>
       <!-- /Add New Address card -->
       <h5 class="card-title">Select Address</h5>
-      <% addresses.forEach(address => { %>
+      <% addresses.forEach((address,index) => { %>
       <!-- address card -->
       <div class="card address-card">
         <div class="card-body">
@@ -132,6 +132,7 @@
               id="radio-<%= address.id %>"
               data-address="<%= JSON.stringify(address) %>"
               data-address-id="<%= address.id %>"
+              <%= index === 0 ? 'checked' : '' %>
               onchange="selectAddress('<%= address.id %>')"
             />
             <label class="form-check-label" for="card2">
@@ -296,6 +297,7 @@
                       class="form-control"
                       type="text"
                       id="state"
+                      placeholder="Kerala.."
                       required=""
                     />
                   </div>
@@ -308,6 +310,7 @@
                       type="text"
                       class="form-control"
                       id="zipCode"
+                      placeholder="123 456"
                       required=""
                     />
                   </div>
@@ -519,14 +522,15 @@
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <p class="m-0 fw-bolder fs-6">Shipping</p>
-            <p class="m-0 fs-6 fw-bolder">$8.95</p>
+            <span style="display: flex;gap: 2;">
+            <p class="m-0 fs-6 fw-bolder" style="text-decoration: line-through;">$8.95</p><p>free shipping</p>
+          </span>
           </div>
         </div>
         <div class="py-3 border-bottom">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <p class="m-0 fw-bold fs-5">Grand Total</p>
-              <span class="text-muted small">Inc $45.89 sales tax</span>
             </div>
             <p
               id="grandTotal"
@@ -549,6 +553,7 @@
                   name="payment-option"
                   value="razorPay"
                   id="razorPay"
+                  checked
                 />
                 <label class="form-check-label" for="payment-option1">
                   Razor Pay
@@ -817,7 +822,7 @@
   });
 
   function validateAddress(address, minLength = 5) {
-    const addressRegex = /^[a-zA-Z\s]+$/;
+    const addressRegex = /^[a-zA-Z\s,.]+$/;
 
     return addressRegex.test(address) && address.length >= minLength;
   }

@@ -19,6 +19,9 @@ const client = twilio(accountSid, authToken);
 // GET USER LANDING PAGE
 const loadHome = async function (req, res) {
   try {
+
+    
+   
     const banner = await Banner.find()
     const products = await Product.find({ deleted: false }).sort({ upload: -1 }).limit(7);
     res.render("home", { layout: "layouts/userLayout", products: products, banners: banner });
@@ -261,7 +264,7 @@ const verifyOtp = async function (req, res) {
 // GET SEARCH
 const loadSearchProducts = async function (req, res) {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ deleted: false });
     res.render("search", {
       layout: "layouts/userLayout",
       products: products,
@@ -296,6 +299,7 @@ const searchProducts = async function (req, res) {
 const loadCheckout = async function (req, res) {
   try {
     const userId = req.session.userId;
+    console.log(userId+"❤️😂");
     console.log(userId + "user id from the load check out ");
 
     const cart = await Cart.findOne({ userId: userId }).populate(
@@ -311,11 +315,11 @@ const loadCheckout = async function (req, res) {
       subtotal += totalPrice;
     }
 
-    grandTotal = subtotal + 45.89 + 8.95;
+    grandTotal = subtotal;
     grandTotal = grandTotal.toFixed(2);
     await cart.save();
 
-    const addresses = await Address.find({ isDeleted: false });
+    const addresses = await Address.find({ user: userId,isDeleted: false });
     const products = cart.items.map((item) => ({
       product: item.productId,
       quantity: item.quantity,
@@ -475,8 +479,9 @@ const deleteAddress = async function (req, res) {
 const userProfile = async function (req, res) {
   try {
     const userId = req.session.userId;
-    const defaultAddress = await Address.findOne({ defaultAddress: true });
-    const allAddress = await Address.find();
+    console.log(userId+"💕🚀😢");
+    const defaultAddress = await Address.findOne({user:userId, defaultAddress: true });
+    const allAddress = await Address.find({user:userId,});
     const orders = await Order.find({ user: userId })
       .populate("shippingAddress", "fname lname email address state country")
       .populate("items.product", "image name price")
