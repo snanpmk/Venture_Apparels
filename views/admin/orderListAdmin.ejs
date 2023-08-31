@@ -1,83 +1,192 @@
 <style>
   .key {
     text-transform: uppercase;
-    font-weight: 500;
-  } 
-  .card-text{
+    font-weight: 100;
+    font-size: smaller;
+  }
+  .card-text {
     font-weight: 400;
     color: black;
+  }
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    vertical-align: middle;
+    gap: 10px; /* Adjust the value as needed */
+  }
+  .table th {
+    font-weight: 700;
+    color: rgb(74, 74, 74);
+    border-color: rgba(0, 0, 0, 0.098);
+  }
+  .table td {
+    font-weight: 400;
+    color: rgb(74, 74, 74);
+    border-color: rgba(0, 0, 0, 0.098);
+    vertical-align: middle;
+  }
+  .action-cell {
+    white-space: nowrap;
+  }
+  .dropdown-item {
+    width: 80%;
+  }
+  .dropdown-menu {
+    --bs-dropdown-min-width: 7rem;
   }
 </style>
 <h3 class="mb-4">View Orders</h3>
 <div class="table-responsive">
-  <table class="table text-nowrap mb-0">
-    <!-- Table headers here -->
-    <tbody>
-      <% allorders.forEach((order) => { %> <% order.items.forEach((item) => { %>
-
-      <!-- Card for each order -->
+  <table class="table table-hover">
+    <thead thead-dark>
       <tr>
-        <td colspan="8" class="border-0">
-          <div class="card mb-4">
-            <div class="row g-0">
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title" style="text-align: start;">Order #<%= order.orderNumber %></h5>
-                  <div
-                    class="d-md-flex justify-content-between align-items-center"
-                  >
-                    <p class="card-text mb-md-0"><%= item.product.name %></p>
-                    <p class="card-text mb-md-0">Qty: <%= item.quantity %></p>
-                    <p class="card-text mb-0">
-                      <%= order.date.toDateString() %>
-                    </p>
-                  </div>
-                  <div
-                    class="d-md-flex justify-content-between align-items-center mt-2"
-                  >
-                    <p class="card-text mb-0"> Shipping Addres :
-                      <%= order.shippingAddress.address %>, <%=
-                      order.shippingAddress.state %>, <%=
-                      order.shippingAddress.country %>
-                    </p>
-                    <p class="card-text mb-0">
-                      User: <%= order.shippingAddress.fname %> <%=
-                      order.shippingAddress.lname %>
-                    </p>
-                    
-                  </div>
-                  <div
-                    class="d-md-flex justify-content-between align-items-center mt-2"
-                  >
-                    <p class="card-text mb-0">
-                      Payment Method: <%= order.paymentMethod %>
-                    </p>
-                    <p class="card-text mb-0">
-                      <span
-                        class="badge rounded-pill <%= order.status === 'cancelled' ? 'bg-danger' : 'bg-info' %>"
-                      >
-                        <%= order.status %>
-                      </span>
-                    </p>
-                    
-                  </div>
+        <th class="key">Order Number</th>
+        <th class="key">Order Date</th>
+        <th class="key">User</th>
+        <th class="key">Payment Method</th>
+        <th class="key">Payment Status</th>
+        <th class="key">Product</th>
+        <th class="key">Quantity</th>
+        <th class="key">Status</th>
+        <!-- Moved Status here -->
+        <th class="key">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% allorders.forEach((order) => { %>
+      <tr>
+        <td><%= order.orderNumber %></td>
+        <td><%= order.date.toLocaleString() %></td>
+        <td>
+          <%= order.shippingAddress.fname %> <%= order.shippingAddress.lname %>
+        </td>
+        <td><%= order.paymentMethod %></td>
+        <td><%= order.paymentStatus %></td>
+
+        <td>
+          <% order.items.forEach((item) => { %>
+          <ul>
+            <%= item.product.name %>
+          </ul>
+          <% }); %>
+        </td>
+        <td>
+          <% order.items.forEach((item) => { %>
+          <ul>
+            <%= item.quantity %>
+          </ul>
+          <% }); %>
+        </td>
+
+        <td>
+          <% if (order.status === 'cancelPending') { %>
+            <span class="badge rounded-pill alert-warning" style="background-color: rgb(255, 255, 0);color: black;">cancelation pending</span>
+          <% } else if (order?.paymentStatus === 'failed') { %>
+            <span class="badge rounded-pill alert-danger" style="background-color: rgb(255, 51, 0);">payment failed</span>
+          <% } else if (order.status === 'canceled') { %>
+            <span class="badge rounded-pill alert-secondary" style="background-color: rgb(108, 117, 125);">order canceled</span>
+          <% } else if (order.status === 'shipped') { %>
+            <span class="badge rounded-pill alert-info" style="background-color: rgb(0, 123, 255);">shipped</span>
+          <% } else if (order.status === 'delivered') { %>
+            <span class="badge rounded-pill alert-success" style="background-color: rgb(40, 167, 69);">delivered</span>
+          <% } else if (order.status === 'processing') { %>
+            <span class="badge rounded-pill alert-dark" style="background-color: rgb(52, 58, 64);">processing</span>
+          <% } else if (order.status === 'pending') { %>
+            <span class="badge rounded-pill alert-primary" style="background-color: rgb(0, 123, 255);">pending</span>
+          <% } else if (order.status === 'returned') { %>
+            <span class="badge rounded-pill alert-warning" style="background-color: rgb(255, 193, 7);">return completed</span>
+          <% } else if (order.status === 'returnPending') { %>
+            <span class="badge rounded-pill alert-success" style="background-color: rgb(40, 167, 69);">return pending</span>
+          <% } %>
+        </td>
+        <td class="action-cell">
+          <div class="action-buttons">
+            <a
+            class="btn btn-outline-primary btn-sm"
+            href="/order-details?id=<%= order._id %>"
+          >
+            View Details
+          </a>
+            
+            <% if (order.status !== 'delivered' && order.status !== 'returned' && order.status !== 'canceled') { %>
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-dark dropdown-toggle btn-sm"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#dropdown<%= order.orderNumber %>"
+                >
+                  Change Status
+                </button>
+                <div
+                  class="collapse dropdown-menu"
+                  id="dropdown<%= order.orderNumber %>"
+                >
+                  <% if (order.status === 'cancelPending') { %>
+                    <a
+                      class="dropdown-item"
+                      onclick="changeStatus('<%= order._id %>','canceled')"
+                      data-orderid="<%= order._id %>"
+                    >Approve cancel</a>
+                  <% } else if (order.status === 'processing') { %>
+                    <a
+                      class="dropdown-item"
+                      onclick="changeStatus('<%= order._id %>','shipped')"
+                      data-shippedid="<%= order._id %>"
+                    >Shipping completed</a>
+                  <% } else if (order.status === 'returnPending') { %>
+                    <a
+                      class="dropdown-item"
+                      onclick="changeStatus('<%= order._id %>','returned')"
+                      data-deliveredid="<%= order._id %>"
+                    >Approve return</a>
+                  <% } else if (order.status === 'shipped') { %>
+                    <a
+                      class="dropdown-item"
+                      onclick="changeStatus('<%= order._id %>','delivered')"
+                      data-deliveredid="<%= order._id %>"
+                    >Delivery completed</a>
+                  <% } %>
                 </div>
               </div>
-              <div
-                class="col-md-4 d-flex align-items-center justify-content-center"
-              >
-                <img
-                  src="/<%= item.product.image %>"
-                  alt="<%= item.product.name %>"
-                  class="img-thumbnail"
-                  style="max-width: 100px"
-                />
-              </div>
-            </div>
+            <% } %>
           </div>
         </td>
       </tr>
-      <% }); %> <% }); %>
+      <% }); %>
     </tbody>
   </table>
 </div>
+
+<script>
+  function viewDetails(orderNumber) {
+    // Logic to handle viewing order details
+    console.log("View Details for Order Number:", orderNumber);
+  }
+
+  async function changeStatus(orderId, status) {
+    try {
+      const response = await fetch('/admin/order-status', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          status: status
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+
+      location.reload(); // Reload the page after successful response
+    } catch (error) {
+      console.error(error);
+      // Handle error gracefully, e.g., show an error message to the user
+    }
+  }
+</script>

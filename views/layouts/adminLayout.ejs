@@ -4,6 +4,38 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Venture Apparels</title>
+    <style>
+      /* CSS for the modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+    </style>
     <link
       rel="shortcut icon"
       type="image/png"
@@ -219,12 +251,21 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                  <i class="ti ti-bell-ringing"></i>
+                  <i id="bellIcon" class="ti ti-bell-ringing"></i>
                   <div class="notification bg-primary rounded-circle"></div>
                 </a>
               </li>
             </ul>
             <!-- give better search bar -->
+            <div id="notificationModal" class="modal">
+              <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <!-- Add your notification content here -->
+                <h2>Notification</h2>
+                <p>You have a new notification.</p>
+              </div>
+            </div>
+            
             <div
               class="navbar-collapse justify-content-end px-0"
               id="navbarNav"
@@ -299,7 +340,7 @@
 
         <div
         class="container"
-        style="padding-top: 6rem; padding-left: 2rem; background-color: rgb(241, 253, 255); padding-right: 2rem"
+        style="padding-top: 6rem; padding-left: 2rem; background-color: white; padding-right: 2rem"
         >
         <!-- body  -->
           <%- body %>

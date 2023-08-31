@@ -482,7 +482,7 @@ const userProfile = async function (req, res) {
     console.log(userId+"💕🚀😢");
     const defaultAddress = await Address.findOne({user:userId, defaultAddress: true });
     const allAddress = await Address.find({user:userId,});
-    const orders = await Order.find({ user: userId })
+    const orders = await Order.find({ user: userId }).sort({orderNumber:-1})
       .populate("shippingAddress", "fname lname email address state country")
       .populate("items.product", "image name price")
       .sort({ date: -1 });

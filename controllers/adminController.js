@@ -162,7 +162,7 @@ const activateUser = async function (req, res) {
 
 const listAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
+    const orders = await Order.find().sort({orderNumber:-1})
       .populate('shippingAddress', 'fname lname email address state country')
       .populate('items.product', 'image name price')
       .sort({ date: -1 });

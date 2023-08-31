@@ -17,13 +17,12 @@ const paymentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'Completed', 'Failed'],
+    enum: ['PENDING', 'COMPLETED', 'FAILED'],
     default: 'Pending'
   },
   transactionId: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
   },
   timestamp: {
     type: Date,

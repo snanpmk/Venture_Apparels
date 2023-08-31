@@ -523,26 +523,39 @@
                         style="background-color: #0a1025"
                         id="dropdown<%= order._id %>"
                       >
-                        <% if (order.status === 'processing') { %>
-                        <a
-                          href="/order-details?id=<%= order._id %>"
-                          class="dropdown-item"
-                        >
-                          View
-                        </a>
-                        <a
-                          href="/cancel-order?id=<%= order._id %>"
-                          class="dropdown-item"
-                        >
-                          Cancel order
-                        </a>
+                        <% if (order.status === 'processing' || order.status === 'shipped') { %>
+                          <a
+                            href="/order-details?id=<%= order._id %>"
+                            class="dropdown-item"
+                          >
+                            View
+                          </a>
+                          <a
+                            href="/cancel-order?id=<%= order._id %>"
+                            class="dropdown-item"
+                          >
+                            Cancel order
+                          </a>
                         <% } else if (order.status === 'delivered') { %>
-                        <a class="dropdown-item" href="#">View</a>
-                        <a class="dropdown-item" href="#">Return</a>
+                          <a class="dropdown-item" href="#">View</a>
+                          <a
+                            class="dropdown-item"
+                            href="/return-order?id=<%= order._id %>"
+                          >
+                            Return
+                          </a>
+                        <% } else { %>
+                          <a
+                            href="/order-details?id=<%= order._id %>"
+                            class="dropdown-item"
+                          >
+                            View
+                          </a>
                         <% } %>
                       </div>
                     </div>
                   </td>
+                  
                 </tr>
                 <% }); %>
               </tbody>

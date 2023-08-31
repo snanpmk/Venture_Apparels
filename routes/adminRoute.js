@@ -3,7 +3,7 @@ var router = express.Router();
 const adminController = require('../controllers/adminController')
 const sessionMiddleware = require("../middlewares/sessionMiddleware")
 const upload = require("../helpers/banners.upload")
-
+const orderController = require("../controllers/orderController")
 
 
 router.get('/',adminController.loadAdminLogin)
@@ -37,6 +37,8 @@ router.post("/sales-data",adminController.getSalesData)
 router.post("/polarGraph-data",adminController.getPolarGraphData)
 
 router.post("/doughnut-data",adminController.getDoughNutData)
+
+router.post("/order-status",orderController.changeOrderStatus)
 
 
 module.exports = router;
