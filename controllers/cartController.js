@@ -23,7 +23,7 @@ const viewCart = async function (req, res) {
       }
 
       var limitMssg = ""
-      
+
       grandTotal = subtotal + 45.89;
       await cart.save();
 
@@ -173,43 +173,45 @@ const deleteItem = async function (req, res) {
     console.log("error in deleting item", error);
   }
 }
-const updateCouponDiscount = async function(req, res) {
+const updateCouponDiscount = async function (req, res) {
   try {
+    const currentDate = new Date();
     const couponCode = req.body.couponCode;
-    const subtotal = parseFloat(req.body.subtotalValue); // Parse subtotal as a float
+    const subtotal = parseFloat(req.body.subtotalValue);
 
-    console.log("Coupon Code: " + couponCode);
-    console.log("Subtotal: " + subtotal);
+    const userId = req.session.userId;
+    const user = await User.findById(userId);
+
+    if (user.couponUsed) {
+      return res.status(400).json({ message: "User has already used a coupon" });
+    }
 
     // Find the coupon by code
     const coupon = await Coupon.findOne({ couponCode: couponCode });
 
     if (!coupon) {
-      // Handle the case where the coupon doesn't exist
-      console.log("Coupon not found");
-      // Respond with an appropriate message or status code
       return res.status(404).json({ message: "Coupon not found" });
+    } else if (subtotal < coupon.minimumSpend) {
+      return res.status(400).json({ message: `Spend a minimum of ${coupon.minimumSpend} to use this coupon` });
+    } else if (currentDate > coupon.expiryDate) {
+      return res.status(400).json({ message: "Coupon has expired" });
     }
 
     const decrementPercentage = coupon.discount;
-    console.log("Discount Percentage: " + decrementPercentage);
 
     // Calculate the discount amount
-    const discountAmount = (decrementPercentage / 100) * subtotal;
+    const discountAmount = ((decrementPercentage / 100) * subtotal).toFixed(2);
 
+    const discountedSubtotal = (subtotal - discountAmount).toFixed(2);
 
-    const discountedSubtotal = subtotal - discountAmount;
+    // Update the user's couponUsed field to indicate that the coupon has been used
+    user.couponUsed = couponCode;
+    await user.save();
 
-    console.log("Discount Amount: " + discountAmount);
-    console.log("Discounted Subtotal: " + discountedSubtotal);
-
-        
-    // Respond with the discounted subtotal or any other relevant information
-    return res.status(200).json({discountedSubtotal,discountAmount});
+    return res.status(200).json({ discountedSubtotal, discountAmount });
   } catch (error) {
     console.log("Error in updating coupon discount", error);
-    // Handle the error and respond with an appropriate message or status code
-    return res.status(500).json({ message: "Internal Server Error",success:true });
+    return res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
 

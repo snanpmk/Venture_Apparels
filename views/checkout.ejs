@@ -648,7 +648,7 @@
               </div>
             </div>
             <div class="flex-shrink-0 fw-bolder">
-              <span>&#8377 <%= item.productId.price %></span>
+              <span>&#8377 <%= item.totalPrice %></span>
             </div>
           </div>
 
@@ -747,6 +747,9 @@
               class="btn btn-dark btn-sm px-4"
               onclick="applyCoupon()"
               >Apply</a>
+          </div>
+          <div>
+            <p style="display: none;color: red;" id="couponError"></p>
           </div>
           <div class="show-coupons" style="margin-top: 1rem">
             <button
@@ -1279,7 +1282,17 @@
     })
     .then(async (response) => {
       const data = await response.json()
-      
+      console.log(data.message);
+      if(data.message) {
+        const couponError = document.getElementById("couponError")
+        couponError.textContent =  data.message;
+        couponError.style.display = "block"
+
+        setTimeout(()=>{
+          couponError.textContent = " "
+          couponError.style.display = "none"
+        },3000)
+      } else {
       console.log(data.discountedSubtotal);
       document.getElementById("grandTotal").textContent=  data.discountedSubtotal;
       document.getElementById("coupon-section").style.display= "none"
@@ -1287,6 +1300,7 @@
       document.getElementById("discountTxt").style.display="block"
       document.getElementById("discountValue").style.display="block"
       document.getElementById("rsymbol").style.display="block"
+      }
     })
   }
 

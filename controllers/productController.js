@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const Offer = require("../models/offerModel")
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const Category = require("../models/categoryModel");
@@ -12,8 +13,8 @@ const path = require('path')
 const listAllProducts = async function (req, res) {
   try {
     const products = await Product.find().populate('category');
-    
-    
+
+
 
     res.render("product/list", {
       title: "All Products",
@@ -99,7 +100,7 @@ const uploadProduct = async function (req, res) {
       price,
       stock,
       description,
-      image:croppedImage,
+      image: croppedImage,
       category: new ObjectId(req.body.category),
     });
 
@@ -253,6 +254,43 @@ const filterPrice = async function (req, res) {
   }
 }
 
+const loadOffers = async function (req, res) {
+  try {
+    const offers = await Offer.find().populate('category')
+    
+    const categories = await Category.find()
+    res.render("admin/offerList", {
+      categories: categories,
+      offers:offers,
+      layout: "layouts/adminLayout",
+      errorMessage: null,
+    })
+  } catch (error) {
+    console.log("error while loading offers" + error);
+  }
+}
+
+const addOffers = async function (req, res) {
+  try {
+    const { offerTitle, offerCategory, discountPercent, expiryDate } = req.body;
+  
+    const offer = new Offer({
+      offerTitle,
+      category:offerCategory,
+      discountPercent,
+      expiryDate,
+    });
+
+    const savedOffer = await offer.save();
+    console.log(savedOffer);
+
+    res.redirect("/product/offers")
+  } catch (error) {
+    console.log("error in adding offers" + error);
+  }
+
+}
+
 module.exports = {
   listAllProducts,
   loadAddProduct,
@@ -265,4 +303,6 @@ module.exports = {
   activateProduct,
   sort,
   filterPrice,
+  loadOffers,
+  addOffers,
 };

@@ -1,0 +1,330 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .offer-card,
+  .add-offer-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 0 20px 20px 0;
+    width: calc(33.33% - 20px);
+  }
+  .add-offer-card {
+    background-color: #0c1927;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .plus-icon {
+    font-size: 50px;
+    margin-right: 10px;
+  }
+  .offer-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  .offer-title {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .offer-description {
+    color: #666;
+    margin-top: 5px;
+  }
+
+  /* Responsive styles */
+  @media screen and (max-width: 768px) {
+    .offer-card,
+    .add-offer-card {
+      width: calc(50% - 20px);
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .offer-card,
+    .add-offer-card {
+      width: 100%;
+    }
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(19, 19, 19, 0.696);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 80%;
+  }
+
+  /* Additional styles for the form */
+  form {
+    margin-top: 10px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .addoffertxt {
+    color: #fff;
+  }
+
+  .choose-file {
+    background-color: #0c1927;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  /* Hide the default file input */
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .error-message {
+    margin-top: 10px;
+    color: red;
+  }
+  .deletediv {
+    align-items: end;
+    display: grid;
+  }
+
+  .btn.replace-button:hover {
+    color: black;
+  }
+</style>
+
+<div class="container">
+  <div class="add-offer-card" id="addOffersBtn">
+    <span class="plus-icon">+</span>
+    <span><h3 class="addoffertxt">Add Offers</h3></span>
+  </div>
+  <!-- Looping through the offers array -->
+  <% offers.forEach((offer) => { %>
+  <div class="offer-card">
+    <h3 class="offer-title" style="text-transform: uppercase">
+      <%= offer.offerTitle %>
+    </h3>
+    <div class="offer-details">
+      <div class="d-flex" style="justify-content: space-between">
+        <p class="offer-info">Offer Category:</p>
+        <p><%= offer.category.name %></p>
+      </div>
+
+      <p class="offer-info">Discount: <%= offer.discountPercent %>%</p>
+      <p class="offer-info">
+        Expiry Date: <%= offer.expiryDate.toDateString() %>
+      </p>
+    </div>
+    <div
+      class="offer-actions"
+      style="display: flex; justify-content: space-between"
+    >
+      <button
+        class="btn replace-button activate-button"
+        style="color: #00cc00"
+        id="activateOfferButton<%= offer._id %>"
+        onclick="activateOffer('<%= offer._id %>')"
+      >
+        Activate Offer
+      </button>
+
+      <button
+        class="btn replace-button delete-button"
+        style="color: red"
+        data-offer-id="<%= offer._id %>"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <% }) %>
+</div>
+
+<!-- Add Offer Modal -->
+<div id="addOfferModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">×</span>
+    <h2>Add Offer</h2>
+    <form method="POST" action="/product/add-offer" id="offerForm">
+      <div class="form-group">
+        <label for="offerTitle">Offer Title:</label>
+
+        <input
+          type="text"
+          id="offerTitle"
+          name="offerTitle"
+          placeholder="Enter a catchy title"
+          required
+        />
+        <p class="error-message" id="offerTitleError"></p>
+      </div>
+
+      <div class="form-group">
+        <!-- Adding a label for the offer category select element -->
+        <label for="offerCategory">Offer Category:</label>
+        <!-- Changing the class name of the select element -->
+        <select
+          class="dropdown"
+          id="offerCategory"
+          name="offerCategory"
+          required
+        >
+          <option value="">Select a category</option>
+          <% categories.forEach((category) => { %>
+          <option value="<%= category._id %>"><%= category.name %></option>
+
+          <%}) %>
+          <!-- Removing the extra option for electronics -->
+        </select>
+        <p class="error-message" id="offerCategoryError"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="expiryDate">Expiry Date:</label>
+        <input type="date" id="expiryDate" name="expiryDate" required />
+        <p class="error-message" id="expiryDateError"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="discountPercent">Discount Percent:</label>
+        <input
+          type="number"
+          id="discountPercent"
+          name="discountPercent"
+          placeholder="Enter a percentage value"
+          required
+        />
+        <p class="error-message" id="discountPercentError"></p>
+      </div>
+
+      <input type="submit" value="Add" />
+    </form>
+  </div>
+</div>
+
+<script>
+  function activateOffer(offerId) {
+    fetch(`/product/activate-offer-${offerId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Handle success, e.g., show a success message
+          console.log("Offer activated successfully.");
+        } else {
+          // Handle errors, e.g., show an error message
+          console.error("Failed to activate offer.");
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const offerForm = document.getElementById("offerForm");
+    const expiryDateInput = document.getElementById("expiryDate");
+    const expiryDateError = document.getElementById("expiryDateError");
+
+    expiryDateInput.addEventListener("input", function () {
+      const enteredDate = new Date(this.value);
+      const currentDate = new Date();
+
+      if (enteredDate < currentDate) {
+        expiryDateError.textContent = "Expiry date must be in the future.";
+      } else {
+        expiryDateError.textContent = "";
+      }
+    });
+
+    offerForm.addEventListener("submit", function (event) {
+      if (expiryDateError.textContent !== "") {
+        event.preventDefault(); // Block form submission if there's an error
+      }
+    });
+  });
+</script>
+
+<script>
+  document
+    // open modal
+    .getElementById("addOffersBtn")
+    .addEventListener("click", function () {
+      document.getElementById("addOfferModal").style.display = "flex";
+    });
+
+  // close modal
+  document.getElementById("closeModal").addEventListener("click", function () {
+    document.getElementById("addOfferModal").style.display = "none";
+  });
+
+  // close modal when clicked outside
+  document.addEventListener("click", function (event) {
+    const modal = document.getElementById("addOfferModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+  // Inside the form submission event listener
+  document.getElementById("offerForm").addEventListener("submit", function () {
+    document.getElementById("addOfferModal").style.display = "none";
+  });
+</script>

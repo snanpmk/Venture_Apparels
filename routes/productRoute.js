@@ -51,4 +51,8 @@ router.post("/sort", productController.sort)
 
 router.post("/filter-price",productController.filterPrice)
 
+router.get("/offers",productController.loadOffers)
+
+router.post("/add-offer",productController.addOffers)
+
 module.exports = router;

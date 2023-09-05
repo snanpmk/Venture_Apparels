@@ -39,6 +39,9 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  couponUsed :{
+    type:String
+  }
 });
 
 const User = mongoose.model("users", userSchema);

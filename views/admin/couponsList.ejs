@@ -254,13 +254,39 @@
       <div class="form-group">
         <label for="expiryDate">Expiry Date:</label>
         <input type="date" id="expiryDate" name="expiryDate" required />
-        <p class="error-message" id="expiryDateError"></p>
+        <p class="error-message" id="expiryDateError" style="color: red;"></p>
       </div>
 
       <input type="submit" value="Add" />
     </form>
   </div>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const couponForm = document.getElementById("couponForm");
+    const expiryDateInput = document.getElementById("expiryDate");
+    const expiryDateError = document.getElementById("expiryDateError");
+
+    expiryDateInput.addEventListener("input", function () {
+      const enteredDate = new Date(this.value);
+      const currentDate = new Date();
+
+      if (enteredDate < currentDate) {
+        expiryDateError.textContent = "Expiry date must be in the future.";
+      } else {
+        expiryDateError.textContent = "";
+      }
+    });
+
+    couponForm.addEventListener("submit", function (event) {
+      if (expiryDateError.textContent !== "") {
+        event.preventDefault(); // Block form submission if there's an error
+      }
+    });
+  });
+</script>
+
+
 
 <script>
   document
