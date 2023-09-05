@@ -6,6 +6,11 @@ const paymentSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  order:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Order',
+    required:true
+  },
   amount: {
     type: Number,
     required: true
@@ -17,8 +22,8 @@ const paymentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['PENDING', 'COMPLETED', 'FAILED'],
-    default: 'Pending'
+    enum: ['PENDING', 'PAID', 'FAILED'],
+    default: 'PENDING'
   },
   transactionId: {
     type: String,

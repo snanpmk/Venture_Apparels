@@ -6,6 +6,7 @@ const Product = require("../models/productModel")
 const Payment = require("../models/paymentModel")
 const Razorpay = require('razorpay')
 const crypto = require('crypto');
+const uuid = require('uuid');
 const User = require('../models/userModel');
 
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
@@ -51,7 +52,14 @@ const verifyPayment = async function (req, res) {
     if (isValidSignature) {
       console.log("Payment verification successful for orderId:", orderId);
 
-  
+      const updatedPayment = await Payment.findOneAndUpdate(
+        { user: req.session.userId, status: 'PENDING' }, // Find the correct payment record
+        {
+          status: 'PAID',
+          transactionId: paymentId, // Use the actual transaction ID
+        },
+        { new: true } // Return the updated document
+      );
 
       if (!updatedPayment) {
         console.log("Could not find the placeholder payment record.");
@@ -86,44 +94,23 @@ const processOrder = async function (req, res) {
     }));
 
     console.log(orderItems + "hey helllllllllllllllllllooooooooooo");
-    const calculateOrderAmount = (orderItems) => {
-      const totalAmountInPaise = orderItems.reduce((total, item) => {
-        const itemTotal = item.product.price * item.quantity;
-        return (total + itemTotal);
-      }, 0);
-      return totalAmountInPaise * 100;
-    };
 
-    const { paymentMethod, address } = req.body;
-    const totalAmount = calculateOrderAmount(orderItems);
+
+    const { paymentMethod, address, TotalAmount } = req.body;
     console.log(paymentMethod)
     console.log(address);
-    console.log(totalAmount + "💕 💕 💕");
+    console.log(TotalAmount + "💕 💕 💕");
     if (!paymentMethod) {
       console.log("Choose a payment option");
       return res.json("Choose a payment option");
     }
-
-      const transactionId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
-
-    // Create a new payment
-    const payment = new Payment({
-      user: userId,
-      amount: totalAmount,
-      paymentMethod: paymentMethod,
-      status: 'PENDING',
-      transactionId: transactionId,
-    });
-
-    const createdPayment = await payment.save();
-
 
     if (paymentMethod === 'razorPay') {
 
       var razorPay = new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret });
 
       const options = {
-        amount: totalAmount,
+        amount: TotalAmount*100,
         currency: "INR",
         receipt: "order_rcptid_11",
       };
@@ -136,7 +123,7 @@ const processOrder = async function (req, res) {
         console.log("Razorpay Order ID:", order.id);
 
         // Call createOrder function for RazorPay payment
-        const createdOrder = await createOrder(userId, orderItems, address, paymentMethod, totalAmount);
+        const createdOrder = await createOrder(userId, orderItems, address, paymentMethod, TotalAmount);
         const createdOrderId = createdOrder._id
 
         return res.json({ success: true, orderId: order.id, createdOrderId, paymentMethod });
@@ -146,7 +133,7 @@ const processOrder = async function (req, res) {
 
     if (paymentMethod === 'COD') {
       // Call createOrder function for COD payment
-      const order = await createOrder(userId, orderItems, address, paymentMethod, totalAmount);
+      const order = await createOrder(userId, orderItems, address, paymentMethod, TotalAmount);
       const createdOrderId = order._id
       console.log(order + "❤️🤣💕😭");
       return res.status(200).json({ success: true, paymentMethod, createdOrderId, order })
@@ -157,31 +144,18 @@ const processOrder = async function (req, res) {
   }
 };
 
-const changePaymentStatus = async function (req, res) {
-  try {
-    const transactionId = req.body.transactionId
-    const updatedPayment = await Payment.findOneAndUpdate(
-      { transactionId: transactionId, status: 'PENDING' }, // Find the correct payment record
-      {
-        status: 'Completed',
-      },
-      { new: true } // Return the updated document
-    );
-    await updatedPayment.save();
-    console.log("the updated payment record is ......." + updatedPayment);
-    return updatedPayment;
-  } catch (error) {
-    console.log("error in changing the payment status" + error);
-  }
-}
 
-const createOrder = async (userId, orderItems, address, paymentMethod, totalAmount) => {
+const createOrder = async (userId, orderItems, address, paymentMethod, TotalAmount) => {
   try {
     // Set order and payment statuses
     const orderStatus = "processing";
-    const paymentStatus = 'PENDING';
+    let paymentStatus = 'PENDING';
 
-  
+    if (paymentMethod === 'razorPay') {
+      paymentStatus = 'PAID';
+    }
+
+
 
     // Create new order document
     const order = new Order({
@@ -191,11 +165,27 @@ const createOrder = async (userId, orderItems, address, paymentMethod, totalAmou
       paymentMethod: paymentMethod,
       status: orderStatus,
       paymentStatus: paymentStatus,
-      totalAmount: totalAmount
+      TotalAmount: TotalAmount
     });
 
     // Save the order
     const createdOrder = await order.save();
+
+
+    // save the payment
+    const transactionId = uuid.v4();
+
+    const payment = new Payment({
+      user: userId,
+      amount: TotalAmount,
+      paymentMethod: paymentMethod,
+      status: paymentStatus,
+      transactionId: transactionId,
+      order: createdOrder._id
+
+    })
+
+    const createdPayment = await payment.save()
 
     if (createdOrder) {
       await Cart.updateOne({ userId: userId }, { $set: { items: [] } });
@@ -215,11 +205,24 @@ async function changeOrderStatus(req, res) {
   try {
     console.log(req.body.status);
     const orderId = req.body.orderId;
+    const newStatus = req.body.status;
+    let updateFields = {
+      status: newStatus,
+      date: new Date(),
+    };
+
+    if (newStatus === 'delivered') {
+      // Set the delivery date to the current date
+      updateFields.deliveryDate = new Date();
+
+      // Calculate the return expiry date as 10 days after the delivery date
+      const returnExpiryDate = new Date(updateFields.deliveryDate);
+      returnExpiryDate.setDate(returnExpiryDate.getDate() + 10);
+      updateFields.returnExpiryDate = returnExpiryDate;
+    }
+
     const orderResult = await Order.findByIdAndUpdate(orderId, {
-      $set: {
-        status: req.body.status,
-        date: new Date(),
-      },
+      $set: updateFields,
     });
 
     if (orderResult) {
@@ -232,6 +235,7 @@ async function changeOrderStatus(req, res) {
     res.status(500).json({ status: false, message: 'Failed to change status' });
   }
 }
+
 
 
 const loadSuccessPage = async function (req, res) {

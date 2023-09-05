@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { none } = require('../middlewares/uploadImage');
 
 const orderSchema = new mongoose.Schema({
   user: {
@@ -41,35 +42,29 @@ const orderSchema = new mongoose.Schema({
     ],
     default: 'processing',
   },
-  paymentMethod:{
+  paymentMethod: {
     type: String,
-    enum:[
-      'COD',
-      'bankTransfer',
-      'razorPay'
-
-    ]
+    enum: ['COD', 'bankTransfer', 'razorPay'],
   },
-  paymentStatus:{
+  paymentStatus: {
     type: String,
-    enum:[
-      'PAID',
-      'PENDING',
-
-    ]
+    enum: ['PAID', 'PENDING'],
   },
-  totalAmount:{ type:Number},
+  totalAmount: { type: Number },
   orderNumber: { type: Number },
+  deliveryDate: { type: Date, default: null },
+  returnExpiryDate: { type: Date, default: null },
+  couponCode : {
+    type : String
+  },
   date: {
     type: Date,
     default: Date.now,
   },
-
 });
 
-
 const autoIncrementPlugin = (schema, options) => {
-  const { field = 'orderNumber', startAt = 1 } = options;
+  const { field = 'orderNumber', startAt = 1000 } = options;
 
   schema.pre('save', async function (next) {
     try {

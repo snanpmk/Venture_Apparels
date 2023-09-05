@@ -8,12 +8,119 @@
     width: 41.6666666667%;
     padding-top: 1.5rem;
   }
+  .contact-detail {
+    max-width: 65%;
+    justify-content: space-between;
+  }
+  @media (max-width: 768px) {
+    .d-flex.contact-detail {
+      flex-direction: column;
+      margin-bottom: 2rem;
+    }
+  }
 
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+  .coupon-container {
+    display: none;
+  }
+
+  .coupon-card {
+    width: 100%;
+    height: 180px;
+    border-radius: 5px;
+    border: #1c212c;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fee356;
+    padding: 10px 10px;
+    position: relative;
+    margin-top: 10px;
+}
+
+  
+  .main,
+  .copy-button {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    align-items: center;
+  }
+
+  .co-img img {
+    width: 100px;
+    height: 100px;
+  }
+  .vertical {
+    border-left: 5px dotted black;
+    height: 100px;
+    position: absolute;
+    left: 40%;
+  }
+
+  .content h1 {
+    font-size: 35px;
+    margin-left: -20px;
+    color: #d50000 !important;
+}
+
+  .content h1 span {
+    font-size: 18px;
+    color: #d50000 !important;
+
+  }
+  .content h2 {
+    font-size: 16px;
+    margin-left: -20px;
+    color: #1c212c !important;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .content p {
+    font-size: 16px;
+    color:#0d0d64 !important;
+    margin-left: -20px;
+    font-family: cursive;
+}
+
+  .copy-button {
+    height: 45px;
+    border-radius: 4px;
+    padding: 0 5px;
+    border: 1px solid #e1e1e1;
+  }
+
+  .copy-button input {
+    width: 100%;
+    height: 80%;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+  .copy-button button {
+    padding: 5px 20px;
+    background-color: #1c212c;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 0.2rem;
+  }
+
+  .buy {
+    position: absolute;
+    content: "";
+    bottom: 20px;
+    left: 20px;
+    background-color: #dc143c;
+  }
   .card {
     margin-bottom: 2vh !important;
   }
   .card-text-small {
     font-size: 14px;
+    font-weight: 500;
   }
   /* Style the close button */
   .btn-close-editModal {
@@ -101,6 +208,35 @@
   .modal-open .modal-content {
     margin-top: 20vh;
   }
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    max-width: 80%;
+  }
+  [class*="btn-outline-"] {
+    border-width: 1px;
+  }
+  .btn-outline-dark {
+    color: #1c212c;
+    border-color: #878a9187;
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #ffffff85;
+    background-clip: border-box;
+    border: 1px solid rgb(0 0 0 / 25%);
+    margin-bottom: 10vh;
+    border-radius: 0.3rem;
+  }
+  .sticky-md-top {
+    border: 1px solid #c0c0c0;
+    background-color: white !important;
+  }
 </style>
 <section class="mt-5 container">
   <!-- Page Content Goes Here -->
@@ -125,16 +261,11 @@
       <div class="card address-card">
         <div class="card-body">
           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="card-selection"
-              id="radio-<%= address.id %>"
-              data-address="<%= JSON.stringify(address) %>"
-              data-address-id="<%= address.id %>"
-              <%= index === 0 ? 'checked' : '' %>
-              onchange="selectAddress('<%= address.id %>')"
-            />
+            <input class="form-check-input" type="radio" name="card-selection"
+            id="radio-<%= address.id %>" data-address="<%=
+            JSON.stringify(address) %>" data-address-id="<%= address.id %>" <%=
+            index === 0 ? 'checked' : '' %> onchange="selectAddress('<%=
+            address.id %>')" />
             <label class="form-check-label" for="card2">
               <h5 class="card-title">
                 <%= address.fname %> <%= address.lname %>
@@ -145,11 +276,20 @@
             <%= address.address %> , <%= address.state %> , <%= address.country
             %>
           </p>
-          <p class="card-text card-text-small">Email :<%= address.email %></p>
+          <div class="d-flex contact-detail">
+            <p class="card-text card-text-small">
+              Email : <%= address.email %>
+            </p>
+            <div>
+              <p class="card-text card-text-small">
+                Mobile : <%= address.phoneNumber %>
+              </p>
+            </div>
+            <div style="margin-right: 2rem"></div>
+          </div>
           <p class="card-text card-text-small">
-            Mobile: <%= address.phoneNumber %>
+            Pin Code : <%= address.zipcode %>
           </p>
-          <p class="card-text card-text-small"><%= address.zipcode %></p>
           <br />
           <p class="card-text card-text-small">• Pay on Delivery available</p>
           <div style="margin-bottom: 0%" class="d-flex justify-content-end">
@@ -503,12 +643,12 @@
 
               <div>
                 <p class="mb-1 fs-6 fw-bolder"><%= item.productId.name %></p>
-                <small class="d-block text-muted">Mens / Blue / Medium</small>
+                <small class="d-block text-muted"><%= item.quantity %> x &#8377 <%= item.productId.price %></small>
                 <span class="fs-xs text-uppercase fw-bolder text-muted"></span>
               </div>
             </div>
             <div class="flex-shrink-0 fw-bolder">
-              <span>$<%= item.productId.price %></span>
+              <span>&#8377 <%= item.productId.price %></span>
             </div>
           </div>
 
@@ -518,13 +658,23 @@
         <div class="py-3 border-bottom">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <p class="m-0 fw-bolder fs-6">Subtotal</p>
-            <p class="m-0 fs-6 fw-bolder">$<%= subtotal %></p>
+            <div style="display: flex;">
+              <p class="m-0 fs-6 fw-bolder">&#8377 </p>
+              <p id="subtotalv" class="m-0 fs-6 fw-bolder"><%= subtotal %></p>
+            </div>
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <p class="m-0 fw-bolder fs-6">Shipping</p>
-            <span style="display: flex;gap: 2;">
-            <p class="m-0 fs-6 fw-bolder" style="text-decoration: line-through;">$8.95</p><p>free shipping</p>
-          </span>
+            <span style="display: flex; gap: 2">
+              <p style="color: green;">FREE</p>
+            </span>
+          </div>
+          <div  class="d-flex justify-content-between align-items-center">
+            <p id="discountTxt" style="display: none;" class="m-0 fw-bolder fs-6">Coupon Discount</p>
+            <span style="display: flex; gap: 2">
+              <p style="display: none;" id="rsymbol">- &#8377</p>
+              <p style="display: none;" id="discountValue"></p>
+            </span>
           </div>
         </div>
         <div class="py-3 border-bottom">
@@ -532,13 +682,10 @@
             <div>
               <p class="m-0 fw-bold fs-5">Grand Total</p>
             </div>
-            <p
-              id="grandTotal"
-              class="m-0 fs-5 fw-bold"
-              data-grand-total="<%= grandTotal %>"
-            >
-              $<%= grandTotal %>
-            </p>
+            <div style="display: flex;">
+              <p class="m-0 fs-6 fw-bolder">&#8377 </p>
+              <p id="grandTotal" class="m-0 fs-6 fw-bolder"><%= grandTotal %></p>
+            </div>
           </div>
         </div>
         <!-- Payment Options -->
@@ -587,14 +734,67 @@
           </div>
         </div>
         <!-- /Payment Options -->
-        <div class="py-3 border-bottom">
+        <div class="py-3 border-bottom" id="coupon-section" style="display: block;">
           <div class="input-group mb-0">
             <input
               type="text"
               class="form-control"
+              id="couponCode"
               placeholder="Enter your coupon code"
             />
-            <button class="btn btn-dark btn-sm px-4">Apply</button>
+            <a
+             id="applyCoupon"
+              class="btn btn-dark btn-sm px-4"
+              onclick="applyCoupon()"
+              >Apply</a>
+          </div>
+          <div class="show-coupons" style="margin-top: 1rem">
+            <button
+              class="btn btn-outline-dark"
+              style="width: 100%"
+              onclick="showCoupon()"
+              id="showHideBtn"
+            >
+              click here to see coupons
+            </button>
+          </div>
+          <div class="coupon-container" id="coupon-container">
+            <div
+              class="coupons d-flex"
+              style="flex-direction: column; justify-content: space-between"
+            >
+            <% coupons.forEach((coupon, index) => { %>
+              <div class="coupon-card">
+                <div class="main">
+                  <div class="co-img">
+                    <img
+                      src="../images/logos/Venture Apparels Logo.png"
+                      alt=""
+                    />
+                  </div>
+                  <div class="vertical"></div>
+                  <div class="content">
+                    <h2 class="spend">Spend &#8377 <%= coupon.minimumSpend %> & get</h2>
+                    <h1><%= coupon.discount %>% <span>OFF</span></h1>
+                    <p>
+                      Valid till <%= moment(coupon.expiryDate).format(
+                      'MMM.DD.YYYY') %>
+                    </p>
+                  </div>
+                </div>
+                <div class="copy-button">
+                  <input
+                  id="copyvalue<%= index %>"
+                  type="text"
+                  readonly
+                  value="<%= coupon.couponCode %>"
+                />
+                <button onclick="copyIt('copyvalue<%= index %>')" class="copybtn">COPY</button>
+              </div>
+              </div>
+              <% }); %>
+              
+            </div>
           </div>
         </div>
         <!-- Accept Terms Checkbox-->
@@ -607,7 +807,9 @@
           />
           <label class="form-check-label fw-bolder" for="accept-terms"
             >I agree to Venture Apparels's
-            <a href="#">terms & conditions</a></label
+            <a href="#" style="text-decoration: none"
+              >terms & conditions</a
+            ></label
           >
         </div>
         <button
@@ -1059,6 +1261,37 @@
 </script>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  function applyCoupon (){
+    const couponCode = document.getElementById("couponCode").value;
+    const subtotalValue = document.getElementById("subtotalv").textContent;
+    console.log(couponCode+"   "+subtotalValue);
+    data = {
+      couponCode,
+      subtotalValue
+    }
+    fetch("/coupon-price",{
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    .then(async (response) => {
+      const data = await response.json()
+      
+      console.log(data.discountedSubtotal);
+      document.getElementById("grandTotal").textContent=  data.discountedSubtotal;
+      document.getElementById("coupon-section").style.display= "none"
+      document.getElementById("discountValue").textContent = data.discountAmount
+      document.getElementById("discountTxt").style.display="block"
+      document.getElementById("discountValue").style.display="block"
+      document.getElementById("rsymbol").style.display="block"
+    })
+  }
+
+  console.log(grandTotal);
+</script>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -1089,12 +1322,14 @@
 
         const grandTotal = document.getElementById("grandTotal");
         const TotalAmount = parseFloat(
-          grandTotal.getAttribute("data-grand-total")
+          grandTotal.textContent
         );
+        console.log(TotalAmount+"😒😒😒😒");
 
         const data = {
           paymentMethod: paymentMethod,
           address: selectedAddress,
+          TotalAmount:TotalAmount
         };
 
         try {
@@ -1150,7 +1385,6 @@
               razorpayModal.open();
 
               const verifyPayment = (paymentId, razorpaySignature, orderId) => {
-
                 const payment = {
                   paymentId: paymentId,
                   razorpaySignature: razorpaySignature,
@@ -1181,7 +1415,7 @@
               };
             } else {
               console.log("Order placed successfully");
-              console.log(res.createdOrderId+"😒😥😢😒🤣");
+              console.log(res.createdOrderId + "😒😥😢😒🤣");
               window.location.href = `/order-success/${res.createdOrderId}`;
             }
           } else {
@@ -1214,4 +1448,28 @@
       }
     });
   });
+</script>
+<script>
+ function showCoupon() {
+  console.log("heyeyeyye");
+  const coupon = document.getElementById("coupon-container");
+  const showHideBtn = document.getElementById("showHideBtn");
+
+  if (coupon.style.display === "none" || coupon.style.display === "") {
+    coupon.style.display = "block";
+    showHideBtn.textContent = "Hide Coupons"; // Change button text
+  } else {
+    coupon.style.display = "none";
+    showHideBtn.textContent = "Click here to see coupons"; // Change button text
+  }
+}
+
+
+   function copyIt(inputId) {
+    let copyInput = document.querySelector(`#${inputId}`);
+    copyInput.select();
+    document.execCommand("copy");
+    const copyBtn = document.querySelector(`#${inputId} + .copybtn`);
+    copyBtn.textContent = "COPIED";
+  }
 </script>

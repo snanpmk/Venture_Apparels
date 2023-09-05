@@ -3,6 +3,16 @@
   body {
     background: #f9f9f9;
   }
+  .nav-pills {
+    position: sticky;
+    top: 0;
+    /* Add any additional styling you need here */
+  }
+
+  /* Add a z-index to ensure the sticky items appear above other content */
+  .nav-pills {
+    z-index: 100;
+  }
   @media (max-width: 767px) {
     body {
       height: calc(100vh - 56px);
@@ -134,6 +144,54 @@
 
   .show {
     display: block;
+  }
+  .returnModal {
+    display: none; /* Hide the modal by default */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    background-color: rgba(
+      68,
+      68,
+      68,
+      0.8
+    ); /* Create a semi-transparent background overlay */
+  }
+  .view-link {
+    color: rgb(0, 0, 0); /* Style for 'View' links */
+  }
+
+  .cancel-link {
+    color: red; /* Style for 'Cancel order' links */
+  }
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    width: fit-content;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(116, 116, 116, 0.053);
+    border-radius: 1rem;
+    margin: 0 auto;
+  }
+  @media (max-width: 767px) {
+    /* Adjust styles for mobile view here */
+    .modal-content {
+      width: 80%; /* Adjust the width for smaller screens */
+      padding: 10px; /* Reduce padding for smaller screens */
+    }
+    @media (max-width: 767px) {
+      /* Adjust the maximum width for mobile view to 14rem */
+      #comments {
+        max-width: 14rem;
+        width: 100%; /* You can adjust this as needed for responsiveness */
+      }
+    }
   }
 </style>
 
@@ -464,102 +522,232 @@
           role="tabpanel"
           aria-labelledby="notification-tab"
         >
-          <h3 class="mb-4">ORDERS</h3>
           <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="table-head">No</th>
-                  <th class="table-head">Order ID</th>
-                  <th class="table-head">Date</th>
-                  <th class="table-head">Items</th>
-                  <th class="table-head">Total Price</th>
-                  <th class="table-head">Status</th>
-                  <th class="table-head">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% allorders.forEach(function(order, index) { %>
-                <tr>
-                  <td class="table-row"><%= index + 1 %></td>
-                  <td class="table-row">#<%= order.orderNumber %></td>
-                  <td class="table-row"><%= order.date.toDateString() %></td>
-                  <td class="table-row">
-                    <% order.items.forEach(function(item) { %>
-                    <div
-                      class="item-info d-flex justify-content-between align-items-center"
-                    >
-                      <div class="item-details" style="max-width: 11rem">
-                        <div class="product-name"><%= item.product.name %></div>
-                        <div>
-                          <%= item.quantity %> x
-                          <span>$<%= item.product.price %></span>
+            <% allorders.forEach(function(order, index) { %>
+            <div class="card mb-3" style="margin: 5px">
+              <div class="card-body">
+                <span
+                  class="card-title badge rounded-pill <% if (order.status === 'processing') { %> bg-info <% } else if (order.status === 'shipped') { %> bg-warning <% } else if (order.status === 'delivered') { %> bg-success <% } else if (order.status === 'returned') { %> bg-danger <% } else if (order.status === 'returnPending') { %> bg-primary <% } else if (order.status === 'canceled') { %> bg-secondary <% } else if (order.status === 'cancelPending') { %> bg-dark <% } else { %> bg-secondary <% } %>"
+                >
+                  <% if (order.status === 'processing') { %> Processing <% }
+                  else if (order.status === 'shipped') { %> Shipped <% } else if
+                  (order.status === 'delivered') { %> Delivered <% } else if
+                  (order.status === 'returned') { %> Returned <% } else if
+                  (order.status === 'returnPending') { %> Return Pending <% }
+                  else if (order.status === 'canceled') { %> Cancelled <% } else
+                  if (order.status === 'cancelPending') { %> Cancel Pending <% }
+                  else { %> Unknown <% } %>
+                </span>
+                <br />
+                <% if (order.status === 'processing') { %> Your order is
+                currently processing %> <% } else if (order.status ===
+                'shipped') { %> Your order has been shipped on <%=
+                order.date.toDateString() %> <% } else if (order.status ===
+                'delivered') { %> Your order has been delivered on <%=
+                order.date.toDateString() %> <% } else if (order.status ===
+                'returned') { %> Your order has been returned on <%=
+                order.date.toDateString() %> <% } else if (order.status ===
+                'returnPending') { %> Your return request is pending %> <% }
+                else if (order.status === 'canceled') { %> Your order has been
+                canceled on <%= order.date.toDateString() %> <% } else if
+                (order.status === 'cancelPending') { %> Your cancel request is
+                pending %> <% } else { %> <% } %>
+                <br />
+
+                <% order.items.forEach(function(item) { %>
+                <div
+                  class="card mb-2"
+                  style=" margin-top: 1rem;background-color: #f9f9f9;"
+                >
+                  <div class="card-body d-flex align-items-center">
+                    <div class="card-body">
+                      <div
+                        class="d-md-flex justify-content-between align-items-center"
+                      >
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="<%= item.product.image %>"
+                            alt="<%= item.product.name %>"
+                            width="70px"
+                            class="img-thumbnail"
+                          />
+
+                          <div style="margin-left: 2rem">
+                            <h6 class="card-title"><%= item.product.name %></h6>
+                          </div>
+                        </div>
+                        <!-- Display price and quantity in mobile view -->
+                        <div class="d-none d-md-block">
+                          <p>Price: $<%= item.product.price %></p>
+                          <p>Quantity:<%= item.quantity %></p>
                         </div>
                       </div>
-                      <div style="padding: 0.3rem">
-                        <img
-                          src="<%= item.product.image %>"
-                          alt="<%= item.product.name %>"
-                          width="70px"
-                          class="img-thumbnail"
-                        />
+                      <!-- Display price and quantity in mobile view -->
+                      <div class="d-md-none mt-2">
+                        <p>Price: $<%= item.product.price %></p>
+                        <p>Quantity: <%= item.quantity %></p>
                       </div>
                     </div>
-                    <% }); %>
-                  </td>
-                  <td class="table-row">$<%= order.totalAmount %></td>
-                  <td class="table-row"><%= order.status %></td>
-                  <td class="table-row">
-                    <div class="btn-group">
-                      <a
-                        href="#"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#dropdown<%= order._id %>"
+                  </div>
+                </div>
+
+                <% }); %>
+
+                <div style="display: flex; justify-content: space-between">
+                  <div style="display: flex; flex-direction: column">
+                    <p class="card-text">
+                      Total Price: $<%= order.totalAmount %>
+                    </p>
+                    <p class="card-text">Status: <%= order.orderNumber %></p>
+                  </div>
+
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                    "
+                  >
+                    <div class="dropdown">
+                      <button
+                        class="btn btn dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton<%= order._id %>"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                       >
                         Details
-                      </a>
-                      <div
-                        class="collapse dropdown-menu"
-                        style="background-color: #0a1025"
-                        id="dropdown<%= order._id %>"
+                      </button>
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton<%= order._id %>"
                       >
-                        <% if (order.status === 'processing' || order.status === 'shipped') { %>
+                        <% if (order.status === 'processing' || order.status ===
+                        'shipped') { %>
+                        <li>
                           <a
                             href="/order-details?id=<%= order._id %>"
-                            class="dropdown-item"
+                            class="dropdown-item view-link"
+                            >View</a
                           >
-                            View
-                          </a>
+                        </li>
+                        <li>
                           <a
                             href="/cancel-order?id=<%= order._id %>"
-                            class="dropdown-item"
+                            class="dropdown-item cancel-link"
+                            >Cancel order</a
                           >
-                            Cancel order
-                          </a>
-                        <% } else if (order.status === 'delivered') { %>
-                          <a class="dropdown-item" href="#">View</a>
-                          <a
-                            class="dropdown-item"
-                            href="/return-order?id=<%= order._id %>"
-                          >
-                            Return
-                          </a>
+                        </li>
                         <% } else { %>
+                        <li>
                           <a
                             href="/order-details?id=<%= order._id %>"
-                            class="dropdown-item"
+                            class="dropdown-item view-link"
+                            >View</a
                           >
-                            View
-                          </a>
+                        </li>
                         <% } %>
+                      </ul>
+                    </div>
+
+                    <% if (order.status === 'delivered' &&
+                    order.returnExpiryDate && new Date(order.returnExpiryDate) >
+                    new Date()) { %>
+                    <div class="card-text">
+                      <button
+                        id="return-btn"
+                        class="return-btn btn"
+                        style="color: red"
+                        data-order-id="<%= order._id %>"
+                      >
+                        Return
+                      </button>
+                    </div>
+                    <% } else { %>
+                    <!-- Display a message if the return is not possible -->
+                    <div class="card-text">
+                      <% if (!order.returnExpiryDate) { %> <% } else if (new
+                      Date(order.returnExpiryDate) <= new Date()) { %> Your
+                      return order has expired on <%=
+                      order.returnExpiryDate.toDateString() %> <% } %>
+                    </div>
+                    <% } %>
+                    <div id="returnModal-<%= order._id %>" class="returnModal">
+                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content" style="border-radius: 1rem">
+                          <div>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              onclick="closeReturnModal('<%= order._id %>')"
+                            ></button>
+                          </div>
+                          <div class="modal-body pt-0">
+                            <h5>Choose Return Reason</h5>
+                            <form id="returnReasonForm">
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="reason"
+                                  value="Defective"
+                                />
+                                Defective </label
+                              ><br />
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="reason"
+                                  value="Wrong Item"
+                                />
+                                Wrong Item </label
+                              ><br />
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="reason"
+                                  value="Changed My Mind"
+                                />
+                                Changed My Mind </label
+                              ><br />
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="reason"
+                                  value="Other"
+                                />
+                                Other </label
+                              ><br />
+
+                              <label for="comments">Comments:</label><br />
+                              <textarea
+                                id="comments"
+                                name="comments"
+                                rows="4"
+                                cols="50"
+                                style="max-width: inherit"
+                              ></textarea
+                              ><br />
+
+                              <a
+                                type="submit"
+                                id="submitReturn"
+                                class="btn btn-success"
+                                onclick="submitReturnModal('<%= order._id %>')"
+                              >
+                                Confirm Return
+                              </a>
+                            </form>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </td>
-                  
-                </tr>
-                <% }); %>
-              </tbody>
-            </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
           </div>
         </div>
       </div>
@@ -567,7 +755,12 @@
   </div>
 </section>
 
-<!-- UPADATE USER ADDRESS -->
+<style>
+  .card {
+    border-radius: 0.2rem;
+  }
+</style>
+
 <script>
   var addressId;
   function editAddress(id) {
@@ -623,4 +816,81 @@
   });
 </script>
 
-<script></script>
+<script>
+  function openReturnAlert(orderId) {
+    Swal.fire({
+      title: "Return Order",
+      text: "Are you sure you want to return this order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, return it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/return-order?id=" + orderId;
+
+        Swal.fire("Returned!", "Your order has been returned.", "success");
+      }
+    });
+  }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function openReturnModal(orderId) {
+    // Find the return modal with the specific order ID
+    const returnModal = document.getElementById(`returnModal-${orderId}`);
+    console.log("❤️❤️❤️❤️❤️");
+    // Open the modal using Bootstrap's modal method
+    $(returnModal).modal("show");
+  }
+
+  document
+    .querySelectorAll(".return-btn[data-order-id]")
+    .forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        const orderId = event.target.getAttribute("data-order-id");
+        openReturnModal(orderId);
+      });
+    });
+
+  function submitReturnModal(orderId) {
+    const modalId = `returnModal-${orderId}`;
+    const modal = document.getElementById(modalId);
+
+    // Get the selected reason
+    const selectedReason = document.querySelector(
+      `#${modalId} input[name="reason"]:checked`
+    );
+
+    // Get the text area content
+    const comments = document.querySelector(
+      `#${modalId} textarea#comments`
+    ).value;
+
+    if (!selectedReason) {
+      // No reason selected, show an error message or perform necessary action
+      alert("Please select a return reason before confirming.");
+      return; // Stop further execution
+    }
+
+    if (modal) {
+      $(modal).modal("hide");
+
+      // Now you can use 'selectedReason.value' and 'comments' as needed
+      console.log("Selected Reason:", selectedReason.value);
+      console.log("Comments:", comments);
+    }
+
+    openReturnAlert(orderId);
+  }
+
+  function closeReturnModal(orderId) {
+    const modalId = `returnModal-${orderId}`;
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      $(modal).modal("hide");
+    }
+  }
+</script>

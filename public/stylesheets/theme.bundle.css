@@ -3984,6 +3984,10 @@ fieldset:disabled .btn {
   color: #000;
   background-color: #0dcaf0;
   border-color: #0dcaf0;
+  /* color: #fff; */
+  border-radius: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 .btn-check:focus + .btn-info,
 .btn-info:focus,
@@ -4136,9 +4140,12 @@ fieldset:disabled .btn {
   border-color: #f6f6f6;
 }
 .btn-dark {
-  color: #fff;
   background-color: #1c212c;
+  color: #fff;
   border-color: #1c212c;
+  border-radius: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 .btn-check:focus + .btn-dark,
 .btn-dark:focus,

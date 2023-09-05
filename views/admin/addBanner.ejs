@@ -171,19 +171,24 @@
 </style>
 <div class="container">
   <% if (banners.length >= 3) { %> <% banners.forEach(banner => { %>
-    <div class="banner-card">
-      <img src="/<%= banner.image %>" class="banner-image" />
-      <h3 class="banner-title"><%= banner.title %></h3>
-      <div class="d-flex" style="flex-direction: column">
-        <div>
-          <p class="banner-url"><%= banner.url %></p>
-          <p class="banner-description"><%= banner.description %></p>
-        </div>
-        <div class="deletediv">
-          <button class="btn btn-danger replace-button" data-banner-id="<%= banner.id %>">Delete</button>
-        </div>
+  <div class="banner-card">
+    <img src="/<%= banner.image %>" class="banner-image" />
+    <h3 class="banner-title"><%= banner.title %></h3>
+    <div class="d-flex" style="flex-direction: column">
+      <div>
+        <p class="banner-url"><%= banner.url %></p>
+        <p class="banner-description"><%= banner.description %></p>
+      </div>
+      <div class="deletediv">
+        <button
+          class="btn btn-danger replace-button"
+          data-banner-id="<%= banner.id %>"
+        >
+          Delete
+        </button>
       </div>
     </div>
+  </div>
   <% }); %> <% } else { %>
   <div class="add-banner-card" id="addBannerBtn">
     <span class="plus-icon">+</span>
@@ -200,7 +205,12 @@
         <p class="banner-description"><%= banner.description %></p>
       </div>
       <div class="deletediv">
-        <button class="btn btn-danger replace-button" data-banner-id="<%= banner.id %>">Delete</button>
+        <button
+          class="btn btn-danger replace-button"
+          data-banner-id="<%= banner.id %>"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -282,11 +292,11 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const deleteButtons = document.querySelectorAll(".replace-button");
-    
-    deleteButtons.forEach(button => {
+
+    deleteButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const bannerId = button.getAttribute("data-banner-id");
-        
+
         // Display SweetAlert confirmation dialog
         Swal.fire({
           title: "Delete Banner?",
@@ -295,27 +305,31 @@
           showCancelButton: true,
           confirmButtonColor: "#d33",
           cancelButtonColor: "#3085d6",
-          confirmButtonText: "Yes, delete it!"
+          confirmButtonText: "Yes, delete it!",
         }).then((result) => {
           if (result.isConfirmed) {
             // User confirmed, send a fetch request to delete the banner
             fetch(`/admin/delete-banner/${bannerId}`, {
               method: "delete",
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success == true) {
-                Swal.fire("Deleted!", "The banner has been deleted.", "success").then(() => {
-                  window.location.reload();
-                });
-              }
-            })
-            .catch(error => {
-              console.error("Error:", error);
-            });
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.success == true) {
+                  Swal.fire(
+                    "Deleted!",
+                    "The banner has been deleted.",
+                    "success"
+                  ).then(() => {
+                    window.location.reload();
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
           }
         });
       });

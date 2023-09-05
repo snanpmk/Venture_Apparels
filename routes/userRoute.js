@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 const productController = require("../controllers/productController")
 const sessionMiddleware = require("../middlewares/sessionMiddleware")
 const orderController = require("../controllers/orderController")
-
+const cartController = require("../controllers/cartController")
 router.get("/",userController.loadHome);
 
 router.get("/signup", userController.loadSignUp);
@@ -56,6 +56,8 @@ router.get("/cancel-order",orderController.cancelOrder)
 router.get("/return-order",orderController.returnOrder)
 
 router.post("/verify-payment/:ObjectId",orderController.verifyPayment)
+
+router.post("/coupon-price",cartController.updateCouponDiscount)
 
 
 

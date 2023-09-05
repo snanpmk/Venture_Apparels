@@ -26,6 +26,12 @@ const cartSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  subtotal: {
+    type: Number,
+  },
+  discount:{
+    type:Number,
   }
 });
 

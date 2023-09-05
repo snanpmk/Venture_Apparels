@@ -1,7 +1,8 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel")
-
+const Coupon = require("../models/couponModel")
+const Order = require("../models/orderModel")
 const viewCart = async function (req, res) {
   try {
     const userId = req.session.userId
@@ -172,10 +173,50 @@ const deleteItem = async function (req, res) {
     console.log("error in deleting item", error);
   }
 }
+const updateCouponDiscount = async function(req, res) {
+  try {
+    const couponCode = req.body.couponCode;
+    const subtotal = parseFloat(req.body.subtotalValue); // Parse subtotal as a float
+
+    console.log("Coupon Code: " + couponCode);
+    console.log("Subtotal: " + subtotal);
+
+    // Find the coupon by code
+    const coupon = await Coupon.findOne({ couponCode: couponCode });
+
+    if (!coupon) {
+      // Handle the case where the coupon doesn't exist
+      console.log("Coupon not found");
+      // Respond with an appropriate message or status code
+      return res.status(404).json({ message: "Coupon not found" });
+    }
+
+    const decrementPercentage = coupon.discount;
+    console.log("Discount Percentage: " + decrementPercentage);
+
+    // Calculate the discount amount
+    const discountAmount = (decrementPercentage / 100) * subtotal;
+
+
+    const discountedSubtotal = subtotal - discountAmount;
+
+    console.log("Discount Amount: " + discountAmount);
+    console.log("Discounted Subtotal: " + discountedSubtotal);
+
+        
+    // Respond with the discounted subtotal or any other relevant information
+    return res.status(200).json({discountedSubtotal,discountAmount});
+  } catch (error) {
+    console.log("Error in updating coupon discount", error);
+    // Handle the error and respond with an appropriate message or status code
+    return res.status(500).json({ message: "Internal Server Error",success:true });
+  }
+};
 
 module.exports = {
   viewCart,
   addToCart,
   updateQuantity,
-  deleteItem
+  deleteItem,
+  updateCouponDiscount,
 };

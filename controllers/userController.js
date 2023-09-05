@@ -6,7 +6,9 @@ const Category = require("../models/categoryModel")
 const Address = require("../models/addressSchema");
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
+const Coupon = require("../models/couponModel")
 const Banner = require("../models/bannerModel")
+const moment = require('moment');
 const bcrypt = require("bcrypt");
 
 const accountSid = process.env.ACCOUNT_SID;
@@ -307,22 +309,24 @@ const loadCheckout = async function (req, res) {
     );
     let grandTotal = 0;
     let subtotal = 0;
-
+      
     for (const item of cart.items) {
       const productPrice = item.productId.price;
       const totalPrice = productPrice * item.quantity;
       item.totalPrice = totalPrice;
       subtotal += totalPrice;
     }
-
     grandTotal = subtotal;
     grandTotal = grandTotal.toFixed(2);
+    cart.subtotal = subtotal;
     await cart.save();
 
     const addresses = await Address.find({ user: userId,isDeleted: false });
+    const coupons = await Coupon.find()
     const products = cart.items.map((item) => ({
       product: item.productId,
       quantity: item.quantity,
+      
     }));
 
     console.log(products);
@@ -332,6 +336,8 @@ const loadCheckout = async function (req, res) {
       addresses: addresses,
       products: cart.items,
       grandTotal: grandTotal,
+      coupons: coupons,
+      moment: moment,
       subtotal: subtotal,
 
     });
