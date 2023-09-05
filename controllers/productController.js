@@ -234,13 +234,21 @@ const filterPrice = async function (req, res) {
   try {
     const { min, max } = req.body;
 
+    // Filter products based on price or offerPrice if offerPrice exists
     const filteredProducts = await Product.find({
-      price: { $gte: parseFloat(min), $lte: parseFloat(max), deleted: false },
+      $and: [
+        {
+          $or: [
+            { price: { $gte: parseFloat(min), $lte: parseFloat(max) } },
+            { offerPrice: { $exists: true, $gte: parseFloat(min), $lte: parseFloat(max) } },
+          ],
+        },
+        { deleted: false },
+      ],
     });
 
-    const categories = await Category.find;
-    // return
-    // console.log();
+    // Find categories
+    const categories = await Category.find();
 
     return res.json({
       success: true,
@@ -251,8 +259,9 @@ const filterPrice = async function (req, res) {
     });
   } catch (error) {
     console.log("error in filtering with price", error);
+    return res.status(500).json({ success: false, error: "Internal Server Error" });
   }
-}
+};
 
 const loadOffers = async function (req, res) {
   try {
@@ -291,6 +300,97 @@ const addOffers = async function (req, res) {
 
 }
 
+const activateOffer = async function (req, res) {
+  try {
+    const offerId = req.query.id;
+    if (!offerId) {
+      return res.status(400).json({ message: 'Offer ID is required in the query parameter.' });
+    }
+
+    const offer = await Offer.findOne({ _id: offerId });
+
+    if (!offer) {
+      return res.status(404).json({ message: 'Offer not found.' });
+    }
+
+    const expiryDate = offer.expiryDate;
+
+    const currentDate = new Date();
+    if (expiryDate <= currentDate) {
+      return res.status(400).json({ message: 'Offer has expired.' });
+    }
+
+    const offerCategory = offer.category;
+    const offersDiscount = offer.discountPercent;
+    const discountPercent = offersDiscount / 100;
+
+    // Use aggregation pipeline to update offerPrice and offerPercent
+    const updatedProducts = await Product.updateMany(
+      { category: offerCategory },
+      [
+        {
+          $addFields: {
+            offerPrice: {
+              $subtract: ["$price", { $multiply: ["$price", discountPercent] }],
+            },
+            offerPercent: offersDiscount,
+          },
+        },
+      ]
+    );
+
+    // Update the isActivated field to true
+    await Offer.updateOne({ _id: offerId }, { isActivated: true });
+
+    return res.status(200).json({ message: 'Offer activated successfully.' });
+  } catch (error) {
+    console.error("Error in activating offer:", error);
+
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+const deactivateOffer = async function (req, res) {
+  try {
+    const offerId = req.query.id;
+    if (!offerId) {
+      return res.status(400).json({ message: 'Offer ID is required in the query parameter.' });
+    }
+
+    const offer = await Offer.findOne({ _id: offerId });
+
+    if (!offer) {
+      return res.status(404).json({ message: 'Offer not found.' });
+    }
+
+    const offerCategory = offer.category;
+
+    // Use aggregation pipeline to remove offerPrice and offerPercent
+    const updatedProducts = await Product.updateMany(
+      { category: offerCategory },
+      [
+        {
+          $unset: "offerPrice", // Remove the offerPrice field
+        },
+        {
+          $unset: "offerPercent", // Remove the offerPercent field
+        },
+      ]
+    );
+
+    await Offer.updateOne({ _id: offerId }, { isActivated: false });
+
+    return res.status(200).json({ message: 'Offer deactivated successfully.' });
+  } catch (error) {
+    console.error("Error in deactivating offer:", error);
+
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+
+
+
 module.exports = {
   listAllProducts,
   loadAddProduct,
@@ -305,4 +405,6 @@ module.exports = {
   filterPrice,
   loadOffers,
   addOffers,
+  activateOffer,
+  deactivateOffer
 };

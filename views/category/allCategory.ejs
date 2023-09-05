@@ -104,13 +104,13 @@
                   <div class="input-group mb-0 me-2 border">
                     <span
                       class="input-group-text bg-transparent fs-7 p-2 text-muted border-0"
-                      >$</span
+                      >&#8377</span
                     >
                     <input
                       type="number"
                       min="00"
                       max="1000"
-                      value="0.00"
+                      value="0"
                       step="1"
                       id="filter-min"
                       class="filter-min form-control-sm border flex-grow-1 text-muted border-0"
@@ -119,13 +119,13 @@
                   <div class="input-group mb-0 ms-2 border">
                     <span
                       class="input-group-text bg-transparent fs-7 p-2 text-muted border-0"
-                      >$</span
+                      >&#8377</span
                     >
                     <input
                       type="number"
                       min="00"
-                      max="1000"
-                      value="1000.00"
+                      max="100000"
+                      value="1000"
                       step="1"
                       id="filter-max"
                       class="filter-max form-control-sm flex-grow-1 text-muted border-0"
@@ -662,53 +662,55 @@
           <% products.forEach(product => { %>
           <div class="col-12 col-sm-6 col-md-4">
             <!-- Card Product -->
-            <div
-              class="card position-relative h-100 card-listing hover-trigger"
-            >
-              <div class="card-header">
-                <picture
-                  class="position-relative overflow-hidden d-block bg-light"
-                >
-                  <img
-                    class="w-100 img-fluid position-relative z-index-10"
-                    title=""
-                    src="/<%= product.image %>"
-                    alt=""
-                  />
-                </picture>
-                <picture
-                  class="position-absolute z-index-20 start-0 top-0 hover-show bg-light"
-                >
-                  <img
-                    class="w-100 img-fluid"
-                    title=""
-                    src="/images/products/product-1b.jpg"
-                    alt=""
-                  />
-                </picture>
-                <div class="card-actions">
-                  <span
-                    class="small text-uppercase tracking-wide fw-bolder text-center d-block"
-                    >Quick Add</span
-                  >
-                  <div
-                    class="d-flex justify-content-center align-items-center flex-wrap mt-3"
-                  >
-                    <button class="btn btn-outline-dark btn-sm mx-2">S</button>
-                    <button class="btn btn-outline-dark btn-sm mx-2">M</button>
-                    <button class="btn btn-outline-dark btn-sm mx-2">L</button>
+            <% if (product.offerPrice) { %>
+              <!-- Product card with offer -->
+              <div class="card position-relative h-100 card-listing hover-trigger">
+                <span class="badge card-badge bg-secondary">- <%= product.offerPercent %> %</span>
+                <div class="card-header">
+                  <picture class="position-relative overflow-hidden d-block bg-light">
+                    <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+                  </picture>
+                  <div class="card-actions">
+                    <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">Quick Add</span>
+                    <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+                      <button class="btn btn-outline-dark btn-sm mx-2">S</button>
+                      <button class="btn btn-outline-dark btn-sm mx-2">M</button>
+                      <button class="btn btn-outline-dark btn-sm mx-2">L</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body px-0 text-center">
+                 
+                  <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="./product.html">Womens Essentials Hoodie</a>
+                  <div class="d-flex justify-content-center align-items-center mt-2">
+                    <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span><%= product.offerPrice %></span></p>
+                    <p class="mb-0 text-muted fw-bolder"><s>&#8377<span><%= product.price %></span></s></p>
                   </div>
                 </div>
               </div>
-              <div class="card-body px-0 text-center">
-                <a
-                  class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center"
-                  href="/product/product-detail/<%= product.id %>"
-                  ><%= product.name %></a
-                >
-                <p class="fw-bolder m-0 mt-2">$<%= product.price %></p>
+            <% } else { %>
+              <!-- Product card without offer -->
+              <div class="card position-relative h-100 card-listing hover-trigger">
+                <div class="card-header">
+                  <picture class="position-relative overflow-hidden d-block bg-light">
+                    <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+                  </picture>
+                  <div class="card-actions">
+                    <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">Quick Add</span>
+                    <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+                      <button class="btn btn-outline-dark btn-sm mx-2">S</button>
+                      <button class="btn btn-outline-dark btn-sm mx-2">M</button>
+                      <button class="btn btn-outline-dark btn-sm mx-2">L</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body px-0 text-center">
+                  <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
+                  <p class="fw-bolder m-0 mt-2">&#8377 <span><%= product.price %></span></p>
+                </div>
               </div>
-            </div>
+            <% } %>
+            
             <!-- / Card Product -->
           </div>
           <% }); %>
@@ -848,44 +850,54 @@
     }
   };
 
-  // Function to update the product cards with the sorted data
-  const updateProductCards = function (products) {
-    const productContainer = document.getElementById("productContainer");
-    productContainer.innerHTML = ""; // Clear the existing product cards
+ // Function to update the product cards with the data
+const updateProductCards = function (products) {
+  const productContainer = document.getElementById("productContainer");
+  productContainer.innerHTML = ""; // Clear the existing product cards
 
-    products.forEach((product) => {
-      const card = `
-        <div class="col-12 col-sm-6 col-md-4">
-          <!-- Card Product -->
-          <div class="card position-relative h-100 card-listing hover-trigger">
-            <div class="card-header">
-              <picture class="position-relative overflow-hidden d-block bg-light">
-                <img class="w-100 img-fluid position-relative z-index-10" title="" src="/${product.image}" alt="" />
-              </picture>
-              <picture class="position-absolute z-index-20 start-0 top-0 hover-show bg-light">
-                <img class="w-100 img-fluid" title="" src="/images/products/product-1b.jpg" alt="" />
-              </picture>
-              <div class="card-actions">
-                <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">Quick Add</span>
-                <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
-                  <button class="btn btn-outline-dark btn-sm mx-2">S</button>
-                  <button class="btn btn-outline-dark btn-sm mx-2">M</button>
-                  <button class="btn btn-outline-dark btn-sm mx-2">L</button>
-                </div>
+  products.forEach((product) => {
+    const card = `
+      <div class="col-12 col-sm-6 col-md-4">
+        <!-- Card Product -->
+        <div class="card position-relative h-100 card-listing hover-trigger">
+          <div class="card-header">
+            <picture class="position-relative overflow-hidden d-block bg-light">
+              <img class="w-100 img-fluid position-relative z-index-10" title="" src="/${product.image}" alt="" />
+            </picture>
+            <div class="card-actions">
+              <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">Quick Add</span>
+              <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+                <button class="btn btn-outline-dark btn-sm mx-2">S</button>
+                <button class="btn btn-outline-dark btn-sm mx-2">M</button>
+                <button class="btn btn-outline-dark btn-sm mx-2">L</button>
               </div>
             </div>
-            <div class="card-body px-0 text-center">
-              <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/${product.id}">${product.name}</a>
-              <p class="fw-bolder m-0 mt-2">$${product.price}</p>
-            </div>
           </div>
-          <!-- / Card Product -->
+          <div class="card-body px-0 text-center">
+            <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/${product.id}">${product.name}</a>
+            
+            ${
+              product.offerPrice
+                ? `
+                  <div class="d-flex justify-content-center align-items-center mt-2">
+                    <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span>${product.offerPrice}</span></p>
+                    <p class="mb-0 text-muted fw-bolder"><s>&#8377<span>${product.price}</span></s></p>
+                  </div>
+                `
+                : `<p class="fw-bolder m-0 mt-2">&#8377 <span>${product.price}</span></p>`
+            }
+          </div>
         </div>
-      `;
+        <!-- / Card Product -->
+      </div>
+    `;
 
-      productContainer.insertAdjacentHTML("beforeend", card);
-    });
-  };
+    productContainer.insertAdjacentHTML("beforeend", card);
+  });
+};
+
+
+  // Function to update the product cards with the sorted data
 </script>
 
 <script>

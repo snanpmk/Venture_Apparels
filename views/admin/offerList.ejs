@@ -147,51 +147,60 @@
 </style>
 
 <div class="container">
-  <div class="add-offer-card" id="addOffersBtn">
-    <span class="plus-icon">+</span>
-    <span><h3 class="addoffertxt">Add Offers</h3></span>
-  </div>
-  <!-- Looping through the offers array -->
-  <% offers.forEach((offer) => { %>
-  <div class="offer-card">
-    <h3 class="offer-title" style="text-transform: uppercase">
-      <%= offer.offerTitle %>
-    </h3>
-    <div class="offer-details">
-      <div class="d-flex" style="justify-content: space-between">
-        <p class="offer-info">Offer Category:</p>
-        <p><%= offer.category.name %></p>
+    <div class="add-offer-card" id="addOffersBtn">
+      <span class="plus-icon">+</span>
+      <span><h3 class="addoffertxt">Add Offers</h3></span>
+    </div>
+    <!-- Looping through the offers array -->
+    <% offers.forEach((offer) => { %>
+    <div class="offer-card">
+      <h3 class="offer-title" style="text-transform: uppercase">
+        <%= offer.offerTitle %>
+      </h3>
+      <div class="offer-details">
+        <div class="d-flex" style="justify-content: space-between">
+          <p class="offer-info">Offer Category:</p>
+          <p><%= offer.category.name %></p>
+        </div>
+  
+        <p class="offer-info">Discount: <%= offer.discountPercent %>%</p>
+        <p class="offer-info">
+          Expiry Date: <%= offer.expiryDate.toDateString() %>
+        </p>
       </div>
-
-      <p class="offer-info">Discount: <%= offer.discountPercent %>%</p>
-      <p class="offer-info">
-        Expiry Date: <%= offer.expiryDate.toDateString() %>
-      </p>
+      <div class="offer-actions" style="display: flex; justify-content: space-between">
+        <% if (offer.isActivated) { %>
+          <button
+            class="btn replace-button deactivate-button"
+            style="color: #ff0000"
+            id="deactivateOfferButton<%= offer._id %>"
+            onclick="deactivateOffer('<%= offer._id %>')"
+          >
+            Deactivate Offer
+          </button>
+        <% } else { %>
+          <button
+            class="btn replace-button activate-button"
+            style="color: #00cc00"
+            id="activateOfferButton<%= offer._id %>"
+            onclick="activateOffer('<%= offer._id %>')"
+          >
+            Activate Offer
+          </button>
+        <% } %>
+  
+        <button
+          class="btn replace-button delete-button"
+          style="color: red"
+          data-offer-id="<%= offer._id %>"
+        >
+          Delete
+        </button>
+      </div>
     </div>
-    <div
-      class="offer-actions"
-      style="display: flex; justify-content: space-between"
-    >
-      <button
-        class="btn replace-button activate-button"
-        style="color: #00cc00"
-        id="activateOfferButton<%= offer._id %>"
-        onclick="activateOffer('<%= offer._id %>')"
-      >
-        Activate Offer
-      </button>
-
-      <button
-        class="btn replace-button delete-button"
-        style="color: red"
-        data-offer-id="<%= offer._id %>"
-      >
-        Delete
-      </button>
-    </div>
+    <% }) %>
   </div>
-  <% }) %>
-</div>
+  
 
 <!-- Add Offer Modal -->
 <div id="addOfferModal" class="modal">
@@ -257,7 +266,7 @@
 
 <script>
   function activateOffer(offerId) {
-    fetch(`/product/activate-offer-${offerId}`, {
+    fetch(`/product/activate-offer?id=${offerId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -267,6 +276,29 @@
         if (response.ok) {
           // Handle success, e.g., show a success message
           console.log("Offer activated successfully.");
+          window.location.reload()
+
+        } else {
+          // Handle errors, e.g., show an error message
+          console.error("Failed to activate offer.");
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  }
+  function deactivateOffer(offerId) {
+    fetch(`/product/deactivate-offer?id=${offerId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Handle success, e.g., show a success message
+          console.log("Offer deactivated successfully.");
+          window.location.reload()
         } else {
           // Handle errors, e.g., show an error message
           console.error("Failed to activate offer.");

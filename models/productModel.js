@@ -26,6 +26,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  offerPrice:{
+    type : Number,
+    default : null,
+  },
+  offerPercent:{
+    type: Number,
+    default:null
+  },
   deleted: {
     type: Boolean,
     default: false,

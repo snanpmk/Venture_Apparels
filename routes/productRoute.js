@@ -55,4 +55,9 @@ router.get("/offers",productController.loadOffers)
 
 router.post("/add-offer",productController.addOffers)
 
+router.post("/activate-offer",productController.activateOffer)
+
+router.post("/deactivate-offer",productController.deactivateOffer)
+
+
 module.exports = router;

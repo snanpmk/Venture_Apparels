@@ -18,6 +18,10 @@ const offerSchema = new mongoose.Schema({
     expiryDate: {
         type: Date,
         required: true
+    },
+    isActivated: {
+        type: Boolean,
+        default: false
     }
 })
 
