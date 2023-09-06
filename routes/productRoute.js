@@ -51,6 +51,8 @@ router.post("/sort", productController.sort)
 
 router.post("/filter-price",productController.filterPrice)
 
+// category offer
+
 router.get("/offers",productController.loadOffers)
 
 router.post("/add-offer",productController.addOffers)
@@ -58,6 +60,12 @@ router.post("/add-offer",productController.addOffers)
 router.post("/activate-offer",productController.activateOffer)
 
 router.post("/deactivate-offer",productController.deactivateOffer)
+
+// product offer
+
+router.get("/offer",productController.loadProductOffers)
+
+router.post("/add-product-offer",productController.addProductOffers)
 
 
 module.exports = router;

@@ -151,19 +151,23 @@
     <span class="plus-icon">+</span>
     <span><h3 class="addoffertxt">Add Offers</h3></span>
   </div>
-  <!-- Looping through the offers array -->
-  <% offers.forEach((offer) => { %>
-    <% if (offer.category) { %>
+  <% offers.forEach((offer) => { %> <% if (offer.product) { %>
+
   <div class="offer-card">
     <h3 class="offer-title" style="text-transform: uppercase">
       <%= offer.offerTitle %>
     </h3>
-
     <div class="offer-details">
       <div class="d-flex" style="justify-content: space-between">
-        <p class="offer-info">Offer Category:</p>
-        <p><%= offer.category.name %></p>
+        <p class="offer-info">
+          Product : <% if (offer.product) { %>
+          <span> <%= offer.product.name %></span>
+          <% } else { %>
+          <span>Product Not Found</span>
+          <% } %>
+        </p>
       </div>
+
       <p class="offer-info">Discount: <%= offer.discountPercent %>%</p>
       <p class="offer-info">
         Expiry Date: <%= offer.expiryDate.toDateString() %>
@@ -210,7 +214,7 @@
   <div class="modal-content">
     <span class="close" id="closeModal">×</span>
     <h2>Add Offer</h2>
-    <form method="POST" action="/product/add-offer" id="offerForm">
+    <form method="POST" action="/product/add-product-offer" id="offerForm">
       <div class="form-group">
         <label for="offerTitle">Offer Title:</label>
 
@@ -225,23 +229,18 @@
       </div>
 
       <div class="form-group">
-        <!-- Adding a label for the offer category select element -->
-        <label for="offerCategory">Offer Category:</label>
+        <!-- Adding a label for the offer product select element -->
+        <label for="offerProduct">Offer Product:</label>
         <!-- Changing the class name of the select element -->
-        <select
-          class="dropdown"
-          id="offerCategory"
-          name="offerCategory"
-          required
-        >
-          <option value="">Select a category</option>
-          <% categories.forEach((category) => { %>
-          <option value="<%= category._id %>"><%= category.name %></option>
+        <select class="dropdown" id="offerProduct" name="offerProduct" required>
+          <option value="">Select a product</option>
+          <% products.forEach((product) => { %>
+          <option value="<%= product._id %>"><%= product.name %></option>
 
           <%}) %>
           <!-- Removing the extra option for electronics -->
         </select>
-        <p class="error-message" id="offerCategoryError"></p>
+        <p class="error-message" id="offerProductError"></p>
       </div>
 
       <div class="form-group">

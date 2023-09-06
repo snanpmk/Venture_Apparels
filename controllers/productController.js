@@ -266,11 +266,11 @@ const filterPrice = async function (req, res) {
 const loadOffers = async function (req, res) {
   try {
     const offers = await Offer.find().populate('category')
-    
+
     const categories = await Category.find()
     res.render("admin/offerList", {
       categories: categories,
-      offers:offers,
+      offers: offers,
       layout: "layouts/adminLayout",
       errorMessage: null,
     })
@@ -282,10 +282,10 @@ const loadOffers = async function (req, res) {
 const addOffers = async function (req, res) {
   try {
     const { offerTitle, offerCategory, discountPercent, expiryDate } = req.body;
-  
+
     const offer = new Offer({
       offerTitle,
-      category:offerCategory,
+      category: offerCategory,
       discountPercent,
       expiryDate,
     });
@@ -320,18 +320,70 @@ const activateOffer = async function (req, res) {
       return res.status(400).json({ message: 'Offer has expired.' });
     }
 
-    const offerCategory = offer.category;
+    let offerCategory;
+
+
+    if (offer.category) {
+      offerCategory = offer.category;
+
+      const offersDiscount = offer.discountPercent;
+      const discountPercent = offersDiscount / 100;
+
+      // Use aggregation pipeline to update offerPrice and offerPercent
+      const updatedProducts = await Product.updateMany(
+        { category: offerCategory },
+        [
+          {
+            $addFields: {
+              offerPrice: {
+                $round: [{ $subtract: ["$price", { $multiply: ["$price", discountPercent] }] }, 2],
+
+              },
+              offerPercent: offersDiscount,
+            },
+          },
+        ]
+      );
+
+
+    } else if (offer.product) {
+      offerCategory = offer.product;
+
+      const offersDiscount = offer.discountPercent;
+      const discountPercent = offersDiscount / 100;
+
+      // Use aggregation pipeline to update offerPrice and offerPercent
+      const updatedProducts = await Product.updateMany(
+        { _id: offerCategory },
+        [
+          {
+            $addFields: {
+              offerPrice: {
+                $round: [{ $subtract: ["$price", { $multiply: ["$price", discountPercent] }] }, 2],
+
+              },
+              offerPercent: offersDiscount,
+            },
+          },
+        ]
+      );
+
+      console.log(offerCategory + "😊😭😊");
+    }
+
+
     const offersDiscount = offer.discountPercent;
     const discountPercent = offersDiscount / 100;
 
     // Use aggregation pipeline to update offerPrice and offerPercent
     const updatedProducts = await Product.updateMany(
-      { category: offerCategory },
+      { _id: offerCategory },
       [
         {
           $addFields: {
             offerPrice: {
-              $subtract: ["$price", { $multiply: ["$price", discountPercent] }],
+              $round: [{ $subtract: ["$price", { $multiply: ["$price", discountPercent] }] }, 2],
+
             },
             offerPercent: offersDiscount,
           },
@@ -363,11 +415,19 @@ const deactivateOffer = async function (req, res) {
       return res.status(404).json({ message: 'Offer not found.' });
     }
 
-    const offerCategory = offer.category;
+    let offerCategory;
+
+    if (offer.category) {
+      offerCategory = offer.category;
+      console.log(offerCategory + "😊😊");
+    } else if (offer.product) {
+      offerCategory = offer.product;
+      console.log(offerCategory + "😊😭😊");
+    }
 
     // Use aggregation pipeline to remove offerPrice and offerPercent
     const updatedProducts = await Product.updateMany(
-      { category: offerCategory },
+      { _id: offerCategory },
       [
         {
           $unset: "offerPrice", // Remove the offerPrice field
@@ -388,6 +448,57 @@ const deactivateOffer = async function (req, res) {
   }
 };
 
+const loadProductOffers = async function (req, res) {
+  try {
+    const offers = await Offer.find().populate('product')
+
+    const products = await Product.find()
+    res.render("admin/offerProductList", {
+      products: products,
+      offers: offers,
+      layout: "layouts/adminLayout",
+      errorMessage: null,
+    })
+  } catch (error) {
+    console.log("error while loading offers" + error);
+  }
+}
+
+const addProductOffers = async function (req, res) {
+  try {
+    const { offerTitle, offerProduct, discountPercent, expiryDate } = req.body;
+    console.log(offerProduct);
+
+    // Assuming you have a Product model for your products
+    const product = await Product.findById(offerProduct);
+
+    console.log(product + "😒😒😊😊");
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const offer = new Offer({
+      offerTitle,
+      category: null, // Set category to null
+      product: product._id, // Set the product field to the product's _id
+      discountPercent,
+      expiryDate,
+    });
+
+    const savedOffer = await offer.save();
+    console.log(savedOffer);
+
+    res.redirect("/product/offer");
+  } catch (error) {
+    console.log("error in adding offers" + error);
+    // Handle the error appropriately, perhaps by sending an error response
+    res.status(500).json({ error: "Error in adding offers" });
+  }
+}
+
+
+
 
 
 
@@ -406,5 +517,7 @@ module.exports = {
   loadOffers,
   addOffers,
   activateOffer,
-  deactivateOffer
+  deactivateOffer,
+  loadProductOffers,
+  addProductOffers
 };
