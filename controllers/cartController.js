@@ -16,10 +16,19 @@ const viewCart = async function (req, res) {
       let grandTotal = 0;
       let subtotal = 0;
       for (const item of cart.items) {
-        const productPrice = item.productId.price;
-        const totalPrice = productPrice * item.quantity;
-        item.totalPrice = totalPrice;
-        subtotal += totalPrice;
+        let productPrice;
+        if (item.productId.offerPrice) {
+          productPrice = item.productId.offerPrice;
+
+          const totalPrice = productPrice * item.quantity;
+          item.totalPrice = totalPrice;
+          subtotal += totalPrice;
+        } else {
+          productPrice = item.productId.price;
+          const totalPrice = productPrice * item.quantity;
+          item.totalPrice = totalPrice;
+          subtotal += totalPrice;
+        }
       }
 
       var limitMssg = ""
@@ -37,10 +46,10 @@ const viewCart = async function (req, res) {
         limitMssg: limitMssg
       });
     } else {
-      const uesrCart = await Cart.create({ userId });
+      const userCart = await Cart.create({ userId });
       res.render("cart", {
         layout: "layouts/userLayout",
-        item: uesrCart.items,
+        item: userCart.items,
       });
     }
   } catch (err) {
@@ -117,15 +126,26 @@ const updateQuantity = async function (req, res) {
       let totalPrice = 0;
       const itemToUpdate = cart.items.find(item => item.productId._id.toString() === productId);
       if (itemToUpdate) {
+        let productPrice;
         itemToUpdate.quantity = quantity;
-        const productPrice = itemToUpdate.productId.price;
-        totalPrice = productPrice * quantity;
-        itemToUpdate.totalPrice = totalPrice;
+        if (itemToUpdate.productId.offerPrice) {
+          productPrice = itemToUpdate.productId.offerPrice;
+          totalPrice = productPrice * quantity;
+          totalPrice = parseFloat(totalPrice.toFixed(2));
+          itemToUpdate.totalPrice = totalPrice;
+        } else {
+          productPrice = itemToUpdate.productId.price;
+          totalPrice = productPrice * quantity;
+          totalPrice = parseFloat(totalPrice.toFixed(2));
+          itemToUpdate.totalPrice = totalPrice;
+        }
+
       }
       cart.items.forEach(item => {
         subtotal += item.totalPrice;
       });
-      grandTotal = subtotal + 45.89;
+      subtotal = parseFloat(subtotal.toFixed(2));
+      grandTotal = subtotal;
 
       await cart.save();
       return res.json({
@@ -177,14 +197,16 @@ const updateCouponDiscount = async function (req, res) {
   try {
     const currentDate = new Date();
     const couponCode = req.body.couponCode;
+    console.log(couponCode + "😍😍😍😍");
     const subtotal = parseFloat(req.body.subtotalValue);
 
     const userId = req.session.userId;
     const user = await User.findById(userId);
 
-    if (user.couponUsed) {
-      return res.status(400).json({ message: "User has already used a coupon" });
+    if (user.couponUsed.includes(couponCode)) {
+      return res.status(400).json({ message: "User has already used this coupon" });
     }
+
 
     // Find the coupon by code
     const coupon = await Coupon.findOne({ couponCode: couponCode });
@@ -205,7 +227,7 @@ const updateCouponDiscount = async function (req, res) {
     const discountedSubtotal = (subtotal - discountAmount).toFixed(2);
 
     // Update the user's couponUsed field to indicate that the coupon has been used
-    user.couponUsed = couponCode;
+    user.couponUsed.push(couponCode);
     await user.save();
 
     return res.status(200).json({ discountedSubtotal, discountAmount });

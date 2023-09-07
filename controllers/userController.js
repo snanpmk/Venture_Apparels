@@ -332,11 +332,24 @@ const loadCheckout = async function (req, res) {
     let grandTotal = 0;
     let subtotal = 0;
 
+
+
+
     for (const item of cart.items) {
-      const productPrice = item.productId.price;
-      const totalPrice = productPrice * item.quantity;
-      item.totalPrice = totalPrice;
-      subtotal += totalPrice;
+      let productPrice;
+      if (item.productId.offerPrice) {
+        productPrice = item.productId.offerPrice;
+
+        const totalPrice = productPrice * item.quantity;
+        item.totalPrice = totalPrice;
+        subtotal += totalPrice;
+      } else {
+        productPrice = item.productId.price;
+        const totalPrice = productPrice * item.quantity;
+        item.totalPrice = totalPrice;
+        subtotal += totalPrice;
+      }
+
     }
     grandTotal = subtotal;
     grandTotal = grandTotal.toFixed(2);
@@ -346,7 +359,13 @@ const loadCheckout = async function (req, res) {
     const addresses = await Address.find({ user: userId, isDeleted: false });
 
     // Check if the user has a referral based on 'referredTo' or 'referredFrom' field
-    const referral = await Referral.findOne({ referredTo: userId });
+    const referral = await Referral.findOne({
+      $or: [
+        { referredTo: userId }, // Check that referredFrom is not null
+        { referredFrom: userId, referredTo: { $ne: null } },
+      ],
+    });
+
 
     let coupons;
     if (referral) {
@@ -370,6 +389,7 @@ const loadCheckout = async function (req, res) {
       products: cart.items,
       grandTotal: grandTotal,
       coupons: coupons,
+
       moment: moment,
       subtotal: subtotal,
     });

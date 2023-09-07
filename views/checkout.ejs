@@ -643,7 +643,11 @@
 
               <div>
                 <p class="mb-1 fs-6 fw-bolder"><%= item.productId.name %></p>
-                <small class="d-block text-muted"><%= item.quantity %> x &#8377 <%= item.productId.price %></small>
+                <% if(item.productId.offerPrice) {%>
+                  <small class="d-block text-muted"><%= item.quantity %> x &#8377 <%= item.productId.offerPrice %> <span><small style="color: #dc143c;">  (Offer Price)</small></span></small>
+                <%} else {%>
+                  <small class="d-block text-muted"><%= item.quantity %> x &#8377 <%= item.productId.price %></small>
+                <%} %>
                 <span class="fs-xs text-uppercase fw-bolder text-muted"></span>
               </div>
             </div>

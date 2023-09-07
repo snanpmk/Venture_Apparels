@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
   couponUsed :{
-    type:String
+    type:Array,
   }
 });
 

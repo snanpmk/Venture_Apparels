@@ -1,4 +1,15 @@
 <!-- Main Section-->
+<style>
+  .proceed-btn {
+    background-color: #fc6229;
+    border: none;
+    color: white;
+}
+.add-btn:hover{
+  background-color: #1c212c;
+  color: white;
+}
+</style>
 <section class="mt-5 container">
   <!-- Page Content Goes Here -->
   <h1 class="mb-6 display-5 fw-bold text-center">Your Cart</h1>
@@ -47,7 +58,11 @@
               <!-- Price -->
               <td>
                 <div class="px-3">
-                  <span class="small text-muted mt-1">$<%= item.productId.price %></span>
+                  <% if(item.productId.offerPrice) {%>
+                    <span class="small text-muted mt-1">&#8377 <%= item.productId.offerPrice %><span><small style="color: #dc143c;"> <br> (Offer Price)</small></span>
+                  <%} else {%>
+                    <span class="small text-muted mt-1">&#8377 <%= item.productId.price %></span>
+                  <%} %>
                 </div>
               </td>
               <!-- /Price -->
@@ -116,7 +131,7 @@
         <div class="py-3 border-bottom-white-opacity">
           <div class="d-flex justify-content-between align-items-center mb-2 flex-column flex-sm-row">
             <p class="m-0 fw-bolder fs-6">Subtotal</p>
-            <p class="m-0 fs-6 fw-bolder js-subtotal">$<%= subtotal %></p>
+            <p class="m-0 fs-6 fw-bolder js-subtotal">&#8377 <%= subtotal %></p>
           </div>
           <div class="d-flex justify-content-between align-items-center flex-column flex-sm-row mt-3 m-sm-0">
             <p class="m-0 fw-bolder fs-6">Shipping</p>
@@ -127,47 +142,21 @@
           <div class="d-flex justify-content-between align-items-center flex-column flex-sm-row">
             <div>
               <p class="m-0 fs-5 fw-bold">Grand Total</p>
-              <span class="text-white opacity-75 small">Inc $45.89 sales tax</span>
             </div>
-            <p class="mt-3 m-sm-0 fs-5 fw-bold js-grand-total">$<%= grandTotal %></p>
+            <p class="mt-3 m-sm-0 fs-5 fw-bold js-grand-total">&#8377 <%= grandTotal %></p>
           </div>
         </div>
 
-        <!-- Coupon Code-->
-        <button
-          class="btn btn-link p-0 mt-2 text-white fw-bolder text-decoration-none"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseExample"
-          aria-expanded="false"
-          aria-controls="collapseExample"
-        >
-          Have a coupon code?
-        </button>
-        <div class="collapse" id="collapseExample">
-          <div class="card card-body bg-transparent p-0">
-            <div class="input-group mb-0 mt-2">
-              <input
-                type="text"
-                class="form-control border-0"
-                placeholder="Enter coupon code"
-              />
-              <button class="btn btn-white text-dark px-3 btn-sm border-0 d-flex justify-content-center align-items-center">
-                <i class="ri-checkbox-circle-line ri-lg"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- / Coupon Code-->
+        
 
         <!-- Checkout Button-->
-        <a href="/checkout" class="btn btn-white w-100 text-center mt-3" role="button">
+        <a href="/checkout" class="btn proceed-btn btn-white w-100 text-center mt-3" role="button">
           <i class="ri-secure-payment-line align-bottom"></i> Proceed to checkout
         </a>
-        <a href="./checkout.html" class="btn btn-orange w-100 text-center mt-3" role="button">
-          <i class="ri-paypal-line align-bottom"></i> Checkout with PayPal
+        <a href="/product/allcategory" class="btn btn-white add-btn w-100 text-center mt-3" role="button">
+           Add items
         </a>
-        <!-- Checkout Button-->
+        
       </div>
 
       <!-- Payment Icons-->
