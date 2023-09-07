@@ -59,6 +59,7 @@ router.post("/verify-payment/:ObjectId",orderController.verifyPayment)
 
 router.post("/coupon-price",cartController.updateCouponDiscount)
 
+router.get("/referlink",userController.getReferalLink)
 
 
 module.exports = router;

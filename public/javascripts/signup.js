@@ -242,6 +242,10 @@ form.addEventListener("submit", async function (event) {
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
 
+  // Get the referral code from the query parameters
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const referralCode = urlSearchParams.get("referralCode");
+
   // Validate phone number one more time before submitting
   const country =
     countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
@@ -254,24 +258,31 @@ form.addEventListener("submit", async function (event) {
   }
 
   try {
+    const requestData = {
+      name,
+      countryCode,
+      phoneNumber,
+      email,
+      password,
+      confirmPassword,
+    };
+
+    // Check if referralCode is not null before adding it to the requestData
+    if (referralCode !== null) {
+      requestData.referralCode = referralCode;
+    }
+
     const response = await fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name,
-        countryCode,
-        phoneNumber,
-        email,
-        password,
-        confirmPassword,
-      }),
+      body: JSON.stringify(requestData),
     });
+
     const data = await response.json();
     console.log(data);
     if (data.success) {
-      console.log(data);
       console.log("Signup successful");
       window.location.href = "/enter-otp";
     } else {
@@ -283,3 +294,4 @@ form.addEventListener("submit", async function (event) {
     showError("An error occurred during signup. Please try again.");
   }
 });
+

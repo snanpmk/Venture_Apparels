@@ -22,6 +22,10 @@ const couponSchema = new mongoose.Schema({
     isBlocked: {
         type: Boolean,
         default: false
+    },
+    restricted: {
+        type: Boolean,
+        default: false,
     }
 })
 

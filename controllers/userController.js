@@ -8,6 +8,7 @@ const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const Coupon = require("../models/couponModel")
 const Banner = require("../models/bannerModel")
+const Referral = require("../models/referralModel")
 const moment = require('moment');
 const bcrypt = require("bcrypt");
 
@@ -22,8 +23,8 @@ const client = twilio(accountSid, authToken);
 const loadHome = async function (req, res) {
   try {
 
-    
-   
+
+
     const banner = await Banner.find()
     const products = await Product.find({ deleted: false }).sort({ upload: -1 }).limit(7);
     res.render("home", { layout: "layouts/userLayout", products: products, banners: banner });
@@ -35,7 +36,9 @@ const loadHome = async function (req, res) {
 // GET USER SIGN UP
 const loadSignUp = async function (req, res) {
   try {
-    res.render("auth/userSignIn", { layout: "layouts/noLayout" });
+    const referralCode = req.query.referralCode
+    console.log(referralCode + "😍😒💕");
+    res.render("auth/userSignIn", { layout: "layouts/noLayout", referralCode: referralCode });
   } catch (err) {
     console.log("Error loading register", err);
   }
@@ -44,6 +47,7 @@ const loadSignUp = async function (req, res) {
 // HASHING USER PASSWORD
 const securePassword = async (password) => {
   try {
+
     const passwordHash = await bcrypt.hash(password, 10);
     return passwordHash;
   } catch (err) {
@@ -54,6 +58,9 @@ const securePassword = async (password) => {
 // POST USER SIGNUP
 const RegisterUser = async function (req, res) {
   try {
+    const referralCode = req.body.referralCode;
+    console.log(referralCode + "😍heeeeeeeeeeeeeeu😒💕");
+
     const existingUserEmail = await User.findOne({ email: req.body.email });
     const existingUserPhone = await User.findOne({
       phoneNumber: req.body.countryCode + req.body.phoneNumber,
@@ -81,12 +88,26 @@ const RegisterUser = async function (req, res) {
 
       const userData = await user.save();
       if (userData) {
-        sendOtpSignup(req, res).catch((err) => {
-          console.log("Error sending OTP", err);
-          res
-            .status(500)
-            .json({ error: "Failed to send OTP. Please try again." });
-        });
+        // Check if a referral code exists and is not null
+        if (referralCode) {
+          // Find the referral associated with the given code
+          const referral = await Referral.findOne({ referralCode });
+
+          if (referral) {
+            // Update the referredTo field with the newly created user's ID
+            referral.referredTo = user._id;
+            const updatereferal = await referral.save();
+            console.log(updatereferal);
+          }
+        }
+
+
+        // sendOtpSignup(req, res).catch((err) => {
+        //   console.log("Error sending OTP", err);
+        //   res
+        //     .status(500)
+        //     .json({ error: "Failed to send OTP. Please try again." });
+        // });
       } else {
         res.status(500).json({ error: "Sign up failed." });
       }
@@ -96,6 +117,7 @@ const RegisterUser = async function (req, res) {
     res.status(500).json({ error: "Registration failed." });
   }
 };
+
 
 // SEND OTP IN SIGNUP
 const sendOtpSignup = async function (req, res) {
@@ -301,7 +323,7 @@ const searchProducts = async function (req, res) {
 const loadCheckout = async function (req, res) {
   try {
     const userId = req.session.userId;
-    console.log(userId+"❤️😂");
+    console.log(userId + "❤️😂");
     console.log(userId + "user id from the load check out ");
 
     const cart = await Cart.findOne({ userId: userId }).populate(
@@ -309,7 +331,7 @@ const loadCheckout = async function (req, res) {
     );
     let grandTotal = 0;
     let subtotal = 0;
-      
+
     for (const item of cart.items) {
       const productPrice = item.productId.price;
       const totalPrice = productPrice * item.quantity;
@@ -321,12 +343,23 @@ const loadCheckout = async function (req, res) {
     cart.subtotal = subtotal;
     await cart.save();
 
-    const addresses = await Address.find({ user: userId,isDeleted: false });
-    const coupons = await Coupon.find()
+    const addresses = await Address.find({ user: userId, isDeleted: false });
+
+    // Check if the user has a referral based on 'referredTo' or 'referredFrom' field
+    const referral = await Referral.findOne({ referredTo: userId });
+
+    let coupons;
+    if (referral) {
+      // If the user is referred, fetch all coupons, including restricted ones
+      coupons = await Coupon.find({});
+    } else {
+      // If the user is not referred, fetch only restricted coupons
+      coupons = await Coupon.find({ restricted: false });
+    }
+
     const products = cart.items.map((item) => ({
       product: item.productId,
       quantity: item.quantity,
-      
     }));
 
     console.log(products);
@@ -339,12 +372,12 @@ const loadCheckout = async function (req, res) {
       coupons: coupons,
       moment: moment,
       subtotal: subtotal,
-
     });
   } catch (err) {
     console.log("error in loading checkout", err);
   }
 };
+
 
 
 // ADD ADDRESS
@@ -485,10 +518,10 @@ const deleteAddress = async function (req, res) {
 const userProfile = async function (req, res) {
   try {
     const userId = req.session.userId;
-    console.log(userId+"💕🚀😢");
-    const defaultAddress = await Address.findOne({user:userId, defaultAddress: true });
-    const allAddress = await Address.find({user:userId,});
-    const orders = await Order.find({ user: userId }).sort({orderNumber:-1})
+    console.log(userId + "💕🚀😢");
+    const defaultAddress = await Address.findOne({ user: userId, defaultAddress: true });
+    const allAddress = await Address.find({ user: userId, });
+    const orders = await Order.find({ user: userId }).sort({ orderNumber: -1 })
       .populate("shippingAddress", "fname lname email address state country")
       .populate("items.product", "image name price")
       .sort({ date: -1 });
@@ -533,6 +566,45 @@ const test = async function (req, res) {
   });
 };
 
+function generateReferralCode(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters.charAt(randomIndex);
+  }
+  return code;
+}
+
+const getReferalLink = async function (req, res) {
+  try {
+    const baseUrl = "http://localhost:3000/signup";
+    const referredFrom = req.session.userId;
+    let referralCode;
+    let isCodeUnique = false;
+    while (!isCodeUnique) {
+      referralCode = generateReferralCode(8);
+      const existingReferral = await Referral.findOne({ referralCode });
+      if (!existingReferral) {
+        isCodeUnique = true;
+      }
+    }
+    const referral = new Referral({
+      referredFrom,
+      referralCode,
+      referredTo: null,
+    });
+    const savedReferral = await referral.save();
+    const referralLink = `${baseUrl}?referralCode=${savedReferral.referralCode}`;
+    console.log(referralLink);
+    res.status(200).json({ referralLink });
+  } catch (error) {
+    console.log("Error in generating referral link: " + error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 module.exports = {
   loadHome,
   loadSignUp,
@@ -554,4 +626,5 @@ module.exports = {
   userProfile,
   logout,
   test,
+  getReferalLink,
 };
