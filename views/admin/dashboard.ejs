@@ -486,6 +486,7 @@
   })
   .then(response => response.json())
   .then(data => {
+    console.log(data.totalAmount+"😍😍💋💋");
     const totalRevenue = document.getElementById('totalRevenue');
     if (totalRevenue) {
       totalRevenue.textContent = data.totalAmount;

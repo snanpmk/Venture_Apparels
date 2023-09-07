@@ -414,8 +414,9 @@ const getDoughNutData = async function (req, res) {
       // You need to adjust this based on your schema
     });
 
-    console.log(lastYearOrders.totalAmount);
+    console.log(lastYearOrders+"dfghj");
     const currentYearTotalAmount = calculateTotalAmount(currentYearOrders);
+    console.log(currentYearTotalAmount);
     const lastYearTotalAmount = calculateTotalAmount(lastYearOrders);
 
     const percentageChange = calculatePercentageChange(lastYearTotalAmount, currentYearTotalAmount);
@@ -435,6 +436,7 @@ const getDoughNutData = async function (req, res) {
 
 // Function to calculate the sum of total amounts in an array of orders
 function calculateTotalAmount(orders) {
+
   return orders.reduce((total, order) => total + order.totalAmount, 0);
 }
 
