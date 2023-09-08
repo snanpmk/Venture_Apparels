@@ -538,7 +538,6 @@ const deleteAddress = async function (req, res) {
 const userProfile = async function (req, res) {
   try {
     const userId = req.session.userId;
-    console.log(userId + "💕🚀😢");
     const defaultAddress = await Address.findOne({ user: userId, defaultAddress: true });
     const allAddress = await Address.find({ user: userId, });
     const orders = await Order.find({ user: userId }).sort({ orderNumber: -1 })
@@ -546,8 +545,6 @@ const userProfile = async function (req, res) {
       .populate("items.product", "image name price")
       .sort({ date: -1 });
 
-    console.log(orders + "❤️❤️❤️❤️❤️");
-    console.log(defaultAddress);
 
     res.render("profile", {
       layout: "layouts/userLayout",

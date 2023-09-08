@@ -225,9 +225,32 @@ const deleteBanner = async function (req, res) {
 }
 const downloadSalesReport = async function (req, res) {
   try {
-    const currentDate = new Date();
-    const thisMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const thisMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    // Extract start and end dates from the request body
+    const { startDate, endDate, reportType } = req.body;
+    console.log(req.body.startDate);
+    console.log(req.body.endDate);
+
+    let thisMonthStartDate, thisMonthEndDate;
+
+    // Check if startDate and endDate are provided in the request
+    if (startDate && endDate) {
+      // Use the provided dates
+      thisMonthStartDate = new Date(startDate);
+      thisMonthEndDate = new Date(endDate);
+    } else {
+      // Calculate default dates based on report type
+      const currentDate = new Date();
+      if (reportType === "monthly") {
+        thisMonthStartDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        thisMonthEndDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+      } else if (reportType === "weekly") {
+        // Calculate one week back from today
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        thisMonthStartDate = oneWeekAgo;
+        thisMonthEndDate = currentDate;
+      }
+    }
 
     const reportData = await Order.find({
       date: {
@@ -250,11 +273,14 @@ const downloadSalesReport = async function (req, res) {
 
       return modifiedItems;
     }).flat();
+
+    // Call the pdfKit function with modifiedReportData and res
     pdfKit.generateSalesReport(modifiedReportData, res);
   } catch (error) {
-    console.log("error in downloading the sales report", error);
+    console.log("Error in downloading the sales report", error);
   }
 }
+
 
 const getSalesData = async function (req, res) {
   try {
@@ -399,7 +425,7 @@ const getDoughNutData = async function (req, res) {
   try {
     const currentYear = new Date().getFullYear();
     const lastYear = currentYear - 1;
-    console.log(currentYear + "        " + lastYear);
+    console.log(currentYear + "     fffffffffffffff   " + lastYear);
 
     // Assuming you are using a MongoDB-like database and the collection is named "orders"
     const currentYearOrders = await Order.find({
@@ -407,7 +433,6 @@ const getDoughNutData = async function (req, res) {
       // You need to adjust this based on your schema
     });
 
-    console.log(currentYearOrders + "🔥🔥😢😢😭😭");
 
     const lastYearOrders = await Order.find({
       date: { $gte: new Date(lastYear, 0, 1), $lt: new Date(currentYear, 0, 1) },

@@ -317,14 +317,19 @@ const cancelOrder = async function (req, res) {
 
 const returnOrder = async function (req, res) {
   try {
-    const orderId = req.query.id;
+    const orderId = req.params.ObjectId ;
+    const reason = req.body.selectedReason
 
+    const selectedItems = req.body.selectedItems;
+    
+    console.log(selectedItems);
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: orderId },
       { $set: { status: 'returnPending', date: new Date() } },
       { new: true }
     );
 
+      console.log(updatedOrder+"😒😒😒😒😒😒😒😒😒🚀");
     if (!updatedOrder) {
       return res.redirect("/user-profile");
     }
