@@ -633,6 +633,7 @@
                       class="return-checkbox return-item-checkbox"
                       data-order-id="<%= order._id %>"
                       data-item-id="<%= item.product.id %>"
+                      data-item-quantity="<%= item.quantity %>"
                     />
                   </div>
                 </div>
@@ -712,23 +713,22 @@
                       <button
                         id="cancelReturn-btn-<%= order._id %>"
                         class="return-btn btn"
-                        style="color: blue;display: none;"
+                        style="color: blue; display: none"
                         data-order-id="<%= order._id %>"
                         onclick="disableReturnCheckBoxes('<%= order._id %>')"
                       >
                         cancel
                       </button>
-                     
                     </div>
                     <button
-                        id="returnSelectedItems-btn-<%= order._id %>"
-                        class="return-selectedItems-btn btn"
-                        style="display: none;color: red;"
-                        data-order-id="<%= order._id %>"
-                      >
-                        Return Selected Items
-                      </button>
-                    
+                      id="returnSelectedItems-btn-<%= order._id %>"
+                      class="return-selectedItems-btn btn"
+                      style="display: none; color: red"
+                      data-order-id="<%= order._id %>"
+                    >
+                      Return Selected Items
+                    </button>
+
                     <% } else { %>
 
                     <div class="card-text">
@@ -875,29 +875,42 @@
 
 <script>
   function toggleReturnCheckboxes(orderId) {
-  const checkboxes = document.querySelectorAll(`input.return-checkbox[data-order-id="${orderId}"]`);
-  checkboxes.forEach((checkbox) => {
-    checkbox.style.display = checkbox.style.display === 'none' ? 'block' : 'none';
-  });
+    const checkboxes = document.querySelectorAll(
+      `input.return-checkbox[data-order-id="${orderId}"]`
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.style.display =
+        checkbox.style.display === "none" ? "block" : "none";
+    });
 
-  document.getElementById(`return-btn-${orderId}`).style.display="none"
-  document.getElementById(`dropdownMenuButton-${orderId}`).style.display="none"
-  document.getElementById(`returnSelectedItems-btn-${orderId}`).style.display="block"
-  document.getElementById(`cancelReturn-btn-${orderId}`).style.display="block"
-}
-
+    document.getElementById(`return-btn-${orderId}`).style.display = "none";
+    document.getElementById(`dropdownMenuButton-${orderId}`).style.display =
+      "none";
+    document.getElementById(
+      `returnSelectedItems-btn-${orderId}`
+    ).style.display = "block";
+    document.getElementById(`cancelReturn-btn-${orderId}`).style.display =
+      "block";
+  }
 </script>
 <script>
-  function disableReturnCheckBoxes(orderId){
-    const checkboxes = document.querySelectorAll(`input.return-checkbox[data-order-id="${orderId}"]`);
-  checkboxes.forEach((checkbox) => {
-    checkbox.style.display = checkbox.style.display === 'block' ? 'none' : 'block';
-  });
+  function disableReturnCheckBoxes(orderId) {
+    const checkboxes = document.querySelectorAll(
+      `input.return-checkbox[data-order-id="${orderId}"]`
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.style.display =
+        checkbox.style.display === "block" ? "none" : "block";
+    });
 
-  document.getElementById(`return-btn-${orderId}`).style.display="block"
-  document.getElementById(`dropdownMenuButton-${orderId}`).style.display="block"
-  document.getElementById(`returnSelectedItems-btn-${orderId}`).style.display="none"
-  document.getElementById(`cancelReturn-btn-${orderId}`).style.display="none"
+    document.getElementById(`return-btn-${orderId}`).style.display = "block";
+    document.getElementById(`dropdownMenuButton-${orderId}`).style.display =
+      "block";
+    document.getElementById(
+      `returnSelectedItems-btn-${orderId}`
+    ).style.display = "none";
+    document.getElementById(`cancelReturn-btn-${orderId}`).style.display =
+      "none";
   }
 </script>
 <script>
@@ -955,125 +968,133 @@
   });
 </script>
 
-
 <script>
   function openReturnAlert(orderId) {
-  Swal.fire({
-    title: "Return Order",
-    text: "Are you sure you want to return this order?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, return it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Get the selected reason and comments
-      const selectedReason = document.querySelector(
-        `#returnModal-${orderId} input[name="reason"]:checked`
-      );
+    Swal.fire({
+      title: "Return Order",
+      text: "Are you sure you want to return this order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, return it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Get the selected reason and comments
+        const selectedReason = document.querySelector(
+          `#returnModal-${orderId} input[name="reason"]:checked`
+        );
 
-      if (!selectedReason) {
-        // No reason selected, show an error message or perform necessary action
-        alert("Please select a return reason before confirming.");
-        return; // Stop further execution
-      }
-
-      // Get selected items
-      const selectedItems = [];
-      const checkboxes = document.querySelectorAll(
-        `.return-checkbox[data-order-id="${orderId}"]:checked`
-      );
-
-      checkboxes.forEach((checkbox) => {
-        selectedItems.push(checkbox.getAttribute("data-item-id"));
-      });
-
-      // Make the fetch request with the selected items as the body
-      fetch(`/return-order/${orderId}`, {
-        method: "POST", // Assuming you want to use POST method for sending data
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          selectedReason: selectedReason.value,
-          selectedItems: selectedItems, // Pass the selected items
-        }),
-      }).then((response) => {
-        if (response.ok) {
-          Swal.fire("Returned!", "Your order has been returned.", "success");
-        } else {
-          // Handle the case where the server responds with an error
-          Swal.fire("Error", "Failed to return the order.", "error");
+        if (!selectedReason) {
+          // No reason selected, show an error message or perform necessary action
+          alert("Please select a return reason before confirming.");
+          return; // Stop further execution
         }
-      });
-    }
-  });
-}
-  </script>
 
+        // Get selected items
+        const selectedItems = [];
+        const checkboxes = document.querySelectorAll(
+          `.return-checkbox[data-order-id="${orderId}"]:checked`
+        );
 
+        checkboxes.forEach((checkbox) => {
+          const itemId = checkbox.getAttribute("data-item-id");
+          const itemQuantity = parseFloat(checkbox.getAttribute("data-item-quantity")); 
+
+          // Create an object with the quantity and item ID
+          const itemData = {
+            itemId: itemId,
+            itemQuantity: itemQuantity,
+          };
+
+          // Push the object to the selectedItems array
+          selectedItems.push(itemData);
+        });
+
+        // Now selectedItems contains an array of objects with itemId and itemQuantity
+        console.log(selectedItems);
+
+        // Make the fetch request with the selected items as the body
+        fetch(`/return-order/${orderId}`, {
+          method: "POST", // Assuming you want to use POST method for sending data
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            selectedReason: selectedReason.value,
+            selectedItems: selectedItems, // Pass the selected items
+          }),
+        }).then((response) => {
+          if (response.ok) {
+            Swal.fire("Returned!", "Your order has been returned.", "success");
+          } else {
+            // Handle the case where the server responds with an error
+            Swal.fire("Error", "Failed to return the order.", "error");
+          }
+        });
+      }
+    });
+  }
+</script>
 
 //
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    function openReturnModal(orderId) {
-      const returnModal = document.getElementById(`returnModal-${orderId}`);
-      $(returnModal).modal("show");
-    }
+  function openReturnModal(orderId) {
+    const returnModal = document.getElementById(`returnModal-${orderId}`);
+    $(returnModal).modal("show");
+  }
 
-    document
-      .querySelectorAll(".return-selectedItems-btn[data-order-id]")
-      .forEach(function (button) {
-        button.addEventListener("click", function (event) {
-          const orderId = event.target.getAttribute("data-order-id");
-          openReturnModal(orderId);
-        });
+  document
+    .querySelectorAll(".return-selectedItems-btn[data-order-id]")
+    .forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        const orderId = event.target.getAttribute("data-order-id");
+        openReturnModal(orderId);
       });
+    });
 
-    function submitReturnModal(orderId) {
-      const modalId = `returnModal-${orderId}`;
-      const modal = document.getElementById(modalId);
+  function submitReturnModal(orderId) {
+    const modalId = `returnModal-${orderId}`;
+    const modal = document.getElementById(modalId);
 
-      // Get the selected reason
-      // Get the selected radio button value
-      const selectedReason = document.querySelector(
-        `#${modalId} input[name="reason"]:checked`
-      );
+    // Get the selected reason
+    // Get the selected radio button value
+    const selectedReason = document.querySelector(
+      `#${modalId} input[name="reason"]:checked`
+    );
 
-      // Check if a radio button is selected
-      if (selectedReason) {
-        // Access the value property to get the selected reason
-        const reasonValue = selectedReason.value;
-      } else {
-      }
-
-     
-      if (!selectedReason) {
-        // No reason selected, show an error message or perform necessary action
-        alert("Please select a return reason before confirming.");
-        return; // Stop further execution
-      }
-
-      if (modal) {
-        $(modal).modal("hide");
-
-        // // Now you can use 'selectedReason.value' and 'comments' as needed
-        // console.log("Selected Reason:", selectedReason.value);
-        // console.log("Comments:", comments);
-      }
-      openReturnAlert(orderId)
+    // Check if a radio button is selected
+    if (selectedReason) {
+      // Access the value property to get the selected reason
+      const reasonValue = selectedReason.value;
+    } else {
     }
 
-    function closeReturnModal(orderId) {
-      const modalId = `returnModal-${orderId}`;
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        $(modal).modal("hide");
-      }
+    if (!selectedReason) {
+      // No reason selected, show an error message or perform necessary action
+      alert("Please select a return reason before confirming.");
+      return; // Stop further execution
     }
-  
+
+    if (modal) {
+      $(modal).modal("hide");
+
+      // // Now you can use 'selectedReason.value' and 'comments' as needed
+      // console.log("Selected Reason:", selectedReason.value);
+      // console.log("Comments:", comments);
+    }
+    openReturnAlert(orderId);
+  }
+
+  function closeReturnModal(orderId) {
+    const modalId = `returnModal-${orderId}`;
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      $(modal).modal("hide");
+    }
+  }
 </script>
 
 <script>
@@ -1101,7 +1122,9 @@
       })
         .then((response) => {
           if (response.ok) {
-            return response.json(); // Return the promise
+            const data =  response.json(); 
+            console.log(data.message);
+
           } else {
             // Handle errors here
             console.error("Error making GET request to /referlink");

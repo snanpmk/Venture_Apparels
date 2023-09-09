@@ -110,7 +110,7 @@ const processOrder = async function (req, res) {
       var razorPay = new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret });
 
       const options = {
-        amount: TotalAmount*100,
+        amount: TotalAmount * 100,
         currency: "INR",
         receipt: "order_rcptid_11",
       };
@@ -314,14 +314,34 @@ const cancelOrder = async function (req, res) {
   }
 };
 
+const updateStockReturn = async function (selectedItems) {
+  try {
+    for (const item of selectedItems) {
+      let productId = item.itemId
+      let quantity = item.itemQuantity
+      const product = await Product.findById(productId);
+      if (!product) {
+        console.log(`Product with ID ${productId} not found`);
+        continue; // Skip to the next product if not found
+      }
+      product.stock = product.stock + quantity;
+      await product.save();
+    }
+  } catch (error) {
+    console.log("Error updating stock quantity", error);
+  }
+}
+
 
 const returnOrder = async function (req, res) {
   try {
-    const orderId = req.params.ObjectId ;
+    const orderId = req.params.ObjectId;
     const reason = req.body.selectedReason
 
     const selectedItems = req.body.selectedItems;
-    
+    if(reason!=="Defective"){
+      updateStockReturn(selectedItems)
+    }
     console.log(selectedItems);
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: orderId },
@@ -329,12 +349,12 @@ const returnOrder = async function (req, res) {
       { new: true }
     );
 
-      console.log(updatedOrder+"😒😒😒😒😒😒😒😒😒🚀");
+    console.log(updatedOrder + "😒😒😒😒😒😒😒😒😒🚀");
     if (!updatedOrder) {
-      return res.redirect("/user-profile");
+      return res.status(500).json({message:"order cannot be updated"});
     }
 
-    res.redirect("/user-profile");
+    res.status(200).json({message:"order status updated , stock updated succssfully"});
   } catch (error) {
     console.log(error);
     res.status(500).send("Error in updating order status.");
