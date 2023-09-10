@@ -18,10 +18,12 @@ const loadAdminLogin = function (req, res) {
 // GET ADMIN DASHBOARD
 const loadDashboard = async function (req, res) {
   try {
+    const targetStatuses = ['cancelPending', 'returnPending'];
+    const orders = await Order.find({status:{$in:targetStatuses}}).limit(6).populate('user');
     const users = await User.find().limit(7).sort({ createdAt: -1 });
-    const payments = await Payment.find().limit(6).populate('user'); // Use populate to include user information in payments
+    const payments = await Payment.find().sort({_id:-1}).populate('user'); // Use populate to include user information in payments
     console.log(payments);
-    res.render("admin/dashboard", { allUsers: users, payments: payments });
+    res.render("admin/dashboard", { allUsers: users, payments: payments,orders:orders });
   } catch (err) {
     console.log("error in loading admin login", err);
   }

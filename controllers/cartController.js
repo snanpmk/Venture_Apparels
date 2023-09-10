@@ -107,6 +107,7 @@ const updateQuantity = async function (req, res) {
     console.log(product);
     if (quantity == product.stock) {
       limitMssg = "Sorry , Maximum quantity of this product is reached"
+      return res.status(500).json(limitMssg)
     }
     else {
       limitMssg = ""

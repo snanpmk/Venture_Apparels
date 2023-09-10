@@ -27,6 +27,35 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* Reduce font size for headers and data cells */
+  th, td {
+    font-size: 12px; /* Adjust font size for mobile view */
+  }
+
+  /* Adjust padding for headers and data cells as needed for mobile view */
+  th {
+    padding: 8px;
+  }
+
+  td {
+    padding: 6px;
+  }
+  .fw-semibold {
+    font-weight: 400 !important;
+    font-size: 10px;
+  }
+
+  td h6 {
+    text-align: center;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
 
 
 
@@ -125,28 +154,29 @@
           <h5 class="card-title fw-semibold" style="margin-top: 2rem;">Download Sales Report</h5>
       
           <div style="display: flex; flex-direction: column; align-items: center; vertical-align: middle;">
-            <div class="choose-date-btn" style="display: flex; justify-content: space-between;">
-              <div>
+            <div class="choose-date-btn" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+              <div style="width: 48%;"> <!-- Adjust the width to make it smaller and leave some space between elements -->
                 <label for="startDate">Start Date:</label>
                 <input type="date" class="form-control" id="startDate">
               </div>
-              <div>
+              <div style="width: 48%;"> <!-- Adjust the width to make it smaller and leave some space between elements -->
                 <label for="endDate">End Date:</label>
                 <input type="date" class="form-control" id="endDate">
               </div>
             </div>
-            <div>
+            <div style="margin-top: 1rem;"> <!-- Add margin for spacing -->
               <select class="form-select choose-btn" id="reportType">
                 <option value="monthly" selected>Monthly Data</option>
                 <option value="weekly">Weekly Data</option>
               </select>
             </div>
-            <div class="btn btn-primary downloadbtn" id="downloadButton">
+            <div class="btn btn-primary downloadbtn" id="downloadButton" style="margin-top: 1rem;"> <!-- Add margin for spacing -->
               Download
             </div>
           </div>
         </div>
       </div>
+      
       <div class="col-lg-8 d-flex align-items-stretch">
         <div class="card w-100">
           <div class="card-body p-4">
@@ -205,9 +235,10 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-8 d-flex align-items-stretch">
-      <div class="card w-100">
-        <div class="card-body p-4">
+    <div class="row">
+    <div class="col-lg-7 d-flex align-items-stretch">
+      <div class="card w-100" style="margin-right: 1rem;">
+        <div class="card-body p-4" style="max-height: 24rem;overflow: auto;">
           <div class="mb-4">
             <h5 class="card-title fw-semibold">Recent Transactions</h5>
           </div>
@@ -232,88 +263,65 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6 col-xl-3">
-        <div class="card overflow-hidden rounded-2">
-          <div class="position-relative">
-            <a href="javascript:void(0)"><img src="../assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."></a>
-            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>                      </div>
-          <div class="card-body pt-3 p-4">
-            <h6 class="fw-semibold fs-4">Boat Headphone</h6>
-            <div class="d-flex align-items-center justify-content-between">
-              <h6 class="fw-semibold fs-4 mb-0">$50 <span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
-              <ul class="list-unstyled d-flex align-items-center mb-0">
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-              </ul>
-            </div>
+    <div class="col-lg-5 d-flex align-items-stretch">
+      <div class="card w-100">
+        <div class="card-body p-4"style="max-height: 24rem;overflow: auto;">
+          <div class="mb-4">
+            <h5 class="card-title fw-semibold">Requests in Pending</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="table text-nowrap mb-0 align-middle">
+              <thead class="text-dark fs-4">
+                <tr>
+                  <th class="border-bottom-0">
+                    <h6 class="fw-semibold mb-0">Order</h6>
+                  </th>
+                  <th class="border-bottom-0">
+                    <h6 class="fw-semibold mb-0">time</h6>
+                  </th>
+                 
+                  <th class="border-bottom-0">
+                    <h6 class="fw-semibold mb-0">status</h6>
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <% orders.forEach(order => { %>
+                  <tr>
+                    <td class="border-bottom-0"><h6 class="fw-semibold mb-0">#<%= order.orderNumber %></h6></td>
+                    <td class="border-bottom-0">
+                      <h6 class="fw-semibold mb-0"><%= order.date.toLocaleDateString() %></h6>
+                      <p class="mb-0"><%= order.date.toLocaleTimeString() %></p> <!-- Display time below the date -->
+                    </td>
+                  
+                    <td class="border-bottom-0">
+                      <div class="d-flex align-items-center gap-4">
+                        <% if (order.status === 'cancelPending')  {%>
+                        <span class="badge bg-info rounded-3 fw-semibold mx-auto">
+                          Cancel requested 
+                        </span>
+                        <% } else if (order.status === 'returnPending')  {%>
+                          <span class="badge bg-danger rounded-3 fw-semibold mx-auto">
+                            Return requested 
+                          </span>
+                        <% } %>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+                
+              </tbody>
+              
+            </table>
+            <a href="/admin/orders" class="btn btn-info">Go to all orders</a>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card overflow-hidden rounded-2">
-          <div class="position-relative">
-            <a href="javascript:void(0)"><img src="../assets/images/products/s5.jpg" class="card-img-top rounded-0" alt="..."></a>
-            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>                      </div>
-          <div class="card-body pt-3 p-4">
-            <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
-            <div class="d-flex align-items-center justify-content-between">
-              <h6 class="fw-semibold fs-4 mb-0">$650 <span class="ms-2 fw-normal text-muted fs-3"><del>$900</del></span></h6>
-              <ul class="list-unstyled d-flex align-items-center mb-0">
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card overflow-hidden rounded-2">
-          <div class="position-relative">
-            <a href="javascript:void(0)"><img src="../assets/images/products/s7.jpg" class="card-img-top rounded-0" alt="..."></a>
-            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>                      </div>
-          <div class="card-body pt-3 p-4">
-            <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
-            <div class="d-flex align-items-center justify-content-between">
-              <h6 class="fw-semibold fs-4 mb-0">$150 <span class="ms-2 fw-normal text-muted fs-3"><del>$200</del></span></h6>
-              <ul class="list-unstyled d-flex align-items-center mb-0">
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="card overflow-hidden rounded-2">
-          <div class="position-relative">
-            <a href="javascript:void(0)"><img src="../assets/images/products/s11.jpg" class="card-img-top rounded-0" alt="..."></a>
-            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-basket fs-4"></i></a>                      </div>
-          <div class="card-body pt-3 p-4">
-            <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
-            <div class="d-flex align-items-center justify-content-between">
-              <h6 class="fw-semibold fs-4 mb-0">$285 <span class="ms-2 fw-normal text-muted fs-3"><del>$345</del></span></h6>
-              <ul class="list-unstyled d-flex align-items-center mb-0">
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
+   </div>
+    
   
   </div>
 </div>
@@ -594,7 +602,7 @@
     console.log(data.totalAmount+"😍😍💋💋");
     const totalRevenue = document.getElementById('totalRevenue');
     if (totalRevenue) {
-      totalRevenue.textContent = data.totalAmount;
+      totalRevenue.textContent = data.totalAmount.toFixed(2);
     }
 
     const percentageChange = data.percentageChange;
