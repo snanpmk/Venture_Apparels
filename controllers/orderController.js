@@ -165,7 +165,7 @@ const createOrder = async (userId, orderItems, address, paymentMethod, TotalAmou
       paymentMethod: paymentMethod,
       status: orderStatus,
       paymentStatus: paymentStatus,
-      TotalAmount: TotalAmount
+      totalAmount: TotalAmount
     });
 
     // Save the order
@@ -219,6 +219,26 @@ async function changeOrderStatus(req, res) {
       const returnExpiryDate = new Date(updateFields.deliveryDate);
       returnExpiryDate.setDate(returnExpiryDate.getDate() + 10);
       updateFields.returnExpiryDate = returnExpiryDate;
+    }
+
+    // Check if the new status is 'cancelled'
+    if (newStatus === 'canceled') {
+      // Find the order by ID
+      const order = await Order.findById(orderId);
+
+      if (order) {
+        // Loop through the items in the cancelled order and update the product stock
+        for (const item of order.items) {
+          const product = await Product.findById(item.product);
+
+          if (product) {
+            console.log(product.name);
+            // Increase the stock by the quantity of the cancelled item
+            product.stock += item.quantity;
+            await product.save();
+          }
+        }
+      }
     }
 
     const orderResult = await Order.findByIdAndUpdate(orderId, {
@@ -336,25 +356,40 @@ const updateStockReturn = async function (selectedItems) {
 const returnOrder = async function (req, res) {
   try {
     const orderId = req.params.ObjectId;
-    const reason = req.body.selectedReason
-
+    const reason = req.body.selectedReason;
     const selectedItems = req.body.selectedItems;
-    if(reason!=="Defective"){
-      updateStockReturn(selectedItems)
+
+    // Check if the reason is not "Defective" to update stock
+    if (reason !== "Defective") {
+      updateStockReturn(selectedItems);
     }
-    console.log(selectedItems);
+
+    console.log("orderId:", orderId);
+    console.log("reason:", reason);
+    console.log("selectedItems:", selectedItems);
+
+    // Create an array of return objects from selectedItems
+    const returnItems = selectedItems.map((itemData) => ({
+      itemID: itemData.itemId, // Assuming itemData.itemId is the product ID
+      returnedQuantity: itemData.itemQuantity,
+      returnReason: reason,
+    }));
+
+    // Update the order document with returnItems
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: orderId },
-      { $set: { status: 'returnPending', date: new Date() } },
+      {
+        $set: { status: 'returnPending', date: new Date() },
+        $push: { returns: { $each: returnItems } },
+      },
       { new: true }
     );
 
-    console.log(updatedOrder + "😒😒😒😒😒😒😒😒😒🚀");
     if (!updatedOrder) {
-      return res.status(500).json({message:"order cannot be updated"});
+      return res.status(500).json({ message: "Order cannot be updated" });
     }
 
-    res.status(200).json({message:"order status updated , stock updated succssfully"});
+    res.status(200).json({ message: "Order status updated, stock updated successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error in updating order status.");

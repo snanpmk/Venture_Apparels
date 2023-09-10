@@ -18,6 +18,11 @@
       margin-bottom: 2rem;
     }
   }
+  @media (max-width: 767px) {
+    .custom-container {
+      width: 100%; /* Adjust the width as needed for mobile screens */
+    }
+  }
 
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
@@ -621,7 +626,7 @@
     </div>
 
     <!-- Checkout Panel Summary -->
-    <div class="col-lg-5">
+    <div class="col-lg-5 col-md-5 col-sm-12 custom-container">
       <div class="bg-light p-4 sticky-md-top top-5">
         <div class="border-bottom pb-3">
           <!-- Cart Item-->

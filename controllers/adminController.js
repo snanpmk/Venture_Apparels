@@ -19,12 +19,14 @@ const loadAdminLogin = function (req, res) {
 const loadDashboard = async function (req, res) {
   try {
     const users = await User.find().limit(7).sort({ createdAt: -1 });
-
-    res.render("admin/dashboard", { allUsers: users });
+    const payments = await Payment.find().limit(6).populate('user'); // Use populate to include user information in payments
+    console.log(payments);
+    res.render("admin/dashboard", { allUsers: users, payments: payments });
   } catch (err) {
     console.log("error in loading admin login", err);
   }
 };
+  
 
 
 const securePassword = async (password) => {
@@ -439,7 +441,7 @@ const getDoughNutData = async function (req, res) {
       // You need to adjust this based on your schema
     });
 
-    console.log(lastYearOrders+"dfghj");
+    console.log(lastYearOrders + "dfghj");
     const currentYearTotalAmount = calculateTotalAmount(currentYearOrders);
     console.log(currentYearTotalAmount);
     const lastYearTotalAmount = calculateTotalAmount(lastYearOrders);
@@ -518,7 +520,7 @@ const listCoupons = async function (req, res) {
         title: "Add Coupons",
         layout: "layouts/adminLayout",
         errorMessage: null,
-        coupons:coupons
+        coupons: coupons
       })
   } catch (error) {
     console.log("error in listing coupons" + error);
@@ -527,7 +529,7 @@ const listCoupons = async function (req, res) {
 
 const addCoupons = async function (req, res) {
   try {
-    const { couponCode, minimumSpend, discount,expiryDate } = req.body;
+    const { couponCode, minimumSpend, discount, expiryDate } = req.body;
     const coupon = new Coupon({
       couponCode,
       minimumSpend,

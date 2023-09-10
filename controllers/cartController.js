@@ -33,7 +33,7 @@ const viewCart = async function (req, res) {
 
       var limitMssg = ""
 
-      grandTotal = subtotal + 45.89;
+      grandTotal = subtotal;
       await cart.save();
 
       res.render("cart", {

@@ -643,7 +643,7 @@
                 <div style="display: flex; justify-content: space-between">
                   <div style="display: flex; flex-direction: column">
                     <p class="card-text">
-                      Total Price: $<%= order.totalAmount %>
+                      Total Price: &#8377 <%= order.totalAmount %>
                     </p>
                     <p class="card-text">Status: <%= order.orderNumber %></p>
                   </div>
@@ -1026,7 +1026,10 @@
           }),
         }).then((response) => {
           if (response.ok) {
-            Swal.fire("Returned!", "Your order has been returned.", "success");
+          Swal.fire("Return requested!", "Your order will be collected from delivery location.", "success")
+            .then(() => {
+              window.location.reload();
+            });
           } else {
             // Handle the case where the server responds with an error
             Swal.fire("Error", "Failed to return the order.", "error");

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { none } = require('../middlewares/uploadImage');
+const { none, array } = require('../middlewares/uploadImage');
 
 const orderSchema = new mongoose.Schema({
   user: {
@@ -54,8 +54,24 @@ const orderSchema = new mongoose.Schema({
   orderNumber: { type: Number },
   deliveryDate: { type: Date, default: null },
   returnExpiryDate: { type: Date, default: null },
-  couponCode : {
-    type : String
+  returns: [
+    {
+      itemID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product', // Reference to the Product model
+        required: true,
+      },
+      returnedQuantity: {
+        type: Number,
+        default: 0,
+      },
+      returnReason: {
+        type: String,
+      },
+    },
+  ],
+  couponCode: {
+    type: String
   },
   date: {
     type: Date,

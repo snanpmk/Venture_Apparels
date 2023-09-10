@@ -103,8 +103,8 @@
               
               <!-- Total -->
               <td>
-                <div class="px-3">
-                  <p id="total-price<%=item.productId._id %>" class="small text-muted mt-1">$<%= item.totalPrice %></p>
+                <div class="px-3 d-flex">
+                  <p class="small text-muted mt-1">&#8377</p><p id="total-price<%=item.productId._id %>" class="small text-muted mt-1"><%= item.totalPrice %></p>
                 </div>
               </td>
               <!-- /Total -->
@@ -131,7 +131,10 @@
         <div class="py-3 border-bottom-white-opacity">
           <div class="d-flex justify-content-between align-items-center mb-2 flex-column flex-sm-row">
             <p class="m-0 fw-bolder fs-6">Subtotal</p>
-            <p class="m-0 fs-6 fw-bolder js-subtotal">&#8377 <%= subtotal %></p>
+            <div class="d-flex">
+              <p class="m-0 fs-6 fw-bolder ">&#8377</p>
+              <p class="m-0 fs-6 fw-bolder js-subtotal"><%= subtotal %></p>
+            </div>
           </div>
           <div class="d-flex justify-content-between align-items-center flex-column flex-sm-row mt-3 m-sm-0">
             <p class="m-0 fw-bolder fs-6">Shipping</p>
@@ -143,7 +146,10 @@
             <div>
               <p class="m-0 fs-5 fw-bold">Grand Total</p>
             </div>
-            <p class="mt-3 m-sm-0 fs-5 fw-bold js-grand-total">&#8377 <%= grandTotal %></p>
+            <div class="d-flex">
+              <p class="mt-3 m-sm-0 fs-5 fw-bold">&#8377</p>
+              <p class="mt-3 m-sm-0 fs-5 fw-bold js-grand-total"><%= grandTotal %></p>
+            </div>
           </div>
         </div>
 
@@ -219,14 +225,14 @@
         console.log(data)
         const totalPriceElement = document.getElementById(`total-price${productId}`);
         console.log(totalPriceElement)
-        totalPriceElement.textContent = `$${data.totalPrice}`;
+        totalPriceElement.textContent = `${data.totalPrice}`;
         console.log(totalPriceElement)
 
         const subtotalElement = document.querySelector('.js-subtotal');
-        subtotalElement.textContent = `$${data.subtotal}`;
+        subtotalElement.textContent = `${data.subtotal}`;
 
         const grandTotalElement = document.querySelector('.js-grand-total');
-        grandTotalElement.textContent = `$${data.grandTotal}`;
+        grandTotalElement.textContent = `${data.grandTotal}`;
       })
       .catch(error => {
         // Handle errors
@@ -264,10 +270,10 @@
     .then(data => {
       console.log(data);
       const subtotalElement = document.querySelector('.js-subtotal');
-        subtotalElement.textContent = `$${data.subtotal}`;
+        subtotalElement.textContent = `${data.subtotal}`;
 
         const grandTotalElement = document.querySelector('.js-grand-total');
-        grandTotalElement.textContent = `$${data.grandTotal}`;
+        grandTotalElement.textContent = `${data.grandTotal}`;
 
         location.reload()
     })
