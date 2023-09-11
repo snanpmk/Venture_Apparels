@@ -358,10 +358,9 @@ const loadCheckout = async function (req, res) {
 
     const addresses = await Address.find({ user: userId, isDeleted: false });
 
-    // Check if the user has a referral based on 'referredTo' or 'referredFrom' field
     const referral = await Referral.findOne({
       $or: [
-        { referredTo: userId }, // Check that referredFrom is not null
+        { referredTo: userId }, 
         { referredFrom: userId, referredTo: { $ne: null } },
       ],
     });
@@ -369,10 +368,8 @@ const loadCheckout = async function (req, res) {
 
     let coupons;
     if (referral) {
-      // If the user is referred, fetch all coupons, including restricted ones
       coupons = await Coupon.find({});
     } else {
-      // If the user is not referred, fetch only restricted coupons
       coupons = await Coupon.find({ restricted: false });
     }
 

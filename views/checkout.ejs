@@ -1,95 +1,174 @@
 <style>
-  .align-middle {
-    color: black;
-    vertical-align: middle !important;
-  }
-  .col-lg-5 {
-    flex: 0 0 auto;
-    width: 41.6666666667%;
-    padding-top: 1.5rem;
-  }
-  .contact-detail {
-    max-width: 65%;
-    justify-content: space-between;
-  }
-  @media (max-width: 768px) {
-    .d-flex.contact-detail {
-      flex-direction: column;
-      margin-bottom: 2rem;
-    }
-  }
-  @media (max-width: 767px) {
-    .custom-container {
-      width: 100%; /* Adjust the width as needed for mobile screens */
-    }
-  }
+  /* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-
-  .coupon-container {
-    display: none;
-  }
-
-  .coupon-card {
-    width: 100%;
-    height: 180px;
-    border-radius: 5px;
-    border: #1c212c;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-    background-color: #fee356;
-    padding: 10px 10px;
-    position: relative;
-    margin-top: 10px;
+/* General Styles */
+.align-middle {
+  color: black;
+  vertical-align: middle !important;
 }
 
-  
-  .main,
-  .copy-button {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-    align-items: center;
+.col-lg-5 {
+  flex: 0 0 auto;
+  width: 41.6666666667%;
+  padding-top: 1.5rem;
+}
+
+.contact-detail {
+  max-width: 65%;
+  justify-content: space-between;
+}
+
+@media (width: 768px) {
+  .d-flex.contact-detail {
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (width: 820px) {
+  .checkoutpanelsummary,
+  .address {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .custom-container {
+    width: 100%;
+  }
+}
+
+/* Coupon Styles */
+.coupon-container {
+  display: none;
+}
+
+.coupon-card {
+  width: 100%;
+  height: 180px;
+  border-radius: 5px;
+  border: #1c212c;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fee356;
+  padding: 10px 10px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.main,
+.copy-button {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: center;
+}
+
+.co-img img {
+  width: 100px;
+  height: 100px;
+}
+
+.vertical {
+  border-left: 5px dotted black;
+  height: 100px;
+  position: absolute;
+  left: 40%;
+}
+
+.content h1 {
+  font-size: 35px;
+  margin-left: -20px;
+  color: #d50000 !important;
+}
+
+.content h1 span {
+  font-size: 18px;
+  color: #d50000 !important;
+}
+
+.content h2 {
+  font-size: 16px;
+  margin-left: -20px;
+  color: #1c212c !important;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.content p {
+  font-size: 16px;
+  color: #0d0d64 !important;
+  margin-left: -20px;
+  font-family: cursive;
+}
+
+.copy-button {
+  height: 45px;
+  border-radius: 4px;
+  padding: 0 5px;
+  border: 1px solid #e1e1e1;
+}
+
+.copy-button input {
+  width: 100%;
+  height: 80%;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.copy-button button {
+  padding: 5px 20px;
+  background-color: #1c212c;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 1024px) {
+  .coupon-card {
+    max-width: 100%;
+    max-height: 8rem;
   }
 
   .co-img img {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
   }
+
   .vertical {
     border-left: 5px dotted black;
-    height: 100px;
+    height: 71px;
     position: absolute;
     left: 40%;
   }
 
   .content h1 {
-    font-size: 35px;
-    margin-left: -20px;
-    color: #d50000 !important;
-}
+    font-size: 20px;
+    margin-left: 1rem;
+  }
 
   .content h1 span {
-    font-size: 18px;
-    color: #d50000 !important;
-
+    font-size: 12px;
   }
+
   .content h2 {
-    font-size: 16px;
-    margin-left: -20px;
-    color: #1c212c !important;
-    text-transform: uppercase;
-    font-weight: 600;
+    font-size: 9px;
+    margin-left: 1rem;
   }
 
   .content p {
-    font-size: 16px;
-    color:#0d0d64 !important;
-    margin-left: -20px;
-    font-family: cursive;
-}
+    font-size: 9px;
+    margin-left: 1.5rem;
+    max-width: 2.5rem;
+    height: 1rem;
+  }
 
   .copy-button {
-    height: 45px;
+    height: 23px;
     border-radius: 4px;
     padding: 0 5px;
     border: 1px solid #e1e1e1;
@@ -97,151 +176,151 @@
 
   .copy-button input {
     width: 100%;
-    height: 80%;
+    height: 100%;
     border: none;
     outline: none;
-    font-size: 20px;
+    font-size: 13px;
     text-align: center;
     font-weight: bold;
-}
+  }
 
   .copy-button button {
-    padding: 5px 20px;
+    padding: 0px 13px;
     background-color: #1c212c;
     color: #fff;
     border: 1px solid transparent;
     border-radius: 0.2rem;
+    max-height: 1.5rem;
   }
+}
 
-  .buy {
-    position: absolute;
-    content: "";
-    bottom: 20px;
-    left: 20px;
-    background-color: #dc143c;
-  }
-  .card {
-    margin-bottom: 2vh !important;
-  }
-  .card-text-small {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  /* Style the close button */
-  .btn-close-editModal {
-    color: black;
-    background-color: transparent;
-    border-radius: 1rem;
-    width: 4rem;
-    font-weight: 600;
-  }
+/* Buy Button */
+.buy {
+  position: absolute;
+  content: "";
+  bottom: 20px;
+  left: 20px;
+  background-color: #dc143c;
+}
 
-  .btn-close-editModal:hover {
-    color: rgb(255, 255, 255);
-    background-color: black; /* Change the color on hover if desired */
-  }
+/* Card Styles */
+.card {
+  margin-bottom: 2vh !important;
+}
 
-  .card {
-    margin-bottom: 10vh;
-  }
+.card-text-small {
+  font-size: 14px;
+  font-weight: 500;
+}
 
-  .card-text-bold {
-    font-weight: bold;
-  }
+.card-text-bold {
+  font-weight: bold;
+}
 
-  .justify-content-end {
-    margin-bottom: 2rem;
-    margin-right: 2rem;
-  }
+/* Close Button */
+.btn-close-editModal {
+  color: black;
+  background-color: transparent;
+  border-radius: 1rem;
+  width: 4rem;
+  font-weight: 600;
+}
 
-  .form-control {
-    display: block;
-    width: 95%;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
+.btn-close-editModal:hover {
+  color: rgb(255, 255, 255);
+  background-color: black;
+}
 
-  /* The Modal */
-  .modal {
-    display: none; /* Hide the modal by default */
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(
-      0,
-      0,
-      0,
-      0.8
-    ); /* Create a semi-transparent background overlay */
-  }
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
 
-  /* Modal Content */
-  .modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 1rem;
-    margin: 0 auto;
-  }
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  margin: 0 auto;
+}
 
-  /* Close Button */
+/* Background Blur */
+body.modal-open {
+  overflow: hidden;
+}
 
-  /* Blur the background */
-  body.modal-open {
-    overflow: hidden; /* Prevent scrolling on the background */
-  }
+.modal-open .modal {
+  overflow: auto;
+}
 
-  .modal-open .modal {
-    overflow: auto;
-  }
+.modal-open .modal-content {
+  margin-top: 20vh;
+}
 
-  .modal-open .modal-content {
-    margin-top: 20vh;
-  }
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm {
-    max-width: 80%;
-  }
-  [class*="btn-outline-"] {
-    border-width: 1px;
-  }
-  .btn-outline-dark {
-    color: #1c212c;
-    border-color: #878a9187;
-  }
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #ffffff85;
-    background-clip: border-box;
-    border: 1px solid rgb(0 0 0 / 25%);
-    margin-bottom: 10vh;
-    border-radius: 0.3rem;
-  }
-  .sticky-md-top {
-    border: 1px solid #c0c0c0;
-    background-color: white !important;
-  }
+/* Containers */
+.container,
+.container-lg,
+.container-md,
+.container-sm {
+  max-width: 80%;
+}
+
+/* Buttons */
+[class*="btn-outline-"] {
+  border-width: 1px;
+}
+
+.btn-outline-dark {
+  color: #1c212c;
+  border-color: #878a9187;
+}
+
+/* Card Styles */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #ffffff85;
+  background-clip: border-box;
+  border: 1px solid rgb(0 0 0 / 25%);
+  margin-bottom: 10vh;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Shadow on Hover */
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.bg-light p-4 sticky-md-top top-5 {
+  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Shadow on Hover */
+.bg-light p-4 sticky-md-top top-5:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Sticky Styles */
+.sticky-md-top {
+  border: 1px solid #c0c0c0;
+  background-color: white !important;
+}
+
 </style>
 <section class="mt-5 container">
   <!-- Page Content Goes Here -->
@@ -250,7 +329,7 @@
 
   <div class="row">
     <!-- Select Address -->
-    <div class="col-lg-7">
+    <div class="col-lg-7 address">
       <!-- Add New Address card -->
       <div class="card mt-4">
         <div class="card-body">
@@ -626,7 +705,7 @@
     </div>
 
     <!-- Checkout Panel Summary -->
-    <div class="col-lg-5 col-md-5 col-sm-12 custom-container">
+    <div class="col-lg-5 checkoutpanelsummary col-md-5 col-sm-12 custom-container">
       <div class="bg-light p-4 sticky-md-top top-5">
         <div class="border-bottom pb-3">
           <!-- Cart Item-->
@@ -678,7 +757,7 @@
               <p style="color: green;">FREE</p>
             </span>
           </div>
-          <div  class="d-flex justify-content-between align-items-center">
+          <div id="discountGroup" class="d-flex justify-content-between align-items-center">
             <p id="discountTxt" style="display: none;" class="m-0 fw-bolder fs-6">Coupon Discount</p>
             <span style="display: flex; gap: 2">
               <p style="display: none;" id="rsymbol">- &#8377</p>
@@ -741,6 +820,8 @@
               </div>
             </div>
           </div>
+          <div id="remove-discount-btn" class="btn btn-outline-dark remove-discount-btn" style="display: none;">Remove Discount</div>
+
         </div>
         <!-- /Payment Options -->
         <div class="py-3 border-bottom" id="coupon-section" style="display: block;">
@@ -1309,13 +1390,53 @@
       document.getElementById("discountTxt").style.display="block"
       document.getElementById("discountValue").style.display="block"
       document.getElementById("rsymbol").style.display="block"
+      document.getElementById("remove-discount-btn").style.display="block"
       }
     })
   }
 
   console.log(grandTotal);
 </script>
+<script>
+  const removeDiscountBtn = document.getElementById("remove-discount-btn");
+  removeDiscountBtn.addEventListener("click", function() {
+  const code = document.getElementById("couponCode").value
+  const GrandTotal = document.getElementById("subtotalv").textContent
+  console.log(code);
+  console.log(GrandTotal);
+  const removeDisData = {
+    couponCode:code,
+    GrandTotal:GrandTotal
+  }
+    fetch('/remove-coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({removeDisData}),
+    })
+    .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+      document.getElementById("grandTotal").textContent=  data.newGrandTotal;
+      document.getElementById("coupon-section").style.display= "block"
+      document.getElementById("remove-discount-btn").style.display="none"
+      document.getElementById("discountTxt").style.display="none"
+      document.getElementById("discountValue").style.display="none"
+      document.getElementById("rsymbol").style.display="none"
 
+      console.log(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+});
+
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const completeOrderButton = document.getElementById("completeOrderButton");

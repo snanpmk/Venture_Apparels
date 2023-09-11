@@ -208,10 +208,11 @@ const updateCouponDiscount = async function (req, res) {
       return res.status(400).json({ message: "User has already used this coupon" });
     }
 
+    console.log("sdffffffffffffddddddddd");
 
     // Find the coupon by code
     const coupon = await Coupon.findOne({ couponCode: couponCode });
-
+    console.log(coupon);
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
     } else if (subtotal < coupon.minimumSpend) {
@@ -227,7 +228,6 @@ const updateCouponDiscount = async function (req, res) {
 
     const discountedSubtotal = (subtotal - discountAmount).toFixed(2);
 
-    // Update the user's couponUsed field to indicate that the coupon has been used
     user.couponUsed.push(couponCode);
     await user.save();
 
@@ -237,6 +237,43 @@ const updateCouponDiscount = async function (req, res) {
     return res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
+const removeCouponDiscount = async function (req, res) {
+  try {
+    const couponCodeToRemove = req.body.removeDisData.couponCode;
+    console.log(couponCodeToRemove);
+    const GrandTotal = req.body.removeDisData.GrandTotal;
+    console.log(GrandTotal);
+
+    // Find the coupon by its code
+    const coupon = await Coupon.findOne({ couponCode: couponCodeToRemove });
+
+    if (!coupon) {
+      return res.status(404).json({ error: "Coupon not found" });
+    }
+
+    
+    const userId = req.session.userId;
+
+    // Update the user to remove the coupon code
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $pull: { couponUsed: couponCodeToRemove },
+      },
+      { new: true }
+    );
+
+    console.log(updatedUser);
+    res.status(200).json({
+      message: "Coupon removed successfully",
+      newGrandTotal: GrandTotal,
+    });
+  } catch (err) {
+    console.log("Error in removing applied coupon: " + err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 module.exports = {
   viewCart,
@@ -244,4 +281,5 @@ module.exports = {
   updateQuantity,
   deleteItem,
   updateCouponDiscount,
+  removeCouponDiscount
 };

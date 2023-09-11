@@ -2,6 +2,13 @@
   .h-100 {
     height: 90% !important;
 }
+@media (max-width: 768px) {
+  .col-sm-6 {
+    /* Change the column width to 50% for mobile screens */
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
 </style>
 <section class="mt-0">
   <!-- Category Top Banner -->
@@ -660,57 +667,53 @@
         </div>
         <!-- / Top Toolbar -->
 
-        <!-- Products -->
-        <div class="row g-4 mb-5" id="productContainer">
-          <% products.forEach(product => { %>
-          <div class="col-12 col-sm-6 col-md-4">
-            <!-- Card Product -->
-            <% if (product.offerPrice) { %>
-              <!-- Product card with offer -->
-              <div class="card position-relative h-100 card-listing hover-trigger">
-                <span class="badge card-badge bg-secondary">- <%= product.offerPercent %> %</span>
-                <div class="card-header">
-                  <picture class="position-relative overflow-hidden d-block bg-light">
-                    <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
-                  </picture>
-                  <div class="card-actions">
-                    <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
-                    
-                  </div>
-                </div>
-                <div class="card-body px-0 text-center">
-                 
-                  <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
-                  <div class="d-flex justify-content-center align-items-center mt-2">
-                    <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span><%= product.offerPrice %></span></p>
-                    <p class="mb-0 text-muted fw-bolder"><s>&#8377<span><%= product.price %></span></s></p>
-                  </div>
-                </div>
-              </div>
-            <% } else { %>
-              <!-- Product card without offer -->
-              <div class="card position-relative h-100 card-listing hover-trigger">
-                <div class="card-header">
-                  <picture class="position-relative overflow-hidden d-block bg-light">
-                    <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
-                  </picture>
-                  <div class="card-actions">
-                    <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
-                    
-                  </div>
-                </div>
-                <div class="card-body px-0 text-center">
-                  <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
-                  <p class="fw-bolder m-0 mt-2">&#8377 <span><%= product.price %></span></p>
-                </div>
-              </div>
-            <% } %>
-            
-            <!-- / Card Product -->
+      <!-- Products -->
+<div class="row g-4 mb-5" id="productContainer">
+  <% products.forEach(product => { %>
+  <div class="col-12 col-sm-6 col-md-4">
+    <!-- Card Product -->
+    <% if (product.offerPrice) { %>
+      <!-- Product card with offer -->
+      <div class="card position-relative h-100 card-listing hover-trigger">
+        <span class="badge card-badge bg-secondary">- <%= product.offerPercent %> %</span>
+        <div class="card-header">
+          <picture class="position-relative overflow-hidden d-block bg-light">
+            <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+          </picture>
+          <div class="card-actions">
+            <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
           </div>
-          <% }); %>
         </div>
-        <!-- / Products -->
+        <div class="card-body px-0 text-center">
+          <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
+          <div class="d-flex justify-content-center align-items-center mt-2">
+            <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span><%= product.offerPrice %></span></p>
+            <p class="mb-0 text-muted fw-bolder"><s>&#8377<span><%= product.price %></span></s></p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <!-- Product card without offer -->
+      <div class="card position-relative h-100 card-listing hover-trigger">
+        <div class="card-header">
+          <picture class="position-relative overflow-hidden d-block bg-light">
+            <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+          </picture>
+          <div class="card-actions">
+            <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
+          </div>
+        </div>
+        <div class="card-body px-0 text-center">
+          <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
+          <p class="fw-bolder m-0 mt-2">&#8377 <span><%= product.price %></span></p>
+        </div>
+      </div>
+    <% } %>
+    <!-- / Card Product -->
+  </div>
+  <% }); %>
+</div>
+<!-- / Products -->
 
         <!-- Pagination -->
         <nav
@@ -751,50 +754,7 @@
           </ul>
         </nav>
 
-        <!-- Related Categories-->
-        <div class="border-top mt-5 pt-5">
-          <p class="lead fw-bolder">Related Categories</p>
-          <div
-            class="d-flex flex-wrap justify-content-start align-items-center"
-          >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Hiking Shoes</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Waterproof Trousers</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Hiking Shirts</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Jackets</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Gilets</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Hiking Socks</a
-            >
-            <a
-              class="btn btn-sm btn-outline-dark rounded-pill me-2 mb-2 mb-md-0 text-white-hover"
-              href="#"
-              >Rugsacks</a
-            >
-          </div>
-        </div>
-        <!-- Related Categories-->
+       
       </div>
       <!-- / Category Products-->
     </div>
