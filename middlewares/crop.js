@@ -1,5 +1,5 @@
 const sharp = require('sharp')
-const path=require('path')
+
 const cropImage = (req, res, next) => {
     const uploadedImagePath = req.file.path;
     const croppedImagePath = `${uploadedImagePath.split(".")[0]}_cropped.jpg`;
