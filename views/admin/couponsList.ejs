@@ -187,6 +187,9 @@
         <p class="coupon-url">
           Minimum amount to be spend : <%= coupon.minimumSpend %>
         </p>
+        <p class="coupon-url">
+          Maximum amount can be spend : <%= coupon.maxSpend %>
+        </p>
         <p class="coupon-description">Discount : <%= coupon.discount %></p>
         <p class="coupon-description">
           Expiry Date : <%= coupon.expiryDate.toLocaleString() %>
@@ -232,9 +235,9 @@
     <span class="close" id="closeModal">&times;</span>
     <h2>Add Coupon</h2>
     <form method="POST" action="/admin/add-coupon" id="couponForm">
+
       <div class="form-group">
         <label for="couponCode">Coupon Code:</label>
-        
         <input type="text" id="couponCode" name="couponCode" placeholder="BLOCK LETTERS ONLY" required />
         <p class="error-message" id="couponCodeError"></p>
       </div>
@@ -245,9 +248,16 @@
         <p class="error-message" id="minimumSpendError"></p>
       </div>
 
+
+      <div class="form-group">
+        <label for="maxSpend">Max amount can be spent:</label>
+        <input type="number" id="maxSpend" name="maxSpend" placeholder="in Rupees" required />
+        <p class="error-message" id="maxSpendError"></p>
+      </div>
+
       <div class="form-group">
         <label for="discount">Discount:</label>
-        <input type="number" id="discount" name="discount" placeholder="in Rupees" required />
+        <input type="number" id="discount" name="discount" placeholder="in Percentage" required />
         <p class="error-message" id="discountError"></p>
       </div>
 
@@ -258,6 +268,7 @@
       </div>
 
       <input type="submit" value="Add" />
+      
     </form>
   </div>
 </div>

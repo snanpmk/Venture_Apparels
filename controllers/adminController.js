@@ -531,10 +531,11 @@ const listCoupons = async function (req, res) {
 
 const addCoupons = async function (req, res) {
   try {
-    const { couponCode, minimumSpend, discount, expiryDate } = req.body;
+    const { couponCode, minimumSpend,maxSpend, discount, expiryDate } = req.body;
     const coupon = new Coupon({
       couponCode,
       minimumSpend,
+      maxSpend,
       discount,
       expiryDate,
     });

@@ -217,7 +217,9 @@ const updateCouponDiscount = async function (req, res) {
       return res.status(404).json({ message: "Coupon not found" });
     } else if (subtotal < coupon.minimumSpend) {
       return res.status(400).json({ message: `Spend a minimum of ${coupon.minimumSpend} to use this coupon` });
-    } else if (currentDate > coupon.expiryDate) {
+    } else if (subtotal > coupon.maxSpend) {
+      return res.status(400).json({ message: `This coupon is only valid under a purchase of ${coupon.maxSpend}` });
+    }   else if (currentDate > coupon.expiryDate) {
       return res.status(400).json({ message: "Coupon has expired" });
     }
 
