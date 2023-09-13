@@ -11,6 +11,7 @@ const fileStorage = multer.diskStorage({
     );
   },
 });
+ 
 
 const fileFilter = (req, file, cb) => {
   if (
@@ -20,7 +21,7 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(null, false)
   }
 };
 
