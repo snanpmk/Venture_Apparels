@@ -1,6 +1,6 @@
 const sharp = require('sharp')
-
 const cropImage = (req, res, next) => {
+  console.log("😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆😆");
     const uploadedImagePath = req.file.path;
     const croppedImagePath = `${uploadedImagePath.split(".")[0]}_cropped.jpg`;
   
@@ -19,7 +19,10 @@ const cropImage = (req, res, next) => {
         if (err) {
           return res.status(500).json({ error: "Error cropping image." });
         }
-        req.croppedImagePath = croppedImagePath.replace("uploads", "");
+        console.log(croppedImagePath+"😆😆😆😆😆");
+
+        req.croppedImagePath = croppedImagePath.replace("uploads/", "");
+        console.log(req.croppedImagePath+"🚀🚀🚀😒😒😒");
         next();
       });
   };

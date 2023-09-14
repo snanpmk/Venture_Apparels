@@ -94,7 +94,8 @@ const uploadProduct = async function (req, res) {
     console.log("❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️");
     const { name, price, stock, description } = req.body;
     const croppedImage = req.croppedImagePath; // Use cropped image path
-    console.log(croppedImage);
+
+    console.log(croppedImage+"💋💋💋");
     const product = new Product({
       name,
       price,
