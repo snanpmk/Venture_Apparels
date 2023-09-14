@@ -24,5 +24,6 @@ const cropImage = (req, res, next) => {
       });
   };
 
+  
   module.exports = cropImage
   

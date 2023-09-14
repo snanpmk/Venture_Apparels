@@ -10,7 +10,6 @@ router.get("/add", productController.loadAddProduct);
 
 router.post("/add", upload.single("image"), crop, productController.uploadProduct);
 
-
 router.get("/list", productController.listAllProducts);
 
 // all products usersisde
