@@ -1,4 +1,3 @@
-
 const multer = require("multer");
 
 const fileStorage = multer.diskStorage({
@@ -12,8 +11,7 @@ const fileStorage = multer.diskStorage({
     );
   },
 });
-
-
+ 
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
@@ -22,9 +20,10 @@ const fileFilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(null, false)
   }
 };
+
 const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
-module.exports = upload
+module.exports = upload;

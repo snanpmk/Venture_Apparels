@@ -19,7 +19,7 @@ const cropImage = (req, res, next) => {
         if (err) {
           return res.status(500).json({ error: "Error cropping image." });
         }
-        req.croppedImagePath = croppedImagePath.replace("uploads\\", "");
+        req.croppedImagePath = croppedImagePath.replace("uploads", "");
         next();
       });
   };
