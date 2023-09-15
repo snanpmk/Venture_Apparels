@@ -5,7 +5,7 @@ const state = {
 };
 
 module.exports.connect = async function () {
-  const url = "mongodb://127.0.0.1:27017";
+  const url = "mongodb+srv://sinanpmk:sinanmongoatlas1526@cluster0.xhcyklv.mongodb.net/?retryWrites=true&w=majority://127.0.0.1:27017";
   const dbname = "venture_apparel";
 
   try {
