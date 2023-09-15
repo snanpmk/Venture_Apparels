@@ -592,7 +592,7 @@ function generateReferralCode(length) {
 
 const getReferalLink = async function (req, res) {
   try {
-    const baseUrl = "http://localhost:3000/signup";
+    const baseUrl = "http://venture-apparels.site/signup";
     const referredFrom = req.session.userId;
     let referralCode;
     let isCodeUnique = false;
