@@ -58,7 +58,8 @@ const userViewCategory = async function (req, res) {
     // Fetch products excluding those with blocked categories
     const products = await Product.find({ deleted: false, category: { $nin: blockedCategoryIds } })
       .limit(productsPerPage)
-      .skip(skip);
+      .skip(skip)
+      .sort({createdAt:1})
 
     const categories = await Category.find({ deleted: false });
     res.render("category/allCategory", {

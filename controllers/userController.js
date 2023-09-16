@@ -22,9 +22,6 @@ const client = twilio(accountSid, authToken);
 // GET USER LANDING PAGE
 const loadHome = async function (req, res) {
   try {
-
-
-
     const banner = await Banner.find()
     const products = await Product.find({ deleted: false }).sort({ upload: -1 }).limit(7);
     res.render("home", { layout: "layouts/userLayout", products: products, banners: banner });
