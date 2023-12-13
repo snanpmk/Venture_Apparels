@@ -50,6 +50,8 @@ app.use(express.static(path.join(__dirname, "uploads")));
 //   next();
 // });
 
+
+
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
 app.use("/product", productRouter);

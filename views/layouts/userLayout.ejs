@@ -1,31 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<!-- Head -->
-<head>
-    <!-- Page Meta Tags-->
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
+  <head>
+    <!-- Page Meta Tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="keywords" content="" />
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/Venture Apparels Logo.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/Venture Apparels Logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/Venture Apparels Logo.png">
-    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    
-    <!--Sweetalert -->
-    <script src="
-    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
-    "></script>
-    <link href="
-    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css
-    " rel="stylesheet">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/Venture Apparels Logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/Venture Apparels Logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/Venture Apparels Logo.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="\stylesheets\libs.bundle.css" />
@@ -33,308 +48,396 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="\stylesheets\theme.bundle.css" />
 
-    <!-- Google Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Fix for custom scrollbar if JS is disabled-->
+    <!-- Fix for custom scrollbar if JS is disabled -->
     <noscript>
-        <style>
-          /**
-          * Reinstate scrolling for non-JS clients
-          */
-          .simplebar-content-wrapper {
-            overflow: auto;
-          }
-        </style>
+      <style>
+        /** Reinstate scrolling for non-JS clients */
+        .simplebar-content-wrapper {
+          overflow: auto;
+        }
+      </style>
     </noscript>
 
     <!-- Page Title -->
     <title>Venture Apparels</title>
-    
-</head>
-<body class="">
+  </head>
 
+  <body class="">
     <!-- Navbar -->
     <nav
-        class="navbar navbar-expand-lg navbar-light bg-white border-bottom mx-0 p-0 flex-column  border-0">
-        <div class="w-100 pb-lg-0 pt-lg-0 pt-4 pb-3">
-            <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-    
-                <!-- Logo-->
-                <a class="navbar-brand fw-bold fs-3 m-0 p-0 flex-shrink-0" href="#">
-                    <!-- Start of Logo-->
-                    <div class="d-flex align-items-center">
-                        <div class="f-w-6 d-flex align-items-center me-2 lh-1">
-                        </div> <span class="fs-5">Venture Apparels</span>
-                    </div>
-                    <!-- / Logo-->
-                    
-                </a>
-                <!-- / Logo-->
-    
-                <!-- Main Navigation-->
-                <div class="ms-5 flex-shrink-0 collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1" id="navbarNavDropdown">
-    
-                    <!-- Mobile Nav Toggler-->
-                    <button
-                        class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 position-absolute top-0 end-0 mt-3 me-2"
-                        data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="ri-close-circle-line ri-2x"></i>
-                    </button>
-                    <!-- / Mobile Nav Toggler-->
-    
-                    <ul class="navbar-nav py-lg-2 mx-auto">
-                        <li class="nav-item me-lg-4 dropdown position-static">
-                            <a class="nav-link fw-bolder dropdown-toggle py-lg-4" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Menswear
-                            </a>
-                            <!-- Menswear dropdown menu-->
-                            <div class="dropdown-menu dropdown-megamenu">
-                                <div class="container">
-                                    <div class="row g-0">
-                                        <!-- Dropdown Menu Links Section-->
-                                        <div class="col-12 col-lg-7">
-                                            <div class="row py-lg-5">
-                                            
-                                                <!-- menu row-->
-                                                <div class="col col-lg-6 mb-5 mb-sm-0">
-                                                    <h6 class="dropdown-heading">Waterproof Layers</h6>
-                                                    <ul class="list-unstyled">
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Waterproof
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Insulated
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Down
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Softshell
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Casual
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Windproof
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Breathable
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Cleaning &
-                                                                Proofing</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item dropdown-link-all"
-                                                                href="/product/allcategory">View All</a></li>
-                                                    </ul>
-                                            
-                                                </div>
-                                                <!-- /menu row-->
-                                            
-                                                <!-- menu row-->
-                                                <div class="col col-lg-6">
-                                                    <h6 class="dropdown-heading">Brands</h6>
-                                                    <ul class="list-unstyled">
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Lifestyle &
-                                                                Casual</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Walking
-                                                                Shoes</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Running
-                                                                Shoes</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Military
-                                                                Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Fabric Walking
-                                                                Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Leather
-                                                                Walking Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Wellies</a>
-                                                        </li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Winter
-                                                                Footwear</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item dropdown-link-all"
-                                                                href="/product/allcategory">View All</a></li>
-                                                    </ul>
-                                                </div>
-                                                <!-- /menu row-->
-                                            
-                                            </div>                    </div>
-                                        <!-- /Dropdown Menu Links Section-->
-                    
-                                        <!-- Dropdown Menu Images Section-->
-                                        <div class="d-none d-lg-block col-lg-5">
-                                            <div class="vw-50 h-100 bg-img-cover bg-pos-center-center position-absolute" style="background-image: url(/images/banners/banner-2.jpg);"></div>
-                                        </div>
-                                        <!-- Dropdown Menu Images Section-->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- / Menswear dropdown menu-->
-                        </li>
-                        <li class="nav-item me-lg-4 dropdown position-static">
-                            <a class="nav-link fw-bolder dropdown-toggle py-lg-4" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Womenswear
-                            </a>
-                            <!-- Womenswear dropdown menu-->
-                            <div class="dropdown-menu dropdown-megamenu">
-                                <div class="container">
-                                    <div class="row g-0">
-                                        <!-- Dropdown Menu Links Section-->
-                                        <div class="col-12 col-lg-7">
-                                            <div class="row py-lg-5">
-                                            
-                                                <!-- menu row-->
-                                                <div class="col col-lg-6 mb-5 mb-sm-0">
-                                                    <h6 class="dropdown-heading">Waterproof Layers</h6>
-                                                    <ul class="list-unstyled">
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Waterproof
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Insulated
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Down
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Softshell
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Casual
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Windproof
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Breathable
-                                                                Jackets</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Cleaning &
-                                                                Proofing</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item dropdown-link-all"
-                                                                href="/product/allcategory">View All</a></li>
-                                                    </ul>
-                                            
-                                                </div>
-                                                <!-- /menu row-->
-                                            
-                                                <!-- menu row-->
-                                                <div class="col col-lg-6">
-                                                    <h6 class="dropdown-heading">Brands</h6>
-                                                    <ul class="list-unstyled">
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Lifestyle &
-                                                                Casual</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Walking
-                                                                Shoes</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Running
-                                                                Shoes</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Military
-                                                                Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Fabric Walking
-                                                                Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Leather
-                                                                Walking Boots</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Wellies</a>
-                                                        </li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item" href="/product/allcategory">Winter
-                                                                Footwear</a></li>
-                                                        <li class="dropdown-list-item"><a class="dropdown-item dropdown-link-all"
-                                                                href="/product/allcategory">View All</a></li>
-                                                    </ul>
-                                                </div>
-                                                <!-- /menu row-->
-                                            
-                                            </div>                    </div>
-                                        <!-- /Dropdown Menu Links Section-->
-                    
-                                        <!-- Dropdown Menu Images Section-->
-                                        <div class="d-none d-lg-block col-lg-5">
-                                            <div class="vw-50 h-100 bg-img-cover bg-pos-center-center position-absolute" style="background-image: url(/images/banners/banner-4.jpg);"></div>
-                                        </div>
-                                        <!-- Dropdown Menu Images Section-->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- / Womenswear dropdown menu-->
-                        </li>
-                        <li class="nav-item me-lg-4">
-                            <a class="nav-link fw-bolder py-lg-4" href="#">
-                                Kidswear
-                            </a>
-                        </li>
-                        <li class="nav-item me-lg-4">
-                            <a class="nav-link fw-bolder py-lg-4" href="#">
-                                Sale Items
-                            </a>
-                        </li>
-                        <!-- Navbar Login-->
-                        <li class="nav-item me-lg-4"> <!-- Use ms-lg-auto to push it to the right on large screens -->
-                            <a class="nav-link fw-bolder py-lg-4" href="/user-profile">
-                               My Profile
-                            </a>
-                        </li>
-                        
-                    <!-- /Navbar Login-->
-                       
-                    </ul>            </div>
-                <!-- / Main Navigation-->
-    
-                <!-- Navbar Icons-->
-                <ul class="list-unstyled mb-0 d-flex align-items-center">
-    
-                    <!-- Navbar Toggle Icon-->
-                    <li class="d-inline-block d-lg-none">
-                        <button
-                            class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 d-flex align-items-center"
-                            data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="ri-menu-line ri-lg align-middle"></i>
-                        </button>
-                    </li>
-                    <!-- /Navbar Toggle Icon-->
-    
-                    <!-- Navbar Search-->
-                    <li class="ms-1 d-inline-block">
-                        <a
-                        class="btn btn-link px-2 py-0 text-decoration-none d-flex align-items-center"
-                            onclick="navigateToSearchPage()"
-                            >
-                           <i class="ri-search-line" style="font-size: 24px;"></i>
-                    </a>
-                    </li>
-                    <!-- /Navbar Search-->
-    
-                    <%
-                    /*
-                       <!-- Navbar Login-->
-                    <li class="ms-1 d-none d-lg-inline-block">
-                        <a class="btn btn-link px-2 text-decoration-none d-flex align-items-center"
-                            href="/user-profile">
-                            <i class="ri-user-line ri-lg align-middle"></i>
-                        </a>
-                    </li>
-                    <!-- /Navbar Login-->
-                    */
-                    %>
-    
-                    
-    
-                    <!-- Navbar Cart-->
-                    <li class="ms-1 d-inline-block position-relative">
-                        <a href="/cart/view" class="btn btn-link px-2 text-decoration-none d-flex align-items-center disable-child-pointer">
-                          <i class="ri-shopping-cart-2-line ri-lg align-middle position-relative z-index-10"></i>
-                        </a>
-                      </li>
-                      
-                    <!-- /Navbar Cart-->
-    
-                </ul>
-                <!-- Navbar Icons-->
-    
+      class="navbar navbar-expand-lg navbar-light bg-white border-bottom mx-0 p-0 flex-column border-0"
+    >
+      <div class="w-100 pb-lg-0 pt-lg-0 pt-4 pb-3">
+        <div
+          class="container-fluid d-flex justify-content-between align-items-center flex-wrap"
+        >
+          <!-- Logo -->
+          <a class="navbar-brand fw-bold fs-3 m-0 p-0 flex-shrink-0" href="/">
+            <!-- Start of Logo -->
+            <div class="d-flex align-items-center">
+              <div class="f-w-6 d-flex align-items-center me-2 lh-1"></div>
+              <span class="fs-5">Venture Apparels</span>
             </div>
+            <!-- / Logo -->
+          </a>
+          <!-- / Logo -->
+
+          <!-- Main Navigation -->
+          <div
+            class="ms-5 flex-shrink-0 collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1"
+            id="navbarNavDropdown"
+          >
+            <!-- Mobile Nav Toggler -->
+            <button
+              class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 position-absolute top-0 end-0 mt-3 me-2"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="ri-close-circle-line ri-2x"></i>
+            </button>
+            <!-- / Mobile Nav Toggler -->
+
+            <ul class="navbar-nav py-lg-2 mx-auto">
+              <li class="nav-item me-lg-4 dropdown position-static">
+                <a
+                  class="nav-link fw-bolder dropdown-toggle py-lg-4"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >Menswear</a
+                >
+                <!-- Menswear dropdown menu -->
+                <div class="dropdown-menu dropdown-megamenu">
+                  <div class="container">
+                    <div class="row g-0">
+                      <!-- Dropdown Menu Links Section -->
+                      <div class="col-12 col-lg-7">
+                        <div class="row py-lg-5">
+                          <!-- menu row -->
+                          <!-- /menu row -->
+                          <!-- menu row -->
+                          <div class="col col-lg-6">
+                            <h6 class="dropdown-heading">All categories</h6>
+                            <ul class="list-unstyled">
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Campsite Shelters</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Classic Tee Essentials</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Expedition Footwear</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Packs</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Hoodies</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item dropdown-link-all"
+                                  href="/product/allcategory"
+                                  >View All</a
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                          <!-- /menu row -->
+                        </div>
+                      </div>
+                      <!-- /Dropdown Menu Links Section -->
+
+                      <!-- Dropdown Menu Images Section -->
+                      <div class="d-none d-lg-block col-lg-5">
+                        <div
+                          class="vw-50 h-100 bg-img-cover bg-pos-center-center position-absolute"
+                          style="
+                            background-image: url(/images/banners/banner-2.jpg);
+                          "
+                        ></div>
+                      </div>
+                      <!-- Dropdown Menu Images Section -->
+                    </div>
+                  </div>
+                </div>
+                <!-- / Menswear dropdown menu -->
+              </li>
+
+              <li class="nav-item me-lg-4 dropdown position-static">
+                <a
+                  class="nav-link fw-bolder dropdown-toggle py-lg-4"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >Womenswear</a
+                >
+                <!-- Womenswear dropdown menu -->
+                <div class="dropdown-menu dropdown-megamenu">
+                  <div class="container">
+                    <div class="row g-0">
+                      <!-- Dropdown Menu Links Section -->
+                      <div class="col-12 col-lg-7">
+                        <div class="row py-lg-5">
+                          <!-- menu row -->
+                          <!-- /menu row -->
+                          <!-- menu row -->
+                          <div class="col col-lg-6">
+                            <h6 class="dropdown-heading">All Categories</h6>
+                            <ul class="list-unstyled">
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Campsite Shelters</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Classic Tee Essentials</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Expedition Footwear</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Packs</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Hoodies</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item dropdown-link-all"
+                                  href="/product/allcategory"
+                                  >View All</a
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                          <!-- /menu row -->
+                        </div>
+                      </div>
+                      <!-- /Dropdown Menu Links Section -->
+
+                      <!-- Dropdown Menu Images Section -->
+                      <div class="d-none d-lg-block col-lg-5">
+                        <div
+                          class="vw-50 h-100 bg-img-cover bg-pos-center-center position-absolute"
+                          style="
+                            background-image: url(/images/banners/banner-4.jpg);
+                          "
+                        ></div>
+                      </div>
+                      <!-- Dropdown Menu Images Section -->
+                    </div>
+                  </div>
+                </div>
+                <!-- / Womenswear dropdown menu -->
+              </li>
+
+              <li class="nav-item me-lg-4 dropdown position-static">
+                <a
+                  class="nav-link fw-bolder dropdown-toggle py-lg-4"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >Accessories</a
+                >
+                <!-- Womenswear dropdown menu -->
+                <div class="dropdown-menu dropdown-megamenu">
+                  <div class="container">
+                    <div class="row g-0">
+                      <!-- Dropdown Menu Links Section -->
+                      <div class="col-12 col-lg-7">
+                        <div class="row py-lg-5">
+                          <div class="col col-lg-6">
+                            <h6 class="dropdown-heading">All Categories</h6>
+                            <ul class="list-unstyled">
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Campsite Shelters</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Classic Tee Essentials</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Venture Expedition Footwear</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Packs</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item"
+                                  href="/product/allcategory"
+                                  >Adventure Hoodies</a
+                                >
+                              </li>
+                              <li class="dropdown-list-item">
+                                <a
+                                  class="dropdown-item dropdown-link-all"
+                                  href="/product/allcategory"
+                                  >View All</a
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                          <!-- /menu row -->
+                        </div>
+                      </div>
+                      <!-- /Dropdown Menu Links Section -->
+
+                      <!-- Dropdown Menu Images Section -->
+                      <div class="d-none d-lg-block col-lg-5">
+                        <div
+                          class="vw-50 h-100 bg-img-cover bg-pos-center-center position-absolute"
+                          style="
+                            background-image: url(/images/banners/banner-1.jpg);
+                          "
+                        ></div>
+                      </div>
+                      <!-- Dropdown Menu Images Section -->
+                    </div>
+                  </div>
+                </div>
+                <!-- / Womenswear dropdown menu -->
+              </li>
+              <!-- Navbar Login -->
+              <li class="nav-item me-lg-4">
+                <!-- Use ms-lg-auto to push it to the right on large screens -->
+                <a class="nav-link fw-bolder py-lg-4" href="/user-profile"
+                  >My Profile</a
+                >
+              </li>
+
+              <!-- /Navbar Login -->
+            </ul>
+          </div>
+          <!-- / Main Navigation -->
+
+          <!-- Navbar Icons -->
+          <ul class="list-unstyled mb-0 d-flex align-items-center">
+            <!-- Navbar Toggle Icon -->
+            <li class="d-inline-block d-lg-none">
+              <button
+                class="btn btn-link px-2 text-decoration-none navbar-toggler border-0 d-flex align-items-center"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <i class="ri-menu-line ri-lg align-middle"></i>
+              </button>
+            </li>
+            <!-- /Navbar Toggle Icon -->
+
+            <!-- Navbar Search -->
+            <li class="ms-1 d-inline-block">
+              <a
+                class="btn btn-link px-2 py-0 text-decoration-none d-flex align-items-center"
+                onclick="navigateToSearchPage()"
+              >
+                <i class="ri-search-line" style="font-size: 24px"></i>
+              </a>
+            </li>
+            <!-- /Navbar Search -->
+
+            <!-- Navbar Cart -->
+            <li class="ms-1 d-inline-block position-relative">
+              <a
+                href="/cart/view"
+                class="btn btn-link px-2 text-decoration-none d-flex align-items-center disable-child-pointer"
+              >
+                <i
+                  class="ri-shopping-cart-2-line ri-lg align-middle position-relative z-index-10"
+                ></i>
+              </a>
+            </li>
+            <!-- /Navbar Cart -->
+          </ul>
+          <!-- Navbar Icons -->
         </div>
+      </div>
     </nav>
-  <!-- / Navbar-->
+    <!-- / Navbar -->
 
     <script src="/javascripts/vendor.bundle.js"></script>
-    
     <!-- Theme JS -->
     <script src="/javascripts/theme.bundle.js"></script>
-
     <script>
-         function navigateToSearchPage() {
-      // Replace "search.html" with the actual URL of your search page
-      window.location.href = "/search";
-    }
+      function navigateToSearchPage() {
+        // Replace "search.html" with the actual URL of your search page
+        window.location.href = "/search";
+      }
     </script>
-  <%- body %> 
-
+    <%- body %>
+  </body>
 </html>

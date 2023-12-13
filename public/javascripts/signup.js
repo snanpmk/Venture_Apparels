@@ -16,7 +16,7 @@ nameInput.addEventListener("input", function () {
     nameValidMessage.style.display = "block";
     nameValidMessage.textContent = "Please enter a valid name";
   }
-});   
+});
 
 nameInput.addEventListener("blur", function () {
   const name = nameInput.value.trim();
@@ -36,27 +36,15 @@ function validateName(name) {
 }
 
 // Phone Number validation
-const countryCodeSelect = document.querySelector("#countryCode");
 const phoneNumberInput = document.querySelector("#phoneNumber");
 const phoneNumberValidMessage = document.querySelector(
   "#phoneNumberValidMessage"
 );
 
-countryCodeSelect.addEventListener("change", function () {
-  const countryCode = countryCodeSelect.value;
-  const country =
-    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
-  const requiredLength = getRequiredPhoneNumberLength(country);
-
-  phoneNumberInput.placeholder = `Enter your phone number (${countryCode})`;
-
-  validatePhoneNumber(requiredLength, phoneNumberInput.value);
-});
 
 phoneNumberInput.addEventListener("input", function () {
   const phoneNumber = phoneNumberInput.value;
-  const country =
-    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+  const country = "+91"
   const requiredLength = getRequiredPhoneNumberLength(country);
 
   validatePhoneNumber(requiredLength, phoneNumber);
@@ -236,7 +224,7 @@ form.addEventListener("submit", async function (event) {
   }
 
   const name = nameInput.value.trim();
-  const countryCode = countryCodeSelect.value;
+  const countryCode = "+91"
   const phoneNumber = phoneNumberInput.value;
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -247,8 +235,7 @@ form.addEventListener("submit", async function (event) {
   const referralCode = urlSearchParams.get("referralCode");
 
   // Validate phone number one more time before submitting
-  const country =
-    countryCodeSelect.options[countryCodeSelect.selectedIndex].text;
+  const country = "+91"
   const requiredLength = getRequiredPhoneNumberLength(country);
   validatePhoneNumber(requiredLength, phoneNumber);
 
@@ -284,7 +271,7 @@ form.addEventListener("submit", async function (event) {
     console.log(data);
     if (data.success) {
       console.log("Signup successful");
-      window.location.href = "/enter-otp";
+      window.location.href = "/";
     } else {
       console.log("Signup failed");
       showError(data.error);

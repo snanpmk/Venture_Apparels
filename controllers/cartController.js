@@ -72,6 +72,7 @@ const addToCart = async function (req, res) {
       cart = await Cart.create({ userId });
     }
 
+    console.log(cart);
     // if cart exist check for product exists
     const itemIndex = cart.items.findIndex((item) =>
       item.productId.equals(productId)

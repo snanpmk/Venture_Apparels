@@ -3862,88 +3862,93 @@ fieldset:disabled .btn {
   opacity: 0.65;
 }
 .btn-primary {
-  background-color: #5938cc;
-  color: #fff;
-  border-radius: 1rem;
+  background-color: #BBE1FA; /* Your new primary button color */
+  color: #364148 ;
+  border-radius: 0.3rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+
 .btn-check:focus + .btn-primary,
 .btn-primary:focus,
 .btn-primary:hover {
   color: #fff;
-  background-color: #5e3cd9;
-  border-color: #5938cc;
+  background-color: #3282B8; /* Faded color for hover and focus */
+  border-color: #3282B8;
 }
-.btn-check:focus + .btn-primary,
-.btn-primary:focus {
-  box-shadow: 0 0 0 0.25rem rgba(133, 98, 255, 0.5);
-}
+
 .btn-check:active + .btn-primary,
 .btn-check:checked + .btn-primary,
 .btn-primary.active,
 .btn-primary:active,
 .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #5938cc;
-  border-color: #5335bf;
+  background-color: #3282B8; /* Faded color for active state */
+  border-color: #3282B8;
 }
+
 .btn-check:active + .btn-primary:focus,
 .btn-check:checked + .btn-primary:focus,
 .btn-primary.active:focus,
 .btn-primary:active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(133, 98, 255, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(254, 215, 165, 0.5); /* Faded shadow color for focus */
 }
+
 .btn-primary.disabled,
 .btn-primary:disabled {
   color: #fff;
-  background-color: #6f46ff;
-  border-color: #6f46ff;
+  background-color: #fed7a5; /* New color for disabled state */
+  border-color: #fed7a5;
 }
+/* Secondary Button */
 .btn-secondary {
-  color: #000;
-  background-color: #a0a0a2;
-  border-color: #a0a0a2;
+  background-color: #0F4C75; /* Your new secondary button color */
+  color: #fff !important;
+  border-radius: 0.3rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
+
 .btn-check:focus + .btn-secondary,
 .btn-secondary:focus,
 .btn-secondary:hover {
-  color: #000;
-  background-color: #aeaeb0;
-  border-color: #aaaaab;
+  color: #fff;
+  background-color: #1B262C; /* Same color for hover and focus */
+  border-color: #1B262C; /* Same color for hover and focus */
 }
-.btn-check:focus + .btn-secondary,
-.btn-secondary:focus {
-  box-shadow: 0 0 0 0.25rem rgba(136, 136, 138, 0.5);
-}
+
 .btn-check:active + .btn-secondary,
 .btn-check:checked + .btn-secondary,
 .btn-secondary.active,
 .btn-secondary:active,
 .show > .btn-secondary.dropdown-toggle {
-  color: #000;
-  background-color: #b3b3b5;
-  border-color: #aaaaab;
+  color: #fff;
+  background-color: #1B262C; /* Same color for active state */
+  border-color: #1B262C; /* Same color for active state */
 }
+
 .btn-check:active + .btn-secondary:focus,
 .btn-check:checked + .btn-secondary:focus,
 .btn-secondary.active:focus,
 .btn-secondary:active:focus,
 .show > .btn-secondary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(136, 136, 138, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba( /* Specify your shadow color for focus */ );
 }
+
 .btn-secondary.disabled,
 .btn-secondary:disabled {
-  color: #000;
-  background-color: #a0a0a2;
-  border-color: #a0a0a2;
-}
-.btn-success {
-  background-color: #19b8a2;
-  border-color: #19b8a2;
   color: #fff;
-  border-radius: 1rem;
+  background-color:#0F4C75 /* Specify your new color for disabled state */;
+  border-color:#0F4C75 /* Specify your new color for disabled state */;
+}
+
+
+.btn-success {
+  background-color: #5C8374;
+  border-color: #5C8374;
+  color: #fff !important;
+  border-radius: 0.3rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
@@ -3951,8 +3956,8 @@ fieldset:disabled .btn {
 .btn-success:focus,
 .btn-success:hover {
   color: #000;
-  background-color: #3cc3b0;
-  border-color: #30bfab;
+  background-color: #7eac9a;
+  border-color: #7eac9a;
 }
 .btn-check:focus + .btn-success,
 .btn-success:focus {
@@ -3964,8 +3969,8 @@ fieldset:disabled .btn {
 .btn-success:active,
 .show > .btn-success.dropdown-toggle {
   color: #000;
-  background-color: #47c6b5;
-  border-color: #30bfab;
+  background-color: #5C8374;
+  border-color: #5C8374;
 }
 .btn-check:active + .btn-success:focus,
 .btn-check:checked + .btn-success:focus,

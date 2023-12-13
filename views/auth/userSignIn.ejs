@@ -1,148 +1,266 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create Account</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
-  </head>
-  <body>
-    <section>
-      <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-9 col-lg-6 col-xl-5">
+<link rel="stylesheet" href="/stylesheets/userLogin.css" />
+<section class="d-flex align-items-center">
+  <div class="container-fluid">
+    <h1 class="text-center mt-4">
+      Start Your Journey <br />
+      Sign Up!
+    </h1>
+    <div class="row justify-content-center mt-4">
+      <div class="col-12 col-md-10 text-white p-4">
+        <div class="d-md-flex justify-content-center align-items-center">
+          <div
+            class="text-white p-3 m-2 d-flex justify-content-center align-items-center"
+            style="max-width: 350px"
+          >
             <img
-              src="/images/background/signup (2).jpg"
-              class="img-fluid"
+              src="/images/background/Travelers.gif"
+              class="img-fluid small-image"
               alt="Sample image"
-              width="600"
-              style="border-radius: 25px"
+              style="border-radius: 0.5rem"
             />
           </div>
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <!-- form for account creation -->
-            <form
-              method="post"
-              action="/signup"
-              onsubmit="return validateForm()"
-            >
-              <div class="form-group">
-                <label class="form-label" for="name">Your name</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="First and last name"
-                  required
-                />
-                <p id="nameValidMessage" style="color: red"></p>
 
-                <label class="form-label" for="phoneNumber">Phone Number</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <select
-                      class="custom-select"
-                      id="countryCode"
-                      name="countryCode"
+          <div class="text-white m-2 d-flex flex-column align-items-center">
+            <div class="container-fluid">
+              <div class="">
+                <form
+                  method="post"
+                  action="/signup"
+                  onsubmit="return validateForm()"
+                >
+                  <div class="form-group">
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="First and last name"
+                      required
+                    />
+                    <p id="nameValidMessage" style="color: red"></p>
+
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        placeholder="Mobile number"
+                        required
+                      />
+                    </div>
+
+                    <p id="phoneNumberValidMessage" style="color: red"></p>
+
+                    <input
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="Enter your email"
+                    />
+                    <p id="emailValidMessage" style="color: red"></p>
+
+                    <input
+                      class="form-control"
+                      type="password"
+                      id="password"
+                      name="password"
+                      required
+                      placeholder="Enter your password"
+                    />
+                    <p
+                      id="passwordStrengthMessage"
+                      style="width: 20rem; color: red"
+                    ></p>
+
+                    <input
+                      class="form-control"
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      minlength="6"
+                      required
+                      placeholder="Confirm your password"
+                    />
+
+                    <p
+                      id="passwordMatchMessage"
+                      style="color: red; display: none"
                     >
-                      <option value="+91">+91</option>
-                      <option value="+1">+1</option>
-                      <option value="+44">+44</option>
-                      <option value="+86">+86</option>
-                      <option value="+81">+81</option>
-                    </select>
+                      Passwords do not match.
+                    </p>
+
+                    <p id="otpMessage" style="width: 20rem; color: red"></p>
+                    <input
+                      class="form-control"
+                      type="password"
+                      id="otp"
+                      name="otp"
+                      minlength="4"
+                      style="display: none"
+                      placeholder="Enter otp"
+                    />
                   </div>
-                  <input
-                    class="form-control"
-                    type="text"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    placeholder="Mobile number"
-                    required
-                  />
+                  <div class="form-group">
+                    <% if (referralCode) { %>
+                    <label class="form-label" for="referralCode"
+                      >Referral Code</label
+                    >
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="referralCode"
+                      value="<%= referralCode %>"
+                      name="referralCode"
+                      placeholder="Enter referral code"
+                    />
+                  </div>
+                  <% } %>
+
+                  <a id="verifyBtn" class="btn btn-secondary"
+                    >verify & contiue</a
+                  >
+                  <a
+                    id="verifyOtp"
+                    style="display: none"
+                    class="btn btn-secondary"
+                    >verify</a
+                  >
+                  <button
+                    id="submitForm"
+                    type="submit"
+                    style="display: none"
+                    class="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                </form>
+                <br />
+                <div id="errorContainer">
+                  <p id="errorMessage" style="display: none; color: red"></p>
                 </div>
-
-                <p id="phoneNumberValidMessage" style="color: red"></p>
-
-                <label class="form-label" for="email">Email</label>
-                <input
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="Enter your email"
-                />
-                <p id="emailValidMessage" style="color: red"></p>
-
-                <label class="form-label" for="password">Password</label>
-                <input
-                  class="form-control"
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                  placeholder="Enter your password"
-                />
-                <p
-                  id="passwordStrengthMessage"
-                  style="width: 20rem; color: red"
-                ></p>
-
-                <label class="form-label" for="confirmPassword"
-                  >Confirm Password</label
-                >
-                <input
-                  class="form-control"
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  minlength="6"
-                  required
-                  placeholder="Confirm your password"
-                />
-
-                <p id="passwordMatchMessage" style="color: red; display: none">
-                  Passwords do not match.
-                </p>
+                <div class="mt-4">
+                  <p style="color: rgb(7, 6, 28); font-weight: 500">
+                    Already have an account?
+                    <a
+                      href="/login"
+                      style="text-decoration: none; color: rgb(78, 107, 120)"
+                      >Sign in</a
+                    >
+                  </p>
+                </div>
               </div>
-              <div class="form-group">
-                <% if (referralCode) { %>
-                <label class="form-label" for="referralCode"
-                  >Referral Code</label
-                >
-                <input
-                  class="form-control"
-                  type="text"
-                  id="referralCode"
-                  value="<%= referralCode %>"
-                  name="referralCode"
-                  placeholder="Enter referral code"
-                />
-              </div>
-              <%} %>
-
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <br />
-            <div id="errorContainer">
-              <p id="errorMessage" style="display: none; color: red"></p>
-            </div>
-            <div class="mt-4">
-              <p>
-                Already have an account?
-                <a href="/login" style="color: blue">Sign in</a>
-              </p>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="/javascripts/signup.js"></script>
-  </body>
-</html>
+    </div>
+  </div>
+</section>
+<script src="/javascripts/signup.js"></script>
+<script>
+  function showMessage(message, isError = false) {
+    const errorMessage = document.getElementById("otpMessage");
+    errorMessage.textContent = message;
+    errorMessage.style.color = isError ? "red" : "green";
+    errorMessage.style.display = "block";
+
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 3000);
+  }
+
+  function toggleVerifyBtn() {
+    const nameInput = document.getElementById("name");
+    const phoneNumberInput = document.getElementById("phoneNumber");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+
+    // Check if any of the required fields is empty
+    if (
+      nameInput.value === "" ||
+      phoneNumberInput.value === "" ||
+      emailInput.value === "" ||
+      passwordInput.value === "" ||
+      confirmPasswordInput.value === ""
+    ) {
+      showMessage("Please fill in all fields to continue", true);
+      return;
+    }
+
+    // Rest of your code for sending OTP
+    const phoneNumber = phoneNumberInput.value;
+    const errorMessage = document.getElementById("errorMessage");
+    const url = "/getotp";
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phoneNumber }),
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Sendig Otp failed !!!`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        showMessage(data.message);
+        const verifyBtn = document.getElementById("verifyBtn");
+        verifyBtn.style.display = "none";
+        const verifyOtp = document.getElementById("verifyOtp");
+        verifyOtp.style.display = "block";
+        const otpInput = document.getElementById("otp");
+        otpInput.style.display = "block";
+      })
+      .catch((error) => {
+        console.log(error + "error in initiating sending otp");
+        showMessage(error, true);
+      });
+  }
+
+  function toggleVerifyOtpBtn() {
+    const otpInput = document.getElementById("otp");
+    const otp = otpInput.value;
+    const url = "/verify-otp";
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ otp }),
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to verify otp`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.message);
+        showMessage(data.message);
+        const submitForm = document.getElementById("submitForm");
+        submitForm.style.display = "block";
+        const verifyOtpBtn = document.getElementById("verifyOtp");
+        verifyOtpBtn.style.display = "none";
+      })
+      .catch((error) => {
+        showMessage(error);
+        console.log(error + " error in initiating verify otp");
+        
+      });
+  }
+
+  const verifyBtn = document.getElementById("verifyBtn");
+  verifyBtn.addEventListener("click", () => toggleVerifyBtn());
+  const verifyOtpBtn = document.getElementById("verifyOtp");
+  verifyOtpBtn.addEventListener("click", () => toggleVerifyOtpBtn());
+</script>

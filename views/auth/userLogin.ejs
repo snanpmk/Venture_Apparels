@@ -1,75 +1,261 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Login</title>
-    <link
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="\stylesheets\userSignup.css" />
-  </head>
-  <body>
-    <section>
-      <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-9 col-lg-6 col-xl-5">
+<link rel="stylesheet" href="/stylesheets/userLogin.css" />
+<section class="d-flex align-items-center">
+  <div class="container-fluid">
+    <h1 class="text-center mt-4">
+      Welcome to <br />
+      Venture Apparels
+    </h1>
+    <div class="row justify-content-center mt-4">
+      <div class="col-12 col-md-10 text-white p-4">
+        <div class="d-md-flex justify-content-center align-items-center">
+          <div
+            class="text-white p-3 m-2 d-flex justify-content-center align-items-center"
+            style="max-width: 350px"
+          >
             <img
-              src="/images/background/login (2).jpg"
-              class="img-fluid"
+              src="/images/background/Exploring.gif"
+              class="img-fluid small-image"
               alt="Sample image"
-              width="500"
-              style="border-radius: 25px"
+              style="border-radius: 0.5rem"
             />
           </div>
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <div class="container-fluid">
-              <!-- form for account creation -->
-              <form method="post" class="" action="/login">
-                <div class="form-group">
-                  <label class="form-label" for="email">Email</label>
-                  <input
-                    class="form-control"
-                    type="email"
-                    id="email"
-                    name="email"
-                      
-                    required
-                    placeholder="Enter your email"
-                  />
 
-                  <label class="form-label" for="password">Password</label>
-                  <input
-                    class="form-control"
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    placeholder="Enter your password"
-                  />
-                </div>
-                <div class="center-align">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+          <div class="text-white m-2 d-flex flex-column align-items-center">
+            <div class="container-fluid">
+              <div class="" style="display: flex; flex-direction: column">
+                <form method="post" class="" action="/login">
+                  <div class="form-group">
+                    <input
+                      class="form-control mb-3"
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email"
+                    />
+                    <input
+                      class="form-control mb-3"
+                      type="password"
+                      id="password"
+                      name="password"
+                      placeholder="Enter your password"
+                    />
+                    <input
+                      class="form-control mb-3"
+                      type="tel"
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      placeholder="Enter Phone Number"
+                      style="display: none"
+                    />
+                    <input
+                      class="form-control mb-3"
+                      type="password"
+                      id="otp"
+                      name="otp"
+                      placeholder="Enter the otp"
+                      style="display: none"
+                    />
+                    <div class="align-items-center">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="submitBtn"
+                      >
+                        Submit
+                      </button>
+                      <a
+                        id="submitOtp"
+                        class="btn btn-primary"
+                        style="display: none"
+                        >Submit Otp</a
+                      >
+                    </div>
+                    <div class="align-items-center">
+                      <a
+                        style="display: none"
+                        class="btn btn-success"
+                        id="getOtp"
+                      >
+                        Get otp
+                      </a>
+                    </div>
+                    <br />
+                  </div>
+                  <div>
+                    <p
+                      id="errorMessage"
+                      style="color: rgb(151, 25, 25); font-weight: bold"
+                    ></p>
+
+                    <div class="mt-5 text-center">
+                      <a
+                        href="javascript:void(0);"
+                        class="loginPhone btn btn-secondary"
+                        id="loginPhone"
+                        >Login with Otp</a
+                      >
+                      <a
+                        href="javascript:void(0);"
+                        class="loginEmail btn btn-secondary"
+                        id="loginEmail"
+                        style="display: none"
+                        >Login with Email</a
+                      >
+                    </div>
+                  </div>
+                </form>
 
                 <div class="mt-4 center-align">
-                  <p>Or</p>
-                  <button class="btn btn-primary">
-                    <a style="text-decoration: none !important;" href="/login-phone">Login with mobile</a>
-                  </button>
+                  <p class="" style="color: black; font-weight: 500">
+                    Not a member?
+                    <a
+                      href="/signup"
+                      class="no-underline not-member"
+                      style="text-decoration: none; color: rgb(111 137 154)"
+                      >Create Account</a
+                    >
+                  </p>
                 </div>
-              </form>
-
-              <div class="mt-4 center-align">
-                <p>
-                  Not a member?
-                  <a href="/signup" class="no-underline">Join us</a>
-                </p>
               </div>
-              <p id="errorMessage" style="color: red"></p>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <script src="/javascripts/login.js"></script>
-  </body>
-</html>
+    </div>
+  </div>
+</section>
+<script src="/javascripts/login.js"></script>
+<script>
+  function toggleLoginType(loginType) {
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const phoneNumberInput = document.getElementById("phoneNumber");
+    const otpInput = document.getElementById("otp");
+    const mobLogin = document.getElementById("loginPhone");
+    const emailLogin = document.getElementById("loginEmail");
+    const submitBtn = document.getElementById("submitBtn");
+    const getOtpbtn = document.getElementById("getOtp");
+    const submitOtpBtn = document.getElementById("submitOtp");
+
+    if (loginType === "phone") {
+      emailInput.style.display = "none";
+      passwordInput.style.display = "none";
+      phoneNumberInput.style.display = "block";
+      otpInput.style.display = "none";
+      emailLogin.style.display = "block";
+      mobLogin.style.display = "none";
+      submitBtn.style.display = "none";
+      getOtpbtn.style.display = "block";
+    } else if (loginType === "email") {
+      emailInput.style.display = "block";
+      passwordInput.style.display = "block";
+      phoneNumberInput.style.display = "none";
+      otpInput.style.display = "none";
+      emailLogin.style.display = "none";
+      mobLogin.style.display = "block";
+      submitBtn.style.display = "block";
+      getOtpbtn.style.display = "none";
+      submitOtpBtn.style.display = "none";
+    }
+  }
+
+  function showMessage(message) {
+    const errorMessage = document.getElementById("errorMessage"); // Replace "errorMessage" with the actual ID of your message element
+    errorMessage.textContent = message;
+    errorMessage.style.color = "green"; // Set the color to green
+    errorMessage.style.display = "block";
+
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 3000);
+  }
+
+  function sendotp() {
+    const phoneNumberInput = document.getElementById("phoneNumber");
+    const phoneNumber = phoneNumberInput.value;
+    const errorMessage = document.getElementById("errorMessage");
+    const url = "/getotp";
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phoneNumber }),
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.message + "         happppppppppeeeeeeeeeeee");
+        showMessage(data.message);
+        const getOtpbtn = document.getElementById("getOtp");
+        const submitOtpBtn = document.getElementById("submitOtp");
+        const otpInput = document.getElementById("otp");
+        otpInput.style.display = "block";
+        submitOtpBtn.style.display = "block";
+        getOtpbtn.style.display = "none";
+      })
+      .catch((error) => {
+        console.log(error + "error in initiating sending otp");
+      });
+  }
+
+  function toggleGetOtp() {
+    sendotp();
+  }
+
+  function verifyotp() {
+    const otpInput = document.getElementById("otp");
+    const otp = otpInput.value;
+    const url = "/verify-otp";
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ otp }),
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.message);
+        showMessage(data.message);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 3000);
+      })
+      .catch((error) => {
+        console.log(error + "error in initiating verify otp");
+      });
+  }
+
+  function toggleSubmitOtp() {
+    console.log("hweeeeyeyeye");
+    verifyotp();
+  }
+
+  // In your login.js file
+  document
+    .getElementById("loginPhone")
+    .addEventListener("click", () => toggleLoginType("phone"));
+  document
+    .getElementById("loginEmail")
+    .addEventListener("click", () => toggleLoginType("email"));
+  document
+    .getElementById("getOtp")
+    .addEventListener("click", () => toggleGetOtp());
+  document
+    .getElementById("submitOtp")
+    .addEventListener("click", toggleSubmitOtp);
+</script>

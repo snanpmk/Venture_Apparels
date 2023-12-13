@@ -23,7 +23,7 @@ router.post("/verify-otp", userController.verifyOtp)
 
 router.post("/signup", userController.RegisterUser);
  
-router.get("/getotp",userController.sendOtpSignup);
+router.put("/getotp",userController.sendOtpSignup);
 
 router.post("/search",userController.searchProducts)
 
@@ -49,7 +49,6 @@ router.get("/user-profile",sessionMiddleware.isLoggedIn,userController.userProfi
 
 router.get("/logout",userController.logout)
 
-router.get("/test",userController.test)
 
 router.get("/cancel-order",orderController.cancelOrder)
 
@@ -62,6 +61,8 @@ router.post("/coupon-price",cartController.updateCouponDiscount)
 router.post("/remove-coupon",cartController.removeCouponDiscount)
 
 router.get("/referlink",userController.getReferalLink)
+
+router.get("/test",userController.rendertest)
 
 
 module.exports = router;

@@ -8,7 +8,35 @@
     flex: 0 0 50%;
     max-width: 50%;
   }
+ .bannerhead {
+    font-size: 2rem;
+  }
+
+  bannerbody {
+    font-size: 1rem;
+  }
+
+  /* Media query for smaller screens (phones) */
+  @media (max-width: 768px) {
+    .bannerhead {
+      font-size: 1.4rem; /* Adjust the font size for phones */
+    }
+
+    .lead {
+    font-size: 0.7rem;
+    font-weight: 300;
 }
+  }
+  
+}
+</style>
+<style>
+  @media (max-width: 767px) { /* Adjust the breakpoint as needed */
+      .custom-dropdown {
+          display: block !important;
+          width: 100%;
+      }
+  }
 </style>
 <section class="mt-0">
   <!-- Category Top Banner -->
@@ -22,9 +50,9 @@
       data-aos-delay="300"
     >
      
-      <h1 class="fw-bold display-6 mb-4 text-white">Gear Up for Adventure! 🏞️⛺</h1>
+      <h1 class="fw-bold display-6 mb-4 bannerhead text-white">Gear Up for Adventure! 🏞️⛺</h1>
       <div class="col-12 col-md-6">
-        <p class="lead text-white mb-0">
+        <p class="lead text-white bannerbody mb-0">
           Embark on your next outdoor journey with confidence. Discover our rugged and versatile adventure clothing designed to withstand the elements. From waterproof jackets to durable hiking boots, we've got your back on the trail.        </p>
       </div>
     </div>
@@ -69,7 +97,6 @@
                         ></i>
                         <%= category.name %></span
                       >
-                      <span class="text-muted ms-4">(13)</span>
                     </a>
                   </li>
                   <% }); %>
@@ -196,8 +223,29 @@
       <div class="col-12 col-lg-9">
         <!-- Top Toolbar -->
         <div class="mb-4 d-md-flex justify-content-between align-items-center">
-        
-         
+          <div class="dropdown custom-dropdown" style="display: none;">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown button
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <% categories.forEach(category => { %>
+
+                <li><a
+                  class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
+                  href="/product/category/<%= category.name %>"
+                  name="categoryName"
+                >
+                  <span
+                    ><i
+                      class="ri-arrow-right-s-line align-bottom ms-n1"
+                    ></i>
+                    <%= category.name %></span
+                  >
+                </a></li>
+                <% }) %>
+            </ul>
+        </div>
+    
         </div>
         <!-- / Top Toolbar -->
 

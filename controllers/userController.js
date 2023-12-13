@@ -35,7 +35,7 @@ const loadSignUp = async function (req, res) {
   try {
     const referralCode = req.query.referralCode
     console.log(referralCode + "😍😒💕");
-    res.render("auth/userSignIn", { layout: "layouts/noLayout", referralCode: referralCode });
+    res.render("auth/userSignIn", { layout: "layouts/userLayout", referralCode: referralCode }).status(200).json({ message: "successfull hey hey" });
   } catch (err) {
     console.log("Error loading register", err);
   }
@@ -99,12 +99,12 @@ const RegisterUser = async function (req, res) {
         }
 
 
-        // sendOtpSignup(req, res).catch((err) => {
-        //   console.log("Error sending OTP", err);
-        //   res
-        //     .status(500)
-        //     .json({ error: "Failed to send OTP. Please try again." });
-        // });
+        sendOtpSignup(req, res).catch((err) => {
+          console.log("Error sending OTP", err);
+          res
+            .status(500)
+            .json({ error: "Failed to send OTP. Please try again." });
+        });
       } else {
         res.status(500).json({ error: "Sign up failed." });
       }
@@ -116,33 +116,48 @@ const RegisterUser = async function (req, res) {
 };
 
 
+const sendOtp = async () => {
+  try {
+    // client.verify.v2
+    // .services(servicesSid)
+    // .verifications.create({ to: phoneNumber, channel: "sms" })
+    // .then((verification) => {
+    //   console.log(verification.sid);
+    return true;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // return false;
+    // });
+  } catch (error) {
+    console.log(error + "error in sending otp function");
+  }
+}
+
 // SEND OTP IN SIGNUP
 const sendOtpSignup = async function (req, res) {
   try {
     console.log("send otp function is called..........");
-    const phoneNumber = req.body.countryCode + req.body.phoneNumber;
+    const phoneNumber = "+91" + req.body.phoneNumber;
     req.session.phoneNumber = phoneNumber;
-    console.log(req.session.phoneNumber + "from the sendOtpSignup");
+    console.log(req.session.phoneNumber + " from the sendOtpSignup");
 
-    client.verify.v2
-      .services(servicesSid)
-      .verifications.create({ to: phoneNumber, channel: "sms" })
-      .then((verification) => {
-        console.log(verification.sid);
-        return true;
-      })
-      .catch((error) => {
-        console.log(error);
-        return false;
-      });
-    return res
-      .status(200)
-      .json({ success: true, message: "OTP sent successfully" });
+    const otpSendStatus = await sendOtp(); // Wait for the sendOtp function to complete
+    console.log(otpSendStatus);
+
+    if (otpSendStatus) {
+      return res
+        .status(200)
+        .json({ success: true, message: "OTP sent successfully" });
+    } else {
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to send OTP" });
+    }
   } catch (error) {
     res.status(500).json({ success: false, error });
   }
 };
-
 // GET USER LOGIN
 const loadLogin = async function (req, res) {
   try {
@@ -200,19 +215,18 @@ const loadLoginPhone = async function (req, res) {
 // SEND OTP IN LOGIN
 const sendOtpLogin = async function (req, res) {
   console.log("send otp function is called..........");
-  const phoneNumber = req.body.countryCode + req.body.phoneNumber;
+  const phoneNumber = "+91" + req.body.phoneNumber;
   const user = await User.findOne({ phoneNumber: phoneNumber });
   console.log(user);
 
   if (!user) {
-    return res.render("auth/userOtpLogin", {
+    return res.status(404).json({
       message: "User not found!!",
     });
   }
 
   if (user.deleted == true) {
-    return res.render("auth/userOtpLogin", {
-      layout: "layouts/userLayout",
+    return res.status(500).json({
       message: "This account is blocked by the admin!!",
     })
   }
@@ -221,19 +235,9 @@ const sendOtpLogin = async function (req, res) {
   req.session.userId = userId
   req.session.phoneNumber = phoneNumber;
 
-  console.log(req.session.phoneNumber + "from the sendOtpLogin");
-  client.verify.v2
-    .services(servicesSid)
-    .verifications.create({ to: phoneNumber, channel: "sms" })
-    .then((verification) => {
-      console.log(verification.sid);
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-  res.render("auth/userOtpVerification", { layout: "layouts/userLayout" });
+  // console.log(req.session.phoneNumber + "from the sendOtpLogin");
+  sendOtp()
+  res.status(200).json({ message: "otp sent successfully", success: true });
 };
 
 // GET OTP PAGE
@@ -251,33 +255,35 @@ const verifyOtp = async function (req, res) {
     const phoneNumber = req.session.phoneNumber;
     const otp = req.body.otp;
     console.log(phoneNumber + " " + otp);
-    client.verify.v2
-      .services(servicesSid)
-      .verificationChecks.create({ to: phoneNumber, code: otp })
-      .then((verification_check) => {
-        console.log(verification_check.status);
-        if (verification_check.status === "approved") {
+    // client.verify.v2
+    //   .services(servicesSid)
+    //   .verificationChecks.create({ to: phoneNumber, code: otp })
+    //   .then((verification_check) => {
+    //     console.log(verification_check.status);
+    //     if (verification_check.status === "approved") {
           req.session.userloggedIn = true;
-          // Redirect to the landing page after OTP is approved
-          res.redirect("/");
-        } else {
-          // Handle the case when OTP is not approved, e.g., render an error page
-          res.render("auth/userOtpVerification", { message: "Invalid OTP", layout: "layouts/userLayout" });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle the error if needed
-        res.render("auth/userOtpVerification", {
-          layout: "layouts/userLayout",
-          message: "OTP verification failed",
-        });
-      });
+    //       // Redirect to the landing page after OTP is approved
+    //       res.status(200).json({ message: "otp verified successfully" })
+
+    //     } else {
+    //       // Handle the case when OTP is not approved, e.g., render an error page
+    //       res.status(500).json({ message: "Invalid OTP" });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     // Handle the error if needed
+        // res.status(500).json({
+        //   message: "OTP verification failed",
+        // });
+    //   });
+    console.log("heeey");
+    res.status(200).json({ message: "otp verified (test case)" })
   } catch (err) {
     console.log("Error in verifying OTP", err);
     // Handle the error if needed
-    res.render("auth/userOtpVerification", {
-      message: "OTP verification failed", layout: "layouts/userLayout"
+    res.status(500).json({
+      message: "OTP verification failed"
     });
   }
 };
@@ -357,7 +363,7 @@ const loadCheckout = async function (req, res) {
 
     const referral = await Referral.findOne({
       $or: [
-        { referredTo: userId }, 
+        { referredTo: userId },
         { referredFrom: userId, referredTo: { $ne: null } },
       ],
     });
@@ -615,6 +621,10 @@ const getReferalLink = async function (req, res) {
   }
 };
 
+const rendertest = function (req, res) {
+  res.render('test', { layout: "layouts/noLayout" })
+}
+
 
 module.exports = {
   loadHome,
@@ -638,4 +648,5 @@ module.exports = {
   logout,
   test,
   getReferalLink,
+  rendertest
 };

@@ -2,8 +2,8 @@
 const errorMessage = document.getElementById("errorMessage");
 
 function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+  errorMessage.textContent = message;
+  errorMessage.style.display = "block";
 
   setTimeout(() => {
     errorMessage.style.display = "none";
@@ -17,6 +17,7 @@ const passwordInput = document.getElementById("password");
 // Form submission
 const form = document.querySelector("form");
 form.addEventListener("submit", async function (event) {
+  console.log("heeey");
   event.preventDefault();
 
   const email = emailInput.value;
