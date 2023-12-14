@@ -1,5 +1,4 @@
     <!-- Main Section-->
-
     <style>
       .carousel-inner img {
         max-height: 700px;
@@ -25,6 +24,35 @@
         border-radius: 0;
       }
     </style>
+    
+
+    <style>
+      /* Hide the scrollbar */
+      body {
+        scrollbar-width: thin;
+        /* Firefox */
+        scrollbar-color: transparent transparent;
+        -ms-overflow-style: none;
+        /*
+      Internet Explorer and Edge */
+      }
+
+      /* Webkit-based browsers (Chrome, Safari)
+      */
+      body::-webkit-scrollbar {
+        width: 0.5em;
+        display: none;
+      }
+
+      body::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+    </style>
+
 
     <section class="mt-0">
       <!-- Page Content Goes Here -->
@@ -911,63 +939,6 @@
         </div>
       </div>
     </section>
-    <!-- Theme JS -->
-    <!-- Vendor JS -->
-    <script src="/javascripts/vendor.bundle.js"></script>
-
-    <!-- Theme JS -->
-    <script src="/javascripts/theme.bundle.js"></script>
 
 
-    <style>
-      /* Hide the scrollbar */
-      body {
-        scrollbar-width: thin;
-        /* Firefox */
-        scrollbar-color: transparent transparent;
-        -ms-overflow-style: none;
-        /*
-      Internet Explorer and Edge */
-      }
-
-      /* Webkit-based browsers (Chrome, Safari)
-      */
-      body::-webkit-scrollbar {
-        width: 0.5em;
-        display: none;
-      }
-
-      body::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
-
-      body::-webkit-scrollbar-thumb {
-        background-color: transparent;
-      }
-    </style>
-
-    </body>
-
-    <script>
-      // Initialize slide index
-      let currentSlide = 0;
-
-      // Function to show the next slide
-      function showNextSlide() {
-        const slides = document.querySelectorAll('.swiper-slide');
-
-        // Hide the current slide
-        slides[currentSlide].classList.remove('active');
-
-        // Move to the next slide
-        currentSlide = (currentSlide + 1) % slides.length;
-
-        // Show the next slide
-        slides[currentSlide].classList.add('active');
-
-        console.log('Next slide:', currentSlide); // Debugging line
-      }
-
-      // Automatically show the next slide every 2 seconds
-      setInterval(showNextSlide, 2000);
-    </script>
+    
