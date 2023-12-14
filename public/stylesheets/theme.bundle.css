@@ -8482,6 +8482,9 @@ fieldset:disabled .btn {
 .vh-100 {
   height: 100vh !important;
 }
+.vh-60 {
+  height: 60vh !important;
+}
 .vh-10 {
   height: 10vh !important;
 }
@@ -8493,6 +8496,9 @@ fieldset:disabled .btn {
 }
 .vh-75 {
   height: 75vh !important;
+}
+.vh-80 {
+  height: 80vh !important;
 }
 .min-vh-100 {
   min-height: 100vh !important;

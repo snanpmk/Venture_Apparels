@@ -3,7 +3,7 @@
       .carousel-inner img {
         max-height: 700px;
         /* Adjust the value as needed */
-        border-radius: 2rem;
+        border-radius: 1rem;
       }
 
       .btn-dark {
@@ -58,18 +58,18 @@
       <!-- Page Content Goes Here -->
 
       <!-- / Hero Section -->
-      <section class="vh-100 position-relative bg-overlay-dark">
+      <section class="vh-60 position-relative bg-overlay-dark">
         <div class="container d-flex h-100 justify-content-center align-items-center position-relative z-index-10">
           <div class="d-flex justify-content-center align-items-center h-100 position-relative z-index-10 text-white">
             <div>
               <h1 class="display-1 fw-bold px-2 px-md-5 text-center mx-auto col-lg-8 mt-md-0" data-aos="fade-up" data-aos-delay="1000">Where will your next adventure take you?</h1>
               <div data-aos="fade-in" data-aos-delay="2000">
-                <div class="d-md-flex justify-content-center mt-4 mb-3 my-md-5">
-                  <a href="/product/allcategory" class="btn btn-skew-left btn-orange btn-orange-chunky text-white mx-1 w-100 w-md-auto mb-2 mb-md-0"><span>Shop Menswear
+                <!-- <div class="d-md-flex justify-content-center mt-4 mb-3 my-md-5">
+                  <a href="/product/allcategory" class="btn btn-skew-left btn-primary text-white mx-1 w-100 w-md-auto mb-2 mb-md-0"><span>Shop Menswear
                       <i class="ri-arrow-right-line align-middle fw-bold"></i></span></a>
                   <a href="/product/allcategory" class="btn btn-skew-left btn-orange btn-orange-chunky text-white mx-1 w-100 w-md-auto mb-2 mb-md-0"><span>Shop Womenswear
                       <i class="ri-arrow-right-line align-middle fw-bold"></i></span></a>
-                </div>
+                </div> -->
                 <i class="ri-mouse-line d-block text-center animation-float ri-2x transition-all opacity-50-hover text-white" data-pixr-scrollto data-target=".brand-section" data-aos="fade-up" data-aos-delay="700"></i>
               </div>
             </div>
@@ -93,6 +93,10 @@
               </div>
               <div class="swiper-slide position-relative">
                 <div class="w-100 h-100 bg-img-cover animation-move bg-pos-center-center" style="background-image: url(/images/slideshows/slideshow-2.jpg);">
+                </div>
+              </div>
+              <div class="swiper-slide position-relative">
+                <div class="w-100 h-100 bg-img-cover animation-move bg-pos-center-center" style="background-image: url(/images/slideshows/slideshow-3.jpg);">
                 </div>
               </div>
               <div class="swiper-slide position-relative">
@@ -215,7 +219,7 @@
       <!-- / Staff Picks-->
 
       <!-- Image Hotspot Banner -->
-      <section class="my-10 position-relative">
+      <section class=" position-relative">
         <div class="container d-flex justify-content-center align-items-center">
           <div id="myCarousel" class="carousel slide w-100" data-bs-ride="carousel">
             <!-- Indicators -->
@@ -229,10 +233,8 @@
             <div class="carousel-inner">
               <% banners.forEach((banner, index) => { %>
               <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                <img src="/<%= banner.image %>?auto=format&fit=crop&w=1600&h=500&q=80" alt="Slide <%= index + 1 %>" class="img-fluid">
-                <div class="carousel-caption">
-                  <a class="btn btn-dark" href="/product/allcategory">SHOP NOW -></a>
-                </div>
+                <a href="/product/allcategory"><img src="/<%= banner.image %>?auto=format&fit=crop&w=1600&h=500&q=80" alt="Slide <%= index + 1 %>" class="img-fluid"></a>
+               
               </div>
               <% }); %>
             </div>
@@ -273,15 +275,15 @@
                   Sale Extended</h3>
               </div>
               <div class="col-12 col-lg-4 d-flex justify-content-center flex-column" data-aos="fade-up" data-aos-delay="250">
-                <a href="/product/allcategory" class="btn btn-orange btn-orange-chunky text-white my-1"><span>Shop Menswear</span></a>
-                <a href="/product/allcategory" class="btn btn-orange btn-orange-chunky text-white my-1"><span>Shop Womenswear</span></a>
-                <a href="/product/allcategory" class="btn btn-orange btn-orange-chunky text-white my-1"><span>Shop Kidswear</span></a>
-                <a href="/product/allcategory" class="btn btn-orange btn-orange-chunky text-white my-1"><span>Shop Accessories</span></a>
+                <a href="/product/allcategory" class="btn btn-primary my-1"><span>Shop Menswear</span></a>
+                <a href="/product/allcategory" class="btn btn-primary my-1"><span>Shop Womenswear</span></a>
+                <a href="/product/allcategory" class="btn btn-primary my-1"><span>Shop Kidswear</span></a>
+                <a href="/product/allcategory" class="btn btn-primary my-1"><span>Shop Accessories</span></a>
               </div>
               <div class="col-12 col-lg-4 text-center text-lg-end" data-aos="fade-left" data-aos-delay="250">
                 <p class="lead fw-bolder">Discount applied to products at
                   checkout.</p>
-                <a class="text-white fw-bolder text-link-border border-2 border-white align-self-start pb-1 transition-all opacity-50-hover" href="#">Exclusions apply. Learn more
+                <a class="text-white fw-bolder text-link-border border-2 border-white align-self-start pb-1 transition-all opacity-50-hover" href="/checkout">Exclusions apply. Learn more
                   <i class="ri-arrow-right-line align-bottom"></i></a>
               </div>
             </div>
