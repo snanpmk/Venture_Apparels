@@ -3864,7 +3864,7 @@ fieldset:disabled .btn {
 .btn-primary {
   background-color: #BBE1FA; /* Your new primary button color */
   color: #364148 ;
-  border-radius: 0.3rem;
+  border-radius: 2rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
@@ -3905,7 +3905,7 @@ fieldset:disabled .btn {
 .btn-secondary {
   background-color: #0F4C75; /* Your new secondary button color */
   color: #fff !important;
-  border-radius: 0.3rem;
+  border-radius: 2rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }

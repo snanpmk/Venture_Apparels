@@ -1,59 +1,57 @@
 <style>
   .h-100 {
     height: 90% !important;
-}
-@media (max-width: 768px) {
-  .col-sm-6 {
-    /* Change the column width to 50% for mobile screens */
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
- .bannerhead {
-    font-size: 2rem;
   }
 
-  bannerbody {
-    font-size: 1rem;
-  }
-
-  /* Media query for smaller screens (phones) */
   @media (max-width: 768px) {
-    .bannerhead {
-      font-size: 1.4rem; /* Adjust the font size for phones */
+    .col-sm-6 {
+      /* Change the column width to 50% for mobile screens */
+      flex: 0 0 50%;
+      max-width: 50%;
     }
 
-    .lead {
-    font-size: 0.7rem;
-    font-weight: 300;
-}
+    .bannerhead {
+      font-size: 2rem;
+    }
+
+    bannerbody {
+      font-size: 1rem;
+    }
+
+    /* Media query for smaller screens (phones) */
+    @media (max-width: 768px) {
+      .bannerhead {
+        font-size: 1.4rem;
+        /* Adjust the font size for phones */
+      }
+
+      .lead {
+        font-size: 0.7rem;
+        font-weight: 300;
+      }
+    }
+
   }
-  
-}
 </style>
 <style>
-  @media (max-width: 767px) { /* Adjust the breakpoint as needed */
-      .custom-dropdown {
-          display: block !important;
-          width: 100%;
-      }
+  @media (max-width: 767px) {
+
+    /* Adjust the breakpoint as needed */
+    .custom-dropdown {
+      display: block !important;
+      width: 100%;
+    }
   }
 </style>
-<section class="mt-0">
+<section class="allcategory mt-0">
   <!-- Category Top Banner -->
-  <div
-    class="py-6 bg-img-cover bg-dark bg-overlay-gradient-dark position-relative overflow-hidden mb-4 bg-pos-center-center"
-    style="background-image: url(/images/banners/banner-1.jpg)"
-  >
-    <div
-      class="container position-relative z-index-20"
-      data-aos="fade-right"
-      data-aos-delay="300"
-    >
-     
+  <div class="py-6 bg-img-cover bg-dark bg-overlay-gradient-dark position-relative overflow-hidden mb-4 bg-pos-center-center" style="background-image: url(/images/banners/banner-1.jpg)">
+    <div class="container position-relative z-index-20" data-aos="fade-right" data-aos-delay="300">
+
       <h1 class="fw-bold display-6 mb-4 bannerhead text-white">Gear Up for Adventure! 🏞️⛺</h1>
       <div class="col-12 col-md-6">
         <p class="lead text-white bannerbody mb-0">
-          Embark on your next outdoor journey with confidence. Discover our rugged and versatile adventure clothing designed to withstand the elements. From waterproof jackets to durable hiking boots, we've got your back on the trail.        </p>
+          Embark on your next outdoor journey with confidence. Discover our rugged and versatile adventure clothing designed to withstand the elements. From waterproof jackets to durable hiking boots, we've got your back on the trail. </p>
       </div>
     </div>
   </div>
@@ -72,31 +70,15 @@
               <nav>
                 <ul class="list-unstyled list-default-text">
                   <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="/product/allcategory"
-                      ><span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        All Products</span
-                      >
-                      <span class="text-muted ms-4">(21)</span></a
-                    >
+                    <a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="/product/allcategory"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i>
+                        All Products</span>
+                      <span class="text-muted ms-4">(21)</span></a>
                   </li>
                   <% categories.forEach(category => { %>
                   <li class="mb-2">
-                    <a
-                      class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                      href="/product/category/<%= category.name %>"
-                      name="categoryName"
-                    >
-                      <span
-                        ><i
-                          class="ri-arrow-right-s-line align-bottom ms-n1"
-                        ></i>
-                        <%= category.name %></span
-                      >
+                    <a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="/product/category/<%= category.name %>" name="categoryName">
+                      <span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i>
+                        <%= category.name %></span>
                     </a>
                   </li>
                   <% }); %>
@@ -106,107 +88,51 @@
             <!-- / Filter Category-->
 
             <!-- Price Filter -->
-            <div class="py-4 widget-filter widget-filter-price border-top">
-              <a
-                class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron"
-                data-bs-toggle="collapse"
-                href="#filter-price"
-                role="button"
-                aria-expanded="true"
-                aria-controls="filter-price"
-              >
+            <div class="py-4  widget-filter widget-filter-price border-top">
+              <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-price" role="button" aria-expanded="true" aria-controls="filter-price">
                 Price
               </a>
               <div id="filter-price" class="collapse show">
-                <div
-                  class="d-flex justify-content-between align-items-center mt-2"
-                >
+                <div class="d-flex justify-content-between align-items-center mt-2">
                   <div class="input-group mb-0 me-2 border">
-                    <span
-                      class="input-group-text bg-transparent fs-7 p-2 text-muted border-0"
-                      >&#8377</span
-                    >
-                    <input
-                      type="number"
-                      min="00"
-                      max="1000"
-                      value="0"
-                      step="1"
-                      id="filter-min"
-                      class="filter-min form-control-sm border flex-grow-1 text-muted border-0"
-                    />
+                    <span class="input-group-text bg-transparent fs-7 p-2 text-muted border-0">&#8377</span>
+                    <input type="number" min="00" max="1000" value="0" step="1" id="filter-min" class="filter-min form-control-sm border flex-grow-1 text-muted border-0" />
                   </div>
                   <div class="input-group mb-0 ms-2 border">
-                    <span
-                      class="input-group-text bg-transparent fs-7 p-2 text-muted border-0"
-                      >&#8377</span
-                    >
-                    <input
-                      type="number"
-                      min="00"
-                      max="100000"
-                      value="1000"
-                      step="1"
-                      id="filter-max"
-                      class="filter-max form-control-sm flex-grow-1 text-muted border-0"
-                    />
+                    <span class="input-group-text bg-transparent fs-7 p-2 text-muted border-0">&#8377</span>
+                    <input type="number" min="00" max="100000" value="1000" step="1" id="filter-max" class="filter-max form-control-sm flex-grow-1 text-muted border-0" />
                   </div>
                 </div>
               </div>
             </div>
             <!-- / Price Filter -->
 
-            
-            
 
-            <div class="d-flex align-items-center flex-column flex-md-row">
+
+
+            <div class="d-flex mb-2 align-items-center flex-column flex-md-row">
               <!-- Filter Trigger -->
-              <button
-                class="btn bg-light p-3 d-flex d-lg-none align-items-center fs-xs fw-bold text-uppercase w-100 mb-2 mb-md-0 w-md-auto"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasFilters"
-                aria-controls="offcanvasFilters"
-              >
+              <button class="btn bg-light p-3 d-flex d-lg-none align-items-center fs-xs fw-bold text-uppercase w-100 mb-2 mb-md-0 w-md-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
                 <i class="ri-equalizer-line me-2"></i> Filters
               </button>
               <!-- / Filter Trigger -->
-              <div
-                class="dropdown ms-md-2 lh-1 p-3 bg-light w-100 mb-2 mb-md-0 w-md-auto"
-              >
-                <p
-                  class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0 dropdown-toggle"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+              <div class="dropdown ms-md-2 lh-1 p-3 bg-light w-100 mb-2 mb-md-0 w-md-auto">
+                <p class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Sort By
                 </p>
                 <ul class="dropdown-menu">
                   <li>
-                    <a
-                      class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
-                      href="#"
-                      data-sort-by="highToLow"
-                    >
+                    <a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#" data-sort-by="highToLow">
                       Price: High to Low
                     </a>
                   </li>
                   <li>
-                    <a
-                      class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
-                      href="#"
-                      data-sort-by="lowToHigh"
-                    >
+                    <a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#" data-sort-by="lowToHigh">
                       Price: Low to High
                     </a>
                   </li>
                   <li>
-                    <a
-                      class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2"
-                      href="#"
-                      data-sort-by="releaseDate"
-                    >
+                    <a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#" data-sort-by="releaseDate">
                       Release Date
                     </a>
                   </li>
@@ -214,7 +140,51 @@
               </div>
             </div>
 
-          
+            <!-- Activities Filter -->
+            <div class=" py-4 widget-filter border-top">
+              <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-brands" role="button" aria-expanded="true" aria-controls="filter-brands">
+                Activities
+              </a>
+              <div id="filter-brands" class="collapse show">
+
+                <div class="simplebar-wrapper mt-2">
+                  <div class="filter-options" data-pixr-simplebar>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="hiking">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-0">Hiking <span class="text-muted">(21)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="filter-activity-1">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-1">Rock Climbing <span class="text-muted">(13)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="filter-activity-2">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-2">Kayaking <span class="text-muted">(18)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="filter-activity-3">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-3">Mountain Biking <span class="text-muted">(25)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="filter-activity-4">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-4">Skiing <span class="text-muted">(11)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="filter-activity-5">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-5">Surfing <span class="text-muted">(19)</span></label>
+                    </div>
+                    <div class="form-group form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="camping">
+                      <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-6">Camping <span class="text-muted">(24)</span></label>
+                    </div>
+                    <!-- Add more activities as needed -->
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- / Activites Filter -->
+
 
           </aside>
           <!-- / Category Aside-->
@@ -224,124 +194,355 @@
 
       <!-- Category Products-->
       <div class="col-12 col-lg-9">
-        <!-- Top Toolbar -->
+
+        <!-- Top Toolbar-->
         <div class="mb-4 d-md-flex justify-content-between align-items-center">
-          <div class="dropdown custom-dropdown" style="display: none;">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown button
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <% categories.forEach(category => { %>
-
-                <li><a
-                  class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center"
-                  href="/product/category/<%= category.name %>"
-                  name="categoryName"
-                >
-                  <span
-                    ><i
-                      class="ri-arrow-right-s-line align-bottom ms-n1"
-                    ></i>
-                    <%= category.name %></span
-                  >
-                </a></li>
-                <% }) %>
+          <div class="d-flex justify-content-start align-items-center flex-grow-1 mb-4 mb-md-0">
+            <small class="d-inline-block fw-bolder">Filtered by:</small>
+            <ul class="list-unstyled d-inline-block mb-0 ms-2">
+              <li class="bg-light py-1 fw-bolder px-2 cursor-pointer d-inline-block me-1 small">Type: Slip On <i class="ri-close-circle-line align-bottom ms-1"></i></li>
             </ul>
-        </div>
-    
-        </div>
-        <!-- / Top Toolbar -->
+            <span class="fw-bolder text-muted-hover text-decoration-underline ms-2 cursor-pointer small">Clear
+              All</span>
+          </div>
+          <div class="d-flex align-items-center flex-column flex-md-row">
+            <!-- Filter Trigger-->
+            <button class="btn bg-light p-3 d-flex d-lg-none align-items-center fs-xs fw-bold text-uppercase w-100 mb-2 mb-md-0 w-md-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+              <i class="ri-equalizer-line me-2"></i> Filters
+            </button>
+            <!-- / Filter Trigger-->
+            <div class="dropdown ms-md-2 lh-1 p-3 bg-light w-100 mb-2 mb-md-0 w-md-auto">
+              <p class="fs-xs fw-bold text-uppercase text-muted-hover p-0 m-0" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sort By <i class="ri-arrow-drop-down-line ri-lg align-bottom"></i></p>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#">Price: Hi Low</a></li>
+                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#">Price: Low Hi</a></li>
+                <li><a class="dropdown-item fs-xs fw-bold text-uppercase text-muted-hover mb-2" href="#">Name</a></li>
+              </ul>
+            </div>
+          </div>
+        </div> <!-- / Top Toolbar-->
 
-      <!-- Products -->
-<div class="row g-4 mb-5" id="productContainer">
-  <% products.forEach(product => { %>
-  <div class="col-12 col-sm-6 col-md-4">
-    <!-- Card Product -->
-    <% if (product.offerPrice) { %>
-      <!-- Product card with offer -->
-      <div class="card position-relative h-100 card-listing hover-trigger">
-        <span class="badge card-badge bg-secondary">- <%= product.offerPercent %> %</span>
-        <div class="card-header">
-          <picture class="position-relative overflow-hidden d-block bg-light">
-            <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
-          </picture>
-          <div class="card-actions">
-            <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
+        <!-- Products -->
+        <div class="row g-4 mb-5" id="productContainer">
+          <% products.forEach(product => { %>
+          <div class="col-12 col-sm-6 col-md-4">
+            <!-- Card Product -->
+            <% if (product.offerPrice) { %>
+            <!-- Product card with offer -->
+            <div class="card position-relative h-100 card-listing hover-trigger">
+              <span class="badge card-badge bg-secondary">- <%= product.offerPercent %> %</span>
+              <div class="card-header">
+                <picture class="position-relative overflow-hidden d-block bg-light">
+                  <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+                </picture>
+                <div class="card-actions">
+                  <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
+                </div>
+              </div>
+              <div class="card-body px-0 text-center">
+                <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
+                <div class="d-flex justify-content-center align-items-center mt-2">
+                  <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span><%= product.offerPrice %></span></p>
+                  <p class="mb-0 text-muted fw-bolder"><s>&#8377<span><%= product.price %></span></s></p>
+                </div>
+              </div>
+            </div>
+            <% } else { %>
+            <!-- Product card without offer -->
+            <div class="card position-relative h-100 card-listing hover-trigger">
+              <div class="card-header">
+                <picture class="position-relative overflow-hidden d-block bg-light">
+                  <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
+                </picture>
+                <div class="card-actions">
+                  <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
+                </div>
+              </div>
+              <div class="card-body px-0 text-center">
+                <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
+                <p class="fw-bolder m-0 mt-2">&#8377 <span><%= product.price %></span></p>
+              </div>
+            </div>
+            <% } %>
+            <!-- / Card Product -->
           </div>
+          <% }); %>
         </div>
-        <div class="card-body px-0 text-center">
-          <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
-          <div class="d-flex justify-content-center align-items-center mt-2">
-            <p class="mb-0 me-2 text-danger fw-bolder">&#8377<span><%= product.offerPrice %></span></p>
-            <p class="mb-0 text-muted fw-bolder"><s>&#8377<span><%= product.price %></span></s></p>
-          </div>
-        </div>
-      </div>
-    <% } else { %>
-      <!-- Product card without offer -->
-      <div class="card position-relative h-100 card-listing hover-trigger">
-        <div class="card-header">
-          <picture class="position-relative overflow-hidden d-block bg-light">
-            <img class="w-100 img-fluid position-relative z-index-10" title="" src="/<%= product.image %>" alt="" />
-          </picture>
-          <div class="card-actions">
-            <span class="small text-uppercase tracking-wide fw-bolder text-center d-block">View Product</span>
-          </div>
-        </div>
-        <div class="card-body px-0 text-center">
-          <a class="mb-0 mx-2 mx-md-4 fs-p link-cover text-decoration-none d-block text-center" href="/product/product-detail/<%= product.id %>"><%= product.name %></a>
-          <p class="fw-bolder m-0 mt-2">&#8377 <span><%= product.price %></span></p>
-        </div>
-      </div>
-    <% } %>
-    <!-- / Card Product -->
-  </div>
-  <% }); %>
-</div>
-<!-- / Products -->
+        <!-- / Products -->
 
         <!-- Pagination -->
-        <nav
-          class="border-top mt-5 pt-5 d-flex justify-content-between align-items-center"
-          aria-label="Category Pagination"
-        >
+        <nav class="border-top mt-5 pt-5 d-flex justify-content-between align-items-center" aria-label="Category Pagination">
           <ul class="pagination">
             <li class="page-item">
-              <a
-                class="page-link"
-                id="prevPageLink"
-                pg="<%= currentPage %> - 1"
-                href=""
-                ><i class="ri-arrow-left-line align-bottom"></i> Prev</a
-              >
+              <a class="page-link" id="prevPageLink" pg="<%= currentPage %> - 1" href=""><i class="ri-arrow-left-line align-bottom"></i> Prev</a>
             </li>
           </ul>
           <ul class="pagination">
             <% for (let i = 1; i <= totalPages; i++) { %>
             <li class="page-item">
-              <a class="page-link" href="/product/allcategory?page=<%= i %>"
-                ><%= i %></a
-              >
+              <a class="page-link" href="/product/allcategory?page=<%= i %>"><%= i %></a>
             </li>
             <% } %>
           </ul>
 
           <ul class="pagination">
             <li class="page-item">
-              <a
-                class="page-link"
-                id="nextPageLink"
-                pg="<%= currentPage %> + 1"
-                href="#"
-                >Next <i class="ri-arrow-right-line align-bottom"></i
-              ></a>
+              <a class="page-link" id="nextPageLink" pg="<%= currentPage %> + 1" href="#">Next <i class="ri-arrow-right-line align-bottom"></i></a>
             </li>
           </ul>
         </nav>
 
-       
+
       </div>
       <!-- / Category Products-->
+    </div>
+  </div>
+
+  <!-- Filters Offcanvas-->
+  <div class="offcanvas offcanvas-end d-none" tabindex="-1" id="offcanvasFilters">
+    <div class="offcanvas-header d-flex align-items-center">
+      <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Category Filters</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="d-flex flex-column justify-content-between w-100 h-100">
+
+        <!-- Filters-->
+        <div>
+          <!-- Filter Category -->
+          <div class="mb-4">
+            <h2 class="mb-4 fs-6 mt-2 fw-bolder">Jacket Category</h2>
+            <nav>
+              <ul class="list-unstyled list-default-text">
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Waterproof Jackets</span> <span class="text-muted ms-4">(21)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Down Jackets</span> <span class="text-muted ms-4">(13)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Windproof Jackets</span> <span class="text-muted ms-4">(18)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Hiking Jackets</span> <span class="text-muted ms-4">(25)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Climbing Jackets</span> <span class="text-muted ms-4">(11)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Trekking Jackets</span> <span class="text-muted ms-4">(19)</span></a>
+                </li>
+                <li class="mb-2"><a class="text-decoration-none text-body text-secondary-hover transition-all d-flex justify-content-between align-items-center" href="#"><span><i class="ri-arrow-right-s-line align-bottom ms-n1"></i> Allround Jackets</span> <span class="text-muted ms-4">(24)</span></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!-- / Filter Category-->
+
+          <!-- Price Filter -->
+          <div class="py-4 widget-filter widget-filter-price border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-modal-price" role="button" aria-expanded="false" aria-controls="filter-modal-price">
+              Price
+            </a>
+            <div id="filter-modal-price" class="collapse">
+              <div class="filter-price mt-6"></div>
+              <div class="d-flex justify-content-between align-items-center mt-7">
+                <div class="input-group mb-0 me-2 border">
+                  <span class="input-group-text bg-transparent fs-7 p-2 text-muted border-0">$</span>
+                  <input type="number" min="00" max="1000" step="1" class="filter-min form-control-sm border flex-grow-1 text-muted border-0">
+                </div>
+                <div class="input-group mb-0 ms-2 border">
+                  <span class="input-group-text bg-transparent fs-7 p-2 text-muted border-0">$</span>
+                  <input type="number" min="00" max="1000" step="1" class="filter-max form-control-sm flex-grow-1 text-muted border-0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / Price Filter -->
+
+          <!-- Activities Filter -->
+          <div class=" py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-brands" role="button" aria-expanded="true" aria-controls="filter-brands">
+              Activities
+            </a>
+            <div id="filter-brands" class="collapse show">
+
+              <div class="simplebar-wrapper mt-2">
+                <div class="filter-options" data-pixr-simplebar>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="hiking">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-0">Hiking <span class="text-muted">(21)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="filter-activity-1">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-1">Rock Climbing <span class="text-muted">(13)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="filter-activity-2">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-2">Kayaking <span class="text-muted">(18)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="filter-activity-3">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-3">Mountain Biking <span class="text-muted">(25)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="filter-activity-4">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-4">Skiing <span class="text-muted">(11)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="filter-activity-5">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-5">Surfing <span class="text-muted">(19)</span></label>
+                  </div>
+                  <div class="form-group form-check mb-0">
+                    <input type="checkbox" class="form-check-input" id="camping">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-activity-6">Camping <span class="text-muted">(24)</span></label>
+                  </div>
+                  <!-- Add more activities as needed -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- / Activites Filter -->
+
+          <!-- Type Filter -->
+          <div class="py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-modal-type" role="button" aria-expanded="false" aria-controls="filter-modal-type">
+              Type
+            </a>
+            <div id="filter-modal-type" class="collapse">
+              <div class="input-group my-3 py-1">
+                <input type="text" class="form-control py-2 filter-search rounded" placeholder="Search" aria-label="Search">
+                <span class="input-group-text bg-transparent p-2 position-absolute top-2 end-0 border-0 z-index-20"><i class="ri-search-2-line text-muted"></i></span>
+              </div>
+              <div class="filter-options">
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-0">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-0">Slip On </label>
+                </div>
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-1">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-1">Strap Up </label>
+                </div>
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-2">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-2">Zip Up </label>
+                </div>
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-3">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-3">Toggle </label>
+                </div>
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-4">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-4">Auto </label>
+                </div>
+                <div class="form-group form-check mb-0">
+                  <input type="checkbox" class="form-check-input" id="filter-type-modal-5">
+                  <label class="form-check-label fw-normal text-body flex-grow-1 d-flex justify-content-between" for="filter-type-modal-5">Click </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / Type Filter -->
+
+          <!-- Sizes Filter -->
+          <div class="py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-modal-sizes" role="button" aria-expanded="false" aria-controls="filter-modal-sizes">
+              Sizes
+            </a>
+            <div id="filter-modal-sizes" class="collapse">
+              <div class="filter-options mt-3">
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-0">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-0">6.5</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-1">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-1">7</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-2">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-2">7.5</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-3">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-3">8</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-4">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-4">8.5</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-5">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-5">9</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-6">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-6">9.5</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-7">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-7">10</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-8">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-8">10.5</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-9">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-9">11</label>
+                </div>
+                <div class="form-group d-inline-block mr-2 mb-2 form-check-bg form-check-custom">
+                  <input type="checkbox" class="form-check-bg-input" id="filter-sizes-modal-10">
+                  <label class="form-check-label fw-normal" for="filter-sizes-modal-10">11.5</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / Sizes Filter -->
+
+          <!-- Colour Filter -->
+          <div class="py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron" data-bs-toggle="collapse" href="#filter-modal-colour" role="button" aria-expanded="false" aria-controls="filter-modal-colour">
+              Colour
+            </a>
+            <div id="filter-modal-colour" class="collapse">
+              <div class="filter-options mt-3">
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-primary">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-0">
+                  <label class="form-check-label" for="filter-colours-modal-0"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-success">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-1">
+                  <label class="form-check-label" for="filter-colours-modal-1"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-danger">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-2">
+                  <label class="form-check-label" for="filter-colours-modal-2"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-info">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-3">
+                  <label class="form-check-label" for="filter-colours-modal-3"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-warning">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-4">
+                  <label class="form-check-label" for="filter-colours-modal-4"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-dark">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-5">
+                  <label class="form-check-label" for="filter-colours-modal-5"></label>
+                </div>
+                <div class="form-group d-inline-block mr-1 mb-1 form-check-solid-bg-checkmark form-check-custom form-check-secondary">
+                  <input type="checkbox" class="form-check-color-input" id="filter-colours-modal-6">
+                  <label class="form-check-label" for="filter-colours-modal-6"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / Colour Filter -->
+        </div>
+        <!-- / Filters-->
+
+        <!-- Filter Button-->
+        <div class="border-top pt-3">
+          <a href="#" class="btn btn-dark mt-2 d-block hover-lift-sm hover-boxshadow">Done</a>
+        </div>
+        <!-- /Filter Button-->
+      </div>
     </div>
   </div>
 </section>
@@ -350,7 +551,7 @@
   // Add event listeners to the sorting options
   const sortOptions = document.querySelectorAll(".dropdown-item");
   for (const option of sortOptions) {
-    option.addEventListener("click", function (event) {
+    option.addEventListener("click", function(event) {
       event.preventDefault();
       const sortOption = this.getAttribute("data-sort-by");
       fetchProducts(sortOption);
@@ -358,7 +559,7 @@
   }
 
   // Function to fetch products based on the selected sort option
-  const fetchProducts = async function (sortOption) {
+  const fetchProducts = async function(sortOption) {
     try {
       const url = "/product/sort"; // Set the route for the POST request
       const method = "POST"; // Set the HTTP method to POST
@@ -366,7 +567,9 @@
         "Content-Type": "application/json", // Set the desired headers
       };
 
-      const body = JSON.stringify({ sortOption });
+      const body = JSON.stringify({
+        sortOption
+      });
 
       const response = await fetch(url, {
         method,
@@ -390,13 +593,13 @@
     }
   };
 
- // Function to update the product cards with the data
-const updateProductCards = function (products) {
-  const productContainer = document.getElementById("productContainer");
-  productContainer.innerHTML = ""; // Clear the existing product cards
+  // Function to update the product cards with the data
+  const updateProductCards = function(products) {
+    const productContainer = document.getElementById("productContainer");
+    productContainer.innerHTML = ""; // Clear the existing product cards
 
-  products.forEach((product) => {
-    const card = `
+    products.forEach((product) => {
+      const card = `
       <div class="col-12 col-sm-6 col-md-4">
         <!-- Card Product -->
         <div class="card position-relative h-100 card-listing hover-trigger">
@@ -427,9 +630,9 @@ const updateProductCards = function (products) {
       </div>
     `;
 
-    productContainer.insertAdjacentHTML("beforeend", card);
-  });
-};
+      productContainer.insertAdjacentHTML("beforeend", card);
+    });
+  };
 
 
   // Function to update the product cards with the sorted data
@@ -439,13 +642,13 @@ const updateProductCards = function (products) {
   const minInput = document.getElementById("filter-min");
   const maxInput = document.getElementById("filter-max");
 
-  minInput.addEventListener("input", function () {
+  minInput.addEventListener("input", function() {
     const min = minInput.value.trim();
     console.log(min);
     sendFetchRequest(min, maxInput.value);
   });
 
-  maxInput.addEventListener("input", function () {
+  maxInput.addEventListener("input", function() {
     const max = maxInput.value.trim();
     console.log(max);
     sendFetchRequest(minInput.value, max);
@@ -457,13 +660,16 @@ const updateProductCards = function (products) {
     const headers = {
       "Content-Type": "application/json",
     };
-    const body = JSON.stringify({ min, max });
+    const body = JSON.stringify({
+      min,
+      max
+    });
 
     fetch(url, {
-      method,
-      headers,
-      body,
-    })
+        method,
+        headers,
+        body,
+      })
       .then((response) => response.json())
       .then((data) => {
         updateProductCards(data.products);
@@ -478,7 +684,7 @@ const updateProductCards = function (products) {
   const prevPageLink = document.getElementById("prevPageLink");
   const nextPageLink = document.getElementById("nextPageLink");
 
-  prevPageLink.addEventListener("click", function (event) {
+  prevPageLink.addEventListener("click", function(event) {
     event.preventDefault();
     const currentPage = parseInt(prevPageLink.getAttribute("pg"));
     if (currentPage >= 1) {
@@ -487,7 +693,7 @@ const updateProductCards = function (products) {
     }
   });
 
-  nextPageLink.addEventListener("click", function (event) {
+  nextPageLink.addEventListener("click", function(event) {
     event.preventDefault();
     const currentPage = parseInt(nextPageLink.getAttribute("pg"));
     const totalPages = document.querySelectorAll(
@@ -499,3 +705,4 @@ const updateProductCards = function (products) {
     }
   });
 </script>
+<script src="/javascripts/allCategory.js"></script>

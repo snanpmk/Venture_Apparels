@@ -11,14 +11,30 @@ const loadAddCategory = async function (req, res) {
   }
 };
 
+const fetchFilterdPrdcs = async (req, res) => {
+  try {
+    const appliedFilters = req.body;
+    console.log(appliedFilters);
+    const products = await Product.find({ activity: { $in: appliedFilters } });
+    return res.status(200).json({products:products})
+  } catch (error) {
+    console.log(error + "error in fetching products based on applied filters");
+  }
+};
+
+const fetchCategory = async () => {
+  try {
+    const category = req.params.category;
+  } catch (error) {
+    console.log(error + "error in fetching category");
+  }
+};
 
 const addCategory = async (req, res) => {
   try {
     const existingCategory = await Category.findOne({ name: req.body.name });
     if (existingCategory) {
-      return res
-        .status(500)
-        .json({ error: "Category name already exists." });
+      return res.status(500).json({ error: "Category name already exists." });
     }
     // Create a new category instance
     const category = new Category({
@@ -29,7 +45,7 @@ const addCategory = async (req, res) => {
     });
 
     const savedCategory = await category.save();
-    res.redirect("/product/list-category")
+    res.redirect("/product/list-category");
     console.log(savedCategory);
   } catch (err) {
     console.error(err);
@@ -40,7 +56,10 @@ const addCategory = async (req, res) => {
 const loadEachCategory = async function (req, res) {
   try {
     const categoryName = req.params.categoryName;
-    const category = await Category.findOne({ name: categoryName, deleted: false });
+    const category = await Category.findOne({
+      name: categoryName,
+      deleted: false,
+    });
 
     if (!category) {
       // Handle case when category is not found
@@ -50,7 +69,10 @@ const loadEachCategory = async function (req, res) {
 
     const categoryId = category._id;
     const categories = await Category.find();
-    const products = await Product.find({ category: categoryId, deleted: false });
+    const products = await Product.find({
+      category: categoryId,
+      deleted: false,
+    });
     console.log(categories);
 
     res.render("category/eachCategory", {
@@ -65,17 +87,17 @@ const loadEachCategory = async function (req, res) {
 
 const listCategoryAdminSide = async function (req, res) {
   try {
-    const categories = await Category.find()
-    res.render('category/listCategoryAdminSide', {
+    const categories = await Category.find();
+    res.render("category/listCategoryAdminSide", {
       title: "all category",
       layout: "layouts/adminLayout",
       categories: categories,
       errorMessage: null,
-    })
+    });
   } catch (error) {
     console.log("error in listing category admin side", error);
   }
-}
+};
 const loadEditCategory = async function (req, res) {
   try {
     const categoryId = req.params.ObjectId;
@@ -85,31 +107,30 @@ const loadEditCategory = async function (req, res) {
   } catch (err) {
     console.log("Error in loading edit product", err);
   }
-}
+};
 
 const upadateCategory = async function (req, res) {
   try {
     const categoryId = req.params.ObjectId;
-    const name = req.body.name
-    const description = req.body.description
-    const gender = req.body.gender
-    const ageGroup = req.body.ageGroup
+    const name = req.body.name;
+    const description = req.body.description;
+    const gender = req.body.gender;
+    const ageGroup = req.body.ageGroup;
 
-    const category = await Category.findOne({ _id: categoryId })
+    const category = await Category.findOne({ _id: categoryId });
 
-    category.name = name
-    category.description = description
-    category.gender = gender
-    category.ageGroup = ageGroup
+    category.name = name;
+    category.description = description;
+    category.gender = gender;
+    category.ageGroup = ageGroup;
 
-    await category.save()
+    await category.save();
     console.log(category);
-    res.redirect('/product/list-category')
-
+    res.redirect("/product/list-category");
   } catch (error) {
     console.log("error in updating product", error);
   }
-}
+};
 
 const deactivateCategory = async function (req, res) {
   try {
@@ -122,8 +143,7 @@ const deactivateCategory = async function (req, res) {
       },
       { new: true }
     );
-    res.redirect("/product/list-category")
-
+    res.redirect("/product/list-category");
   } catch (err) {
     console.log("Error in soft deleting Category", err);
     res.status(500).json({ error: "Internal server error" });
@@ -141,11 +161,11 @@ const activateCategory = async function (req, res) {
       },
       { new: true }
     );
-    res.redirect("/product/list-category")
+    res.redirect("/product/list-category");
   } catch (err) {
     console.log("error in activating Category", err);
   }
-}
+};
 
 module.exports = {
   addCategory,
@@ -156,5 +176,5 @@ module.exports = {
   upadateCategory,
   deactivateCategory,
   activateCategory,
-
+  fetchFilterdPrdcs,
 };

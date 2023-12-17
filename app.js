@@ -13,6 +13,7 @@ var usersRouter = require("./routes/userRoute");
 var adminRouter = require("./routes/adminRoute");
 const productRouter = require("./routes/productRoute");
 const cartRouter = require("./routes/cartRoute");
+const categoryRouter = require("./routes/categoryRoute")
 
 var app = express();
 
@@ -56,6 +57,7 @@ app.use("/", usersRouter);
 app.use("/admin", adminRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter)  
+app.use("/category",categoryRouter)
 console.clear();
 db.connect((err) => {
   if (err) {

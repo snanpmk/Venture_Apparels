@@ -8,16 +8,8 @@
     <div class="row justify-content-center mt-4">
       <div class="col-12 col-md-10 text-white p-4">
         <div class="d-md-flex justify-content-center align-items-center">
-          <div
-            class="text-white p-3 m-2 d-flex justify-content-center align-items-center"
-            style="max-width: 350px"
-          >
-            <img
-              src="/images/background/Exploring.gif"
-              class="img-fluid small-image"
-              alt="Sample image"
-              style="border-radius: 0.5rem"
-            />
+          <div class="text-white p-3 m-2 d-flex justify-content-center align-items-center" style="max-width: 350px">
+            <img src="/images/background/login.gif" class="img-fluid small-image" alt="Sample image" style="border-radius: 0.5rem" />
           </div>
 
           <div class="text-white m-2 d-flex flex-column align-items-center">
@@ -25,82 +17,29 @@
               <div class="" style="display: flex; flex-direction: column">
                 <form method="post" class="" action="/login">
                   <div class="form-group">
-                    <input
-                      class="form-control mb-3"
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Enter your email"
-                    />
-                    <input
-                      class="form-control mb-3"
-                      type="password"
-                      id="password"
-                      name="password"
-                      placeholder="Enter your password"
-                    />
-                    <input
-                      class="form-control mb-3"
-                      type="tel"
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      placeholder="Enter Phone Number"
-                      style="display: none"
-                    />
-                    <input
-                      class="form-control mb-3"
-                      type="password"
-                      id="otp"
-                      name="otp"
-                      placeholder="Enter the otp"
-                      style="display: none"
-                    />
+                    <input class="form-control mb-3" type="email" id="email" name="email" placeholder="Enter your email" />
+                    <input class="form-control mb-3" type="password" id="password" name="password" placeholder="Enter your password" />
+                    <input class="form-control mb-3" type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number" style="display: none" />
+                    <input class="form-control mb-3" type="password" id="otp" name="otp" placeholder="Enter the otp" style="display: none" />
                     <div class="align-items-center">
-                      <button
-                        type="submit"
-                        class="btn btn-primary"
-                        id="submitBtn"
-                      >
+                      <button type="submit" class="btn btn-primary" id="submitBtn">
                         Submit
                       </button>
-                      <a
-                        id="submitOtp"
-                        class="btn btn-primary"
-                        style="display: none"
-                        >Submit Otp</a
-                      >
+                      <a id="submitOtp" class="btn btn-primary" style="display: none">Submit Otp</a>
                     </div>
                     <div class="align-items-center">
-                      <a
-                        style="display: none"
-                        class="btn btn-success"
-                        id="getOtp"
-                      >
+                      <a style="display: none" class="btn btn-success" id="getOtp">
                         Get otp
                       </a>
                     </div>
                     <br />
                   </div>
                   <div>
-                    <p
-                      id="errorMessage"
-                      style="color: rgb(151, 25, 25); font-weight: bold"
-                    ></p>
+                    <p id="errorMessage" style="color: rgb(151, 25, 25); font-weight: bold"></p>
 
                     <div class="mt-5 text-center">
-                      <a
-                        href="javascript:void(0);"
-                        class="loginPhone btn btn-secondary"
-                        id="loginPhone"
-                        >Login with Otp</a
-                      >
-                      <a
-                        href="javascript:void(0);"
-                        class="loginEmail btn btn-secondary"
-                        id="loginEmail"
-                        style="display: none"
-                        >Login with Email</a
-                      >
+                      <a href="javascript:void(0);" class="loginPhone btn btn-secondary" id="loginPhone">Login with Otp</a>
+                      <a href="javascript:void(0);" class="loginEmail btn btn-secondary" id="loginEmail" style="display: none">Login with Email</a>
                     </div>
                   </div>
                 </form>
@@ -108,12 +47,7 @@
                 <div class="mt-4 center-align">
                   <p class="" style="color: black; font-weight: 500">
                     Not a member?
-                    <a
-                      href="/signup"
-                      class="no-underline not-member"
-                      style="text-decoration: none; color: rgb(111 137 154)"
-                      >Create Account</a
-                    >
+                    <a href="/signup" class="no-underline not-member" style="text-decoration: none; color: rgb(111 137 154)">Create Account</a>
                   </p>
                 </div>
               </div>
@@ -180,7 +114,9 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ phoneNumber }),
+      body: JSON.stringify({
+        phoneNumber
+      }),
     };
 
     fetch(url, requestOptions)
@@ -218,7 +154,9 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ otp }),
+      body: JSON.stringify({
+        otp
+      }),
     };
 
     fetch(url, requestOptions)
