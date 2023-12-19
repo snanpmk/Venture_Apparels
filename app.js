@@ -58,7 +58,7 @@ app.use("/admin", adminRouter);
 app.use("/product", productRouter);
 app.use("/cart", cartRouter)  
 app.use("/category",categoryRouter)
-console.clear();
+// console.clear();
 db.connect((err) => {
   if (err) {
     console.log(err);
